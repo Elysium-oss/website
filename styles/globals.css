@@ -123,3 +123,61 @@
     @apply bg-background text-foreground;
   }
 }
+
+@keyframes lineflow {
+  0% { transform: translateX(-50%); opacity: 0.8; }
+  100% { transform: translateX(50%); opacity: 0.8; }
+}
+
+.animate-lineflow {
+  animation: lineflow 3s linear infinite;
+  background-size: 200% 100%;
+}
+
+@keyframes softpulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes flashonce {
+  0% { opacity: 0; transform: scale(0.96); }
+  25% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.02); }
+}
+
+.animate-softpulse {
+  animation: softpulse 2.5s ease-in-out infinite;
+}
+
+.animate-flashonce {
+  animation: flashonce 0.6s ease-in-out;
+}
+
+@keyframes shine {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+.animate-shine {
+  animation: shine 0.7s linear;
+}
+
+.nav-button,
+button {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.nav-button:hover,
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}

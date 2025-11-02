@@ -17,9 +17,7 @@ export function Header() {
 
   return (
     <header
-      className={`fixed top-0 w-full z-50 bg-background transition-all duration-300 ${
-        isScrolled ? "border-b border-border shadow-sm" : "border-b border-transparent"
-      }`}
+      className={`fixed top-0 left-0 w-full z-50 bg-background border-b border-border shadow-sm transition-all duration-300`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
@@ -37,27 +35,42 @@ export function Header() {
           <nav className="hidden md:flex items-center gap-4">
             <Link
               href="/writings"
-              className="px-4 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-all duration-200"
+              className="relative group px-4 py-2 rounded-lg text-sm font-medium bg-[#F9FAFB] text-[#070707] hover:text-foreground hover:-translate-y-[2px] transition-transform duration-200 focus:outline-none"
             >
-              Writings
+              <span className="inline-block animate-softpulse">Writings</span>
+              <span className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 group-focus:opacity-100 border border-gray-300 border-dashed animate-flashonce pointer-events-none"></span>
+              <span className="absolute inset-0 overflow-hidden rounded-lg">
+                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 animate-shine pointer-events-none" />
+              </span>
             </Link>
             <Link
               href="/development"
-              className="px-4 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-all duration-200"
+              className="relative group px-4 py-2 rounded-lg text-sm font-medium bg-[#F9FAFB] text-[#070707] hover:text-foreground hover:-translate-y-[2px] transition-transform duration-200 focus:outline-none"
             >
-              Development
+              <span className="inline-block animate-softpulse">Development</span>
+              <span className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 group-focus:opacity-100 border border-gray-300 border-dashed animate-flashonce pointer-events-none"></span>
+              <span className="absolute inset-0 overflow-hidden rounded-lg">
+                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 animate-shine pointer-events-none" />
+              </span>
             </Link>
             <Link
               href="/about"
-              className="px-4 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-all duration-200"
+              className="relative group px-4 py-2 rounded-lg text-sm font-medium bg-[#F9FAFB] text-[#070707] hover:text-foreground hover:-translate-y-[2px] transition-transform duration-200 focus:outline-none"
             >
-              About
+              <span className="inline-block animate-softpulse">About</span>
+              <span className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 group-focus:opacity-100 border border-gray-300 border-dashed animate-flashonce pointer-events-none"></span>
+              <span className="absolute inset-0 overflow-hidden rounded-lg">
+                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 animate-shine pointer-events-none" />
+              </span>
             </Link>
             <Link
               href="/contact"
-              className="px-4 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-all duration-200"
+              className="relative group px-4 py-2 rounded-lg text-sm font-medium bg-[#070707] text-[#F9FAFB] hover:-translate-y-[2px] transition-transform duration-200 focus:outline-none"
             >
-              Contact
+              <span className="inline-block animate-softpulse">Contact</span>
+              <span className="absolute inset-0 overflow-hidden rounded-lg">
+                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 animate-shine pointer-events-none" />
+              </span>
             </Link>
           </nav>
 
@@ -69,6 +82,7 @@ export function Header() {
           </button>
         </div>
       </div>
+      <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-gray-300 to-transparent animate-lineflow" />
     </header>
   )
 }
