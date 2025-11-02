@@ -1,7 +1,6 @@
 "use client"
 
 import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
 
 export default function ContactPage() {
   const researchFormUrl = process.env.NEXT_PUBLIC_TYPEFORM_RESEARCH_URL || "https://form.typeform.com/to/research-form-id"
@@ -220,7 +219,6 @@ export default function ContactPage() {
           </div>
         </section>
       </main>
-      <Footer />
     </>
   )
 }

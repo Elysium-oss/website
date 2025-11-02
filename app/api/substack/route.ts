@@ -26,11 +26,8 @@ function parseRSSServer(rssText: string) {
   }
 
   if (itemMatches.length === 0) {
-    console.log('No items found in RSS feed')
     return articles
   }
-  
-  console.log(`Found ${itemMatches.length} items in RSS feed`)
 
   itemMatches.forEach((itemXml, index) => {
     const titleMatch = itemXml.match(/<title><!\[CDATA\[(.*?)\]\]><\/title>|<title>(.*?)<\/title>/i)
@@ -118,8 +115,9 @@ function parseRSSServer(rssText: string) {
 
 /**
  * Fetch articles from Substack API (if API key is provided)
+ * Returns null if API should be skipped (e.g., due to rate limits or permissions)
  */
-async function fetchFromSubstackAPI(apiKey: string, publicationUrl: string): Promise<any[]> {
+async function fetchFromSubstackAPI(apiKey: string, publicationUrl: string, forceRefresh: boolean = false): Promise<any[] | null> {
   try {
     // Try SubstackAPI.dev service
     const apiBaseUrl = process.env.SUBSTACK_API_BASE_URL || "https://api.substackapi.dev"
@@ -128,8 +126,20 @@ async function fetchFromSubstackAPI(apiKey: string, publicationUrl: string): Pro
         "X-API-Key": apiKey,
         "Content-Type": "application/json",
       },
-      next: { revalidate: 3600 }, // Cache for 1 hour
+      next: forceRefresh ? { revalidate: 0 } : { revalidate: 3600 }, // Cache for 1 hour unless forced
+      cache: forceRefresh ? 'no-store' : 'default',
     })
+
+    // Check for permanent failures that suggest we should skip API
+    if (response.status === 403 || response.status === 401) {
+      // API key invalid or forbidden - skip API in future
+      return null
+    }
+
+    if (response.status === 429) {
+      // Rate limited - skip API for this request but don't disable permanently
+      return null
+    }
 
     if (!response.ok) {
       throw new Error(`API request failed: ${response.statusText}`)
@@ -154,9 +164,13 @@ async function fetchFromSubstackAPI(apiKey: string, publicationUrl: string): Pro
     }
     
     return []
-  } catch (error) {
-    console.error("Error fetching from Substack API:", error)
-    throw error
+  } catch (error: any) {
+    // Only log unexpected errors, not rate limits or auth failures
+    if (!error.message?.includes('403') && !error.message?.includes('429') && !error.message?.includes('401')) {
+      console.error("Error fetching from Substack API:", error)
+    }
+    // Return null to indicate API should be skipped
+    return null
   }
 }
 
@@ -171,24 +185,25 @@ export async function GET(request: Request) {
     // Check if API key is provided (try both environment variable names)
     const apiKey = process.env.SUBSTACK_API_KEY || process.env.NEXT_PUBLIC_SUBSTACK_API_KEY
     
-    // Try to use API if key is provided
-    if (apiKey) {
-      try {
-        const articles = await fetchFromSubstackAPI(apiKey, substackUrl)
-        if (articles.length > 0) {
-          return NextResponse.json({ articles, source: "api" }, {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          })
-        }
-      } catch (apiError) {
-        console.error("API fetch failed, falling back to RSS:", apiError)
-        // Fall through to RSS feed
+    // Try to use API if key is provided (but only if not forcing refresh, to avoid rate limits)
+    // For forced refresh, skip API and go straight to RSS to avoid hitting rate limits
+    if (apiKey && !forceRefresh) {
+      const articles = await fetchFromSubstackAPI(apiKey, substackUrl, false)
+      
+      // If articles were successfully fetched from API, return them
+      if (articles && articles.length > 0) {
+        return NextResponse.json({ articles, source: "api" }, {
+          headers: {
+            "Content-Type": "application/json",
+            "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
+          },
+        })
       }
+      // If null was returned, API failed with 403/429, so fall through to RSS
+      // If empty array, API worked but no articles, also fall through
     }
 
-    // Fallback to RSS feed (always available)
+    // Use RSS feed (reliable and doesn't require API key)
     const rssUrl = `${substackUrl}/feed`
     
     const response = await fetch(rssUrl, {
@@ -196,8 +211,8 @@ export async function GET(request: Request) {
         Accept: "application/rss+xml, application/xml, text/xml",
         "User-Agent": "Mozilla/5.0 (compatible; Elysium/1.0)",
       },
-      // Reduce cache time to 5 minutes for faster updates, or skip cache if refresh=true
-      next: forceRefresh ? { revalidate: 0 } : { revalidate: 300 }, // Revalidate every 5 minutes
+      // Cache for 10 minutes normally, or 1 minute if forcing refresh
+      next: forceRefresh ? { revalidate: 60 } : { revalidate: 600 },
       cache: forceRefresh ? 'no-store' : 'default',
     })
 
@@ -211,6 +226,9 @@ export async function GET(request: Request) {
     return NextResponse.json({ articles, source: "rss" }, {
       headers: {
         "Content-Type": "application/json",
+        "Cache-Control": forceRefresh 
+          ? "public, s-maxage=60, stale-while-revalidate=300"
+          : "public, s-maxage=600, stale-while-revalidate=3600",
       },
     })
   } catch (error) {

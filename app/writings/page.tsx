@@ -4,7 +4,6 @@ import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
 
 interface Article {
   id: string
@@ -19,102 +18,14 @@ interface Article {
   content?: string
 }
 
-// Fallback articles if RSS feed fails to load
-const FALLBACK_ARTICLES: Article[] = [
-  {
-    id: "1",
-    title: "Blobobonomics & the New Attack Surface: How Ethereum Is Hardening Its DA Layer",
-    excerpt: "EIP-4844's Blob Pricing Created a New Attack Vector, Forcing Rollups to Design Smarter Economic Defenses",
-    pubDate: "2025-02-28",
-    category: "Protocol Design",
-    author: "Ishita Rastogi",
-    readTime: "12 min read",
-  },
-  {
-    id: "2",
-    title: "Stablecoin Chains for Institutions (Part II)",
-    excerpt:
-      "How stablecoin L1s will win the distribution war through tokenized FX, agentic payments, invisible infrastructure, and branded partnerships to onboard billions via institutions.",
-    pubDate: "2025-02-21",
-    category: "Infrastructure",
-    author: "Pavel Paramonov, Nitin Jakhar",
-    readTime: "15 min read",
-  },
-  {
-    id: "3",
-    title: "Raiku: Solving Solana's Biggest Pain Points",
-    excerpt:
-      "Despite its high speed and low fees, Solana lacks the deterministic execution guarantee required to unlock institutional adoption, particularly during periods of network congestion.",
-    pubDate: "2025-02-14",
-    category: "Architecture Breakdowns",
-    author: "Ishita Rastogi, Pavel Paramonov",
-    readTime: "10 min read",
-  },
-  {
-    id: "4",
-    title: "Flying Tulip: Using Yield Instead of Fundraising",
-    excerpt:
-      "A New Crypto Fundraising Model That Uses Yield to Fund Operations and Scale Without Traditional Venture Capital.",
-    pubDate: "2025-02-07",
-    category: "Research",
-    author: "Ishita Rastogi",
-    readTime: "8 min read",
-  },
-  {
-    id: "5",
-    title: "Understanding Zero-Knowledge Proofs",
-    excerpt: "A deep dive into the mathematics and cryptography behind zero-knowledge proofs and their applications in blockchain.",
-    pubDate: "2025-01-30",
-    category: "Research",
-    author: "Pavel Paramonov",
-    readTime: "14 min read",
-  },
-  {
-    id: "6",
-    title: "The Future of Layer 2 Scaling",
-    excerpt: "Exploring the next generation of Layer 2 solutions and their impact on blockchain scalability.",
-    pubDate: "2025-01-23",
-    category: "Infrastructure",
-    author: "Nitin Jakhar",
-    readTime: "11 min read",
-  },
-  {
-    id: "7",
-    title: "Decentralized Identity Systems",
-    excerpt: "How blockchain-based identity systems are revolutionizing digital authentication and privacy.",
-    pubDate: "2025-01-16",
-    category: "Protocol Design",
-    author: "Ishita Rastogi",
-    readTime: "9 min read",
-  },
-  {
-    id: "8",
-    title: "Cross-Chain Interoperability Challenges",
-    excerpt: "Analyzing the technical and economic challenges of achieving true cross-chain interoperability.",
-    pubDate: "2025-01-09",
-    category: "Architecture Breakdowns",
-    author: "Pavel Paramonov",
-    readTime: "13 min read",
-  },
-  {
-    id: "9",
-    title: "MEV: The Invisible Tax on DeFi",
-    excerpt: "Understanding Maximal Extractable Value and its implications for decentralized finance.",
-    pubDate: "2025-01-02",
-    category: "Research",
-    author: "Nitin Jakhar, Ishita Rastogi",
-    readTime: "10 min read",
-  },
-]
-
 const ITEMS_PER_PAGE = 9
 
 export default function WritingsPage() {
   const router = useRouter()
   const [selectedCategory, setSelectedCategory] = useState("All")
-  const [articles, setArticles] = useState<Article[]>(FALLBACK_ARTICLES)
+  const [articles, setArticles] = useState<Article[]>([])
   const [loading, setLoading] = useState(true)
-  const [categories, setCategories] = useState<string[]>(["All", "Protocol Design", "Infrastructure", "Architecture Breakdowns", "Research"])
+  const [categories, setCategories] = useState<string[]>(["All"])
   const [currentPage, setCurrentPage] = useState(1)
   const [searchQuery, setSearchQuery] = useState("")
 
@@ -143,11 +54,12 @@ export default function WritingsPage() {
     const fetchArticles = async () => {
       try {
         setLoading(true)
-        // Fetch parsed articles from our API route with cache-busting for latest articles
-        const response = await fetch("/api/substack?refresh=true")
+        // Fetch parsed articles from our API route - use cache by default for performance
+        // Only add refresh=true if you explicitly want to bypass cache
+        const response = await fetch("/api/substack")
         
         if (!response.ok) {
-          throw new Error("Failed to fetch RSS feed")
+          throw new Error("Failed to fetch articles")
         }
 
         const data = await response.json()
@@ -178,11 +90,13 @@ export default function WritingsPage() {
             }
           })
           setCategories(Array.from(uniqueCategories))
+        } else {
+          setArticles([])
         }
       } catch (error) {
         console.error("Error fetching articles from Substack:", error)
-        // Keep fallback articles
-        setArticles(FALLBACK_ARTICLES)
+        // Set articles to empty array on error
+        setArticles([])
       } finally {
         setLoading(false)
       }
@@ -391,7 +305,6 @@ export default function WritingsPage() {
           )}
         </div>
       </main>
-      <Footer />
     </>
   )
 }

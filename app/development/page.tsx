@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
 
 interface Project {
   id: string
@@ -221,7 +220,6 @@ export default function DevelopmentPage() {
           </div>
         </section>
       </main>
-      <Footer />
     </>
   )
 }

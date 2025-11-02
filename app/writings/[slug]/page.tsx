@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react"
 import { useParams, useRouter } from "next/navigation"
 import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
 
 interface Article {
   id: string
@@ -165,8 +164,8 @@ export default function ArticlePage() {
       try {
         setLoading(true)
         
-        // First, get all articles to find the one matching the slug (with refresh to get latest)
-        const response = await fetch("/api/substack?refresh=true")
+        // First, get all articles to find the one matching the slug
+        const response = await fetch("/api/substack")
         
         if (!response.ok) {
           throw new Error("Failed to fetch articles")
@@ -252,7 +251,6 @@ export default function ArticlePage() {
             </div>
           </div>
         </main>
-        <Footer />
       </>
     )
   }
@@ -275,7 +273,6 @@ export default function ArticlePage() {
             </button>
           </div>
         </main>
-        <Footer />
       </>
     )
   }
@@ -461,7 +458,6 @@ export default function ArticlePage() {
           </div>
         </div>
       </main>
-      <Footer />
     </>
   )
 }
