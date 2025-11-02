@@ -1,10 +1,10 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import { ArticleModal } from "@/components/article-modal"
 
 interface Article {
   id: string
@@ -110,31 +110,41 @@ const FALLBACK_ARTICLES: Article[] = [
 const ITEMS_PER_PAGE = 9
 
 export default function WritingsPage() {
+  const router = useRouter()
   const [selectedCategory, setSelectedCategory] = useState("All")
   const [articles, setArticles] = useState<Article[]>(FALLBACK_ARTICLES)
   const [loading, setLoading] = useState(true)
   const [categories, setCategories] = useState<string[]>(["All", "Protocol Design", "Infrastructure", "Architecture Breakdowns", "Research"])
-  const [selectedArticle, setSelectedArticle] = useState<Article | null>(null)
-  const [isModalOpen, setIsModalOpen] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const [searchQuery, setSearchQuery] = useState("")
 
-  const handleArticleClick = (article: Article) => {
-    setSelectedArticle(article)
-    setIsModalOpen(true)
+  /**
+   * Generate a slug from article ID or extract from link
+   */
+  const getArticleSlug = (article: Article): string => {
+    // Try to extract slug from link first
+    if (article.link) {
+      const slugMatch = article.link.match(/\/p\/([^/?]+)/)
+      if (slugMatch && slugMatch[1]) {
+        return slugMatch[1]
+      }
+    }
+    // Fallback to article ID (clean it up)
+    return article.id.replace(/^article-/, '').toLowerCase()
   }
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false)
-    setSelectedArticle(null)
+  const handleArticleClick = (article: Article) => {
+    const slug = getArticleSlug(article)
+    // Navigate to the article page
+    router.push(`/writings/${slug}`)
   }
 
   useEffect(() => {
     const fetchArticles = async () => {
       try {
         setLoading(true)
-        // Fetch parsed articles from our API route
-        const response = await fetch("/api/substack")
+        // Fetch parsed articles from our API route with cache-busting for latest articles
+        const response = await fetch("/api/substack?refresh=true")
         
         if (!response.ok) {
           throw new Error("Failed to fetch RSS feed")
@@ -155,6 +165,7 @@ export default function WritingsPage() {
             readTime: article.readTime,
             image: article.image,
             link: article.link,
+            content: article.content, // Include RSS content (excerpt) initially
           }))
 
           setArticles(mappedArticles)
@@ -381,7 +392,6 @@ export default function WritingsPage() {
         </div>
       </main>
       <Footer />
-      <ArticleModal article={selectedArticle} isOpen={isModalOpen} onClose={handleCloseModal} />
     </>
   )
 }

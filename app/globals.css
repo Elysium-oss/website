@@ -199,3 +199,111 @@ a {
 button {
   @apply outline-none;
 }
+
+/* Article content styles for imported Substack content */
+.article-content {
+  @apply text-foreground;
+}
+
+.article-content p {
+  @apply mb-4 leading-relaxed;
+}
+
+.article-content h1,
+.article-content h2,
+.article-content h3,
+.article-content h4,
+.article-content h5,
+.article-content h6 {
+  @apply font-display font-bold mt-8 mb-4 text-foreground;
+}
+
+.article-content h1 {
+  @apply text-3xl;
+}
+
+.article-content h2 {
+  @apply text-2xl;
+}
+
+.article-content h3 {
+  @apply text-xl;
+}
+
+.article-content img {
+  @apply rounded-lg my-6 max-w-full h-auto;
+  display: block !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  object-fit: contain !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  border: none !important;
+}
+
+.article-content figure {
+  @apply my-8;
+}
+
+.article-content figure img {
+  @apply rounded-lg w-full h-auto;
+  margin: 0;
+}
+
+.article-content figure figcaption {
+  @apply text-center text-sm text-muted-foreground mt-2 italic;
+}
+
+.article-content a {
+  @apply text-foreground underline hover:text-muted-foreground;
+}
+
+.article-content blockquote {
+  @apply border-l-4 border-border pl-4 my-6 italic text-muted-foreground;
+}
+
+.article-content code {
+  @apply bg-muted px-2 py-1 rounded text-sm font-mono;
+}
+
+.article-content pre {
+  @apply bg-muted p-4 rounded-lg overflow-x-auto my-6;
+}
+
+.article-content pre code {
+  @apply bg-transparent p-0;
+}
+
+.article-content ul,
+.article-content ol {
+  @apply my-4 ml-6;
+}
+
+.article-content li {
+  @apply mb-2;
+}
+
+.article-content strong {
+  @apply font-semibold text-foreground;
+}
+
+.article-content em {
+  @apply italic;
+}
+
+/* Force article images to be visible */
+.article-content img,
+.article-image {
+  display: block !important;
+  max-width: 100% !important;
+  width: 100% !important;
+  height: auto !important;
+  margin: 1.5rem auto !important;
+  border-radius: 0.5rem !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  border: none !important;
+}
