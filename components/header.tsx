@@ -26,45 +26,40 @@ export function Header() {
           {/* Logo with Icon */}
           <Link href="/" className="flex items-center gap-2 group">
             <div className="w-8 h-8 relative">
-              <Image src="/elysium-logo.png" alt="Elysium" width={32} height={32} className="w-full h-full" />
+              <Image src="/logo.svg" alt="Elysium" width={32} height={32} className="w-full h-full" />
             </div>
             <span className="font-display font-bold text-2xl text-foreground transition-colors">
               Elysium
             </span>
           </Link>
 
-          {/* Navigation */}
-          <nav className="hidden md:flex items-center gap-8">
+          {/* Navigation - Right Side */}
+          <nav className="hidden md:flex items-center gap-4">
             <Link
               href="/writings"
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+              className="px-4 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-all duration-200"
             >
               Writings
             </Link>
             <Link
               href="/development"
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+              className="px-4 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-all duration-200"
             >
               Development
             </Link>
             <Link
               href="/about"
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+              className="px-4 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-all duration-200"
             >
               About
             </Link>
             <Link
               href="/contact"
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+              className="px-4 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-all duration-200"
             >
               Contact
             </Link>
           </nav>
-
-          {/* CTA Button */}
-          <button className="hidden sm:inline-flex px-6 py-2 rounded-lg text-white font-medium text-sm hover:bg-accent-hover shadow-sm hover:shadow-md hover:translate-y-[-2px] bg-foreground">
-            Start a Project
-          </button>
 
           {/* Mobile menu button */}
           <button className="md:hidden p-2 text-foreground">

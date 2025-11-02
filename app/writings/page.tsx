@@ -1,8 +1,10 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { ChevronLeft, ChevronRight } from "lucide-react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
+import { ArticleModal } from "@/components/article-modal"
 
 interface Article {
   id: string
@@ -14,6 +16,7 @@ interface Article {
   readTime: string
   image?: string
   link?: string
+  content?: string
 }
 
 // Fallback articles if RSS feed fails to load
@@ -57,13 +60,74 @@ const FALLBACK_ARTICLES: Article[] = [
     author: "Ishita Rastogi",
     readTime: "8 min read",
   },
+  {
+    id: "5",
+    title: "Understanding Zero-Knowledge Proofs",
+    excerpt: "A deep dive into the mathematics and cryptography behind zero-knowledge proofs and their applications in blockchain.",
+    pubDate: "2025-01-30",
+    category: "Research",
+    author: "Pavel Paramonov",
+    readTime: "14 min read",
+  },
+  {
+    id: "6",
+    title: "The Future of Layer 2 Scaling",
+    excerpt: "Exploring the next generation of Layer 2 solutions and their impact on blockchain scalability.",
+    pubDate: "2025-01-23",
+    category: "Infrastructure",
+    author: "Nitin Jakhar",
+    readTime: "11 min read",
+  },
+  {
+    id: "7",
+    title: "Decentralized Identity Systems",
+    excerpt: "How blockchain-based identity systems are revolutionizing digital authentication and privacy.",
+    pubDate: "2025-01-16",
+    category: "Protocol Design",
+    author: "Ishita Rastogi",
+    readTime: "9 min read",
+  },
+  {
+    id: "8",
+    title: "Cross-Chain Interoperability Challenges",
+    excerpt: "Analyzing the technical and economic challenges of achieving true cross-chain interoperability.",
+    pubDate: "2025-01-09",
+    category: "Architecture Breakdowns",
+    author: "Pavel Paramonov",
+    readTime: "13 min read",
+  },
+  {
+    id: "9",
+    title: "MEV: The Invisible Tax on DeFi",
+    excerpt: "Understanding Maximal Extractable Value and its implications for decentralized finance.",
+    pubDate: "2025-01-02",
+    category: "Research",
+    author: "Nitin Jakhar, Ishita Rastogi",
+    readTime: "10 min read",
+  },
 ]
+
+const ITEMS_PER_PAGE = 9
 
 export default function WritingsPage() {
   const [selectedCategory, setSelectedCategory] = useState("All")
   const [articles, setArticles] = useState<Article[]>(FALLBACK_ARTICLES)
   const [loading, setLoading] = useState(true)
   const [categories, setCategories] = useState<string[]>(["All", "Protocol Design", "Infrastructure", "Architecture Breakdowns", "Research"])
+  const [selectedArticle, setSelectedArticle] = useState<Article | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [searchQuery, setSearchQuery] = useState("")
+
+  const handleArticleClick = (article: Article) => {
+    setSelectedArticle(article)
+    setIsModalOpen(true)
+  }
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false)
+    setSelectedArticle(null)
+  }
 
   useEffect(() => {
     const fetchArticles = async () => {
@@ -119,73 +183,117 @@ export default function WritingsPage() {
   const filteredArticles =
     selectedCategory === "All" ? articles : articles.filter((article) => article.category === selectedCategory)
 
+  const totalPages = Math.ceil(filteredArticles.length / ITEMS_PER_PAGE)
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
+  const endIndex = startIndex + ITEMS_PER_PAGE
+  const currentArticles = filteredArticles.slice(startIndex, endIndex)
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  const getPageNumbers = () => {
+    const pages = []
+    if (totalPages <= 5) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i)
+      }
+    } else {
+      if (currentPage <= 3) {
+        pages.push(1, 2, 3, 4, '...', totalPages)
+      } else if (currentPage >= totalPages - 2) {
+        pages.push(1, '...', totalPages - 3, totalPages - 2, totalPages - 1, totalPages)
+      } else {
+        pages.push(1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages)
+      }
+    }
+    return pages
+  }
+
   return (
     <>
       <Header />
       <main className="pt-24 pb-24 min-h-screen">
-        {/* Split Layout */}
-        <div className="flex flex-col lg:flex-row">
-          {/* Left Sidebar - Header and Filters */}
-          <aside className="lg:w-1/2 lg:border-r lg:border-border lg:sticky lg:top-24 lg:h-[calc(100vh-6rem)] lg:overflow-y-auto">
-            <div className="px-6 sm:px-8 lg:px-12 lg:py-16 py-8 lg:pr-16">
-              <div className="mb-12">
-                <p className="text-xs font-semibold text-muted-foreground tracking-wider mb-4">WRITING</p>
-                <h1 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-foreground leading-tight mb-6 text-balance">
-                  We Focus Our Writing on Topics That Align with Our Core Interests
-                </h1>
-              </div>
+        {/* Search and Filters */}
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 py-8">
+          <div className="mb-12">
+            <p className="text-xs font-semibold text-muted-foreground tracking-wider mb-4">WRITING</p>
+            <h1 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-foreground leading-tight mb-6 text-balance">
+              We Focus Our Writing on Topics That Align with Our Core Interests
+            </h1>
+          </div>
 
-              {/* Category Filter */}
-              <div className="flex flex-wrap items-center gap-3">
-                {categories.map((category) => (
-                  <button
-                    key={category}
-                    onClick={() => setSelectedCategory(category)}
-                    className={`px-4 py-2 rounded-lg font-medium text-sm whitespace-nowrap transition-all duration-200 ${
-                      selectedCategory === category
-                        ? "bg-foreground text-white border border-foreground"
-                        : "bg-transparent border border-border text-muted-foreground hover:border-foreground hover:text-foreground"
-                    }`}
-                  >
-                    {selectedCategory === category && "◆ "}
-                    {category}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </aside>
-
-          {/* Right Content - Articles List */}
-          <section className="lg:w-1/2 lg:px-12 lg:py-16 px-6 sm:px-8 py-8">
-            <div className="space-y-0">
-              {loading ? (
-                <div className="space-y-4">
-                  {[1, 2, 3].map((i) => (
-                    <div key={i} className="animate-pulse flex gap-4 pb-8 border-b border-border">
-                      <div className="w-20 h-20 rounded-md bg-muted" />
-                      <div className="flex-grow space-y-2">
-                        <div className="h-4 bg-muted rounded w-24" />
-                        <div className="h-6 bg-muted rounded w-3/4" />
-                        <div className="h-4 bg-muted rounded w-full" />
-                        <div className="h-3 bg-muted rounded w-1/2" />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                filteredArticles.map((article) => (
-                  <a
-                    key={article.id}
-                    href={article.link || "https://elysium.substack.com"}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  className="group flex gap-4 pb-8 border-b border-border hover:border-foreground transition-colors last:border-0"
+          <div className="flex flex-col md:flex-row gap-4 items-center justify-between mb-8">
+            {/* Search */}
+            <div className="relative w-full md:w-96">
+              <input
+                type="text"
+                placeholder="Search"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full bg-muted border border-border rounded-lg px-4 py-3 pl-10 text-foreground placeholder-muted-foreground focus:outline-none focus:border-foreground"
+              />
+              <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery("")}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                 >
-                  {/* Article Image Placeholder */}
-                  <div className="hidden sm:block flex-shrink-0 w-20 h-20 rounded-md bg-muted border border-border overflow-hidden group-hover:border-foreground transition-colors">
-                    <div className="w-full h-full bg-muted flex items-center justify-center">
+                  ×
+                </button>
+              )}
+            </div>
+
+            {/* Category Filters */}
+            <div className="flex flex-wrap items-center gap-3">
+              {categories.map((category) => (
+                <button
+                  key={category}
+                  onClick={() => {
+                    setSelectedCategory(category)
+                    setCurrentPage(1)
+                  }}
+                  className={`px-4 py-2 rounded-lg font-medium text-sm whitespace-nowrap transition-all duration-200 ${
+                    selectedCategory === category
+                      ? "bg-foreground text-white border border-foreground"
+                      : "bg-transparent border border-border text-muted-foreground hover:border-foreground hover:text-foreground"
+                  }`}
+                >
+                  {selectedCategory === category && "◆ "}
+                  {category}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Articles Grid */}
+          {loading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[1, 2, 3, 4, 5, 6].map((i) => (
+                <div key={i} className="animate-pulse">
+                  <div className="bg-muted rounded-lg h-48 mb-4" />
+                  <div className="h-4 bg-muted rounded w-20 mb-3" />
+                  <div className="h-6 bg-muted rounded w-3/4 mb-2" />
+                  <div className="h-4 bg-muted rounded w-full" />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {currentArticles.map((article) => (
+                <article
+                  key={article.id}
+                  onClick={() => handleArticleClick(article)}
+                  className="group cursor-pointer bg-background rounded-lg overflow-hidden border border-border hover:border-foreground transition-all hover:shadow-lg"
+                >
+                  {/* Article Image */}
+                  <div className="relative h-48 bg-muted overflow-hidden border-b border-border">
+                    <div className="absolute inset-0 flex items-center justify-center">
                       <svg
-                        className="w-8 h-8 text-foreground opacity-40"
+                        className="w-16 h-16 text-foreground opacity-40"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -198,46 +306,82 @@ export default function WritingsPage() {
                         />
                       </svg>
                     </div>
-                  </div>
-
-                  {/* Article Content */}
-                  <div className="flex-grow min-w-0">
-                    <div className="mb-2 flex items-center gap-2">
-                      <span className="px-2 py-0.5 text-xs font-semibold text-foreground bg-muted rounded-full group-hover:bg-foreground group-hover:text-white transition-all">
+                    <div className="absolute top-3 left-3">
+                      <span className="bg-foreground text-white text-xs font-semibold px-3 py-1 rounded-full uppercase">
                         {article.category}
                       </span>
                     </div>
-
-                    <h2 className="font-display font-bold text-lg sm:text-xl text-foreground mb-2 transition-colors line-clamp-2 leading-tight">
-                      {article.title}
-                    </h2>
-
-                    <p className="text-sm text-muted-foreground leading-relaxed mb-3 line-clamp-2">
-                      {article.excerpt}
-                    </p>
-
-                    <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                      <time>
-                        {new Date(article.pubDate).toLocaleDateString("en-US", {
-                          year: "numeric",
-                          month: "short",
-                          day: "numeric",
-                        })}
-                      </time>
-                      <span>•</span>
-                      <span>By {article.author}</span>
-                      <span>•</span>
-                      <span>{article.readTime}</span>
+                    <div className="absolute top-3 right-3 text-muted-foreground text-xs font-medium">
+                      {new Date(article.pubDate).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                      })}
                     </div>
                   </div>
-                </a>
-              ))
-              )}
+
+                  {/* Article Content */}
+                  <div className="p-5">
+                    <h3 className="font-display font-bold text-lg text-foreground mb-2 line-clamp-2 group-hover:text-muted-foreground transition-colors">
+                      {article.title}
+                    </h3>
+                    <p className="text-muted-foreground text-sm leading-relaxed mb-4 line-clamp-2">
+                      {article.excerpt}
+                    </p>
+                  </div>
+                </article>
+              ))}
             </div>
-          </section>
+          )}
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="mt-12 mb-8">
+              <div className="flex items-center justify-between">
+                <p className="text-sm text-muted-foreground">
+                  Showing {startIndex + 1} - {Math.min(endIndex, filteredArticles.length)} of {filteredArticles.length} posts
+                </p>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                    className="w-10 h-10 rounded-lg bg-background border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-foreground disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                  >
+                    <ChevronLeft className="w-5 h-5" />
+                  </button>
+
+                  {getPageNumbers().map((page, index) => (
+                    <button
+                      key={index}
+                      onClick={() => typeof page === 'number' && handlePageChange(page)}
+                      disabled={page === '...'}
+                      className={`min-w-10 h-10 px-3 rounded-lg font-medium text-sm transition-all ${
+                        page === currentPage
+                          ? "bg-foreground text-white"
+                          : page === '...'
+                          ? "text-muted-foreground cursor-default"
+                          : "bg-background border border-border text-muted-foreground hover:text-foreground hover:border-foreground"
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  ))}
+
+                  <button
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                    className="w-10 h-10 rounded-lg bg-background border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-foreground disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                  >
+                    <ChevronRight className="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </main>
       <Footer />
+      <ArticleModal article={selectedArticle} isOpen={isModalOpen} onClose={handleCloseModal} />
     </>
   )
 }

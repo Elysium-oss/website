@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-sans" })
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-display" })
 
 export const metadata: Metadata = {
-  title: "Elysium - Web3 Research & Development",
+  title: "elysium - Web3 Research & Development",
   description: "Deep technical research and production-ready development. For builders. By builders.",
   metadataBase: new URL("https://elysium.dev"),
   openGraph: {
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     title: "Elysium - Web3 Research & Development",
     description: "Deep technical research and production-ready development.",
   },
-  canonical: "https://elysium.dev",
+  
     generator: 'v0.app'
 }
 

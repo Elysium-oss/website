@@ -61,7 +61,7 @@ export function Articles() {
   }, [])
 
   return (
-    <section id="articles" className="relative py-24 px-4 sm:px-6 lg:px-8 bg-background">
+    <section id="articles" className="relative py-24 px-4 sm:px-6 lg:px-8 bg-background border-b border-border">
       <div className="absolute top-0 right-0 w-96 h-96 bg-muted rounded-full blur-3xl opacity-10 -z-10 pointer-events-none" />
 
       <div className="max-w-6xl mx-auto">

@@ -12,18 +12,15 @@ export function Newsletter() {
     <section className="relative py-24 px-4 sm:px-6 lg:px-8 bg-background">
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-muted rounded-full blur-3xl opacity-10 -z-10 pointer-events-none" />
 
-      <div className="max-w-3xl mx-auto">
-        <div className="text-center mb-12">
-          <h2 className="font-display font-bold text-5xl sm:text-6xl text-foreground mb-4">
-            Stay <span className="text-muted-foreground">Ahead</span>
-          </h2>
-          <p className="text-lg text-muted-foreground">
-            Join thousands of builders getting deep technical insights on Web3
-          </p>
-        </div>
+      <div className="max-w-2xl mx-auto text-center">
+        <h2 className="font-display font-bold text-5xl sm:text-6xl text-foreground mb-4">
+          Stay <span className="text-muted-foreground">Ahead</span>
+        </h2>
+        <p className="text-lg text-muted-foreground mb-8">
+          Join thousands of builders getting deep technical insights on Web3
+        </p>
 
-        {/* Substack Embed Container */}
-        <div className="bg-muted/30 rounded-2xl p-8 border-2 border-border hover:border-foreground transition-all duration-300">
+        <div className="max-w-md mx-auto">
           <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
             <input
               type="email"
@@ -38,8 +35,8 @@ export function Newsletter() {
               Subscribe
             </button>
           </form>
-          <p className="text-xs text-muted-foreground mt-4 text-center">
-            Weekly deep dives on Web3 tech. Unsubscribe anytime. No spam, ever.
+          <p className="text-xs text-muted-foreground mt-4">
+            Weekly deep dives on Web3 tech. Unsubscribe anytime.
           </p>
         </div>
 

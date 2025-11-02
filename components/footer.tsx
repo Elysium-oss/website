@@ -12,7 +12,7 @@ export function Footer() {
           <div>
             <div className="flex items-center gap-2 mb-4">
               <div className="w-8 h-8 relative">
-                <Image src="/elysium-logo.png" alt="Elysium" width={32} height={32} className="w-full h-full invert" />
+                <Image src="/logo.svg" alt="Elysium" width={32} height={32} className="w-full h-full invert" />
               </div>
               <h3 className="font-display font-bold text-2xl text-background">Elysium</h3>
             </div>

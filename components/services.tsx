@@ -4,7 +4,7 @@ import Link from "next/link"
 
 export function Services() {
   return (
-    <section id="research" className="relative py-24 px-4 sm:px-6 lg:px-8 bg-background overflow-hidden">
+    <section id="research" className="relative py-24 px-4 sm:px-6 lg:px-8 bg-background overflow-hidden border-b border-border">
       <div className="absolute top-1/2 left-0 w-96 h-96 bg-muted rounded-full blur-3xl opacity-10 -z-10 pointer-events-none -translate-y-1/2" />
 
       <div className="max-w-6xl mx-auto">

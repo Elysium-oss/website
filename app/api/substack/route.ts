@@ -44,7 +44,10 @@ function parseRSSServer(rssText: string) {
     const imageMatch = description.match(/<img[^>]+src=["']([^"']+)["']/i)
     const image = imageMatch ? imageMatch[1] : undefined
 
-    const wordCount = description.split(/\s+/).filter((word) => word.length > 0).length
+    // Use full description as content
+    const content = description
+
+    const wordCount = description.replace(/<[^>]*>/g, "").split(/\s+/).filter(Boolean).length
     const readTime = Math.max(1, Math.ceil(wordCount / 200))
 
     articles.push({
@@ -57,6 +60,7 @@ function parseRSSServer(rssText: string) {
       category: category || undefined,
       readTime: `${readTime} min read`,
       image,
+      content, // Add full content
     })
   })
 

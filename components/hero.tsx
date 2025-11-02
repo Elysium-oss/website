@@ -12,7 +12,7 @@ export function Hero() {
   }, [])
 
   return (
-    <section className="relative pt-32 pb-32 bg-background overflow-hidden">
+    <section className="relative pt-45 pb-32 bg-background overflow-hidden border-b border-border">
       <div className="max-w-full">
         <div className="grid grid-cols-1 lg:grid-cols-[40%_60%] gap-0 items-center">
           {/* Left: Content - Clean white space */}
