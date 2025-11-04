@@ -1,15 +1,18 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Inter, Space_Grotesk } from "next/font/google"
+import { Urbanist } from "next/font/google"
 import "./globals.css"
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" })
-const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-display" })
+const urbanist = Urbanist({ subsets: ["latin"], variable: "--font-sans" })
+const urbanistDisplay = Urbanist({ subsets: ["latin"], variable: "--font-display" })
 
 export const metadata: Metadata = {
   title: "elysium - Web3 Research & Development",
   description: "Deep technical research and production-ready development. For builders. By builders.",
   metadataBase: new URL("https://elysium.dev"),
+  icons: {
+    icon: "/elysium-logo.png",
+  },
   openGraph: {
     type: "website",
     url: "https://elysium.dev",
@@ -39,7 +42,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={`${inter.variable} ${spaceGrotesk.variable} font-sans bg-background text-foreground`}>
+      <body className={`${urbanist.variable} ${urbanistDisplay.variable} font-sans bg-background text-foreground`}>
         {children}
       </body>
     </html>

@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 
 interface Article {
   id: string
@@ -12,46 +13,67 @@ interface Article {
 }
 
 export function Articles() {
+  const router = useRouter()
   const [articles, setArticles] = useState<Article[]>([])
   const [loading, setLoading] = useState(true)
+
+  /**
+   * Generate a slug from article ID or extract from link
+   */
+  const getArticleSlug = (article: Article): string => {
+    // Try to extract slug from link first
+    if (article.link) {
+      const slugMatch = article.link.match(/\/p\/([^/?]+)/)
+      if (slugMatch && slugMatch[1]) {
+        return slugMatch[1]
+      }
+    }
+    // Fallback to article ID (clean it up)
+    return article.id.replace(/^article-/, '').toLowerCase()
+  }
+
+  const handleArticleClick = (article: Article) => {
+    const slug = getArticleSlug(article)
+    router.push(`/writing/${slug}`)
+  }
 
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        // Mock articles - replace with actual RSS fetch in production
-        const mockArticles: Article[] = [
-          {
-            id: "1",
-            title: "Understanding Proof of Stake: A Deep Dive into Consensus Mechanisms",
-            excerpt:
-              "Explore the technical foundations of Proof of Stake and how it revolutionizes blockchain consensus. Learn the economics, security implications, and real-world implementations.",
-            pubDate: "2025-02-28",
-            link: "https://elysium.substack.com",
-            category: "Protocol Design",
-          },
-          {
-            id: "2",
-            title: "The Future of Smart Contract Security: Formal Verification and Beyond",
-            excerpt:
-              "Dive into the cutting-edge approaches to securing smart contracts. From formal verification to runtime monitoring, discover how projects are building bulletproof dApps.",
-            pubDate: "2025-02-21",
-            link: "https://elysium.substack.com",
-            category: "Security",
-          },
-          {
-            id: "3",
-            title: "Cross-Chain Communication: Bridges, Messaging, and Interoperability",
-            excerpt:
-              "As multi-chain becomes the norm, understanding cross-chain communication is essential. We break down bridges, messaging protocols, and the trade-offs involved.",
-            pubDate: "2025-02-14",
-            link: "https://elysium.substack.com",
-            category: "Infrastructure",
-          },
-        ]
+        setLoading(true)
+        // Fetch parsed articles from our API route
+        const response = await fetch("/api/substack")
+        
+        if (!response.ok) {
+          throw new Error("Failed to fetch articles")
+        }
 
-        setArticles(mockArticles)
+        const data = await response.json()
+        const parsedArticles = data.articles || []
+
+        if (parsedArticles.length > 0) {
+          // Map parsed articles to our Article interface
+          const mappedArticles: Article[] = parsedArticles.map((article: any) => ({
+            id: article.id,
+            title: article.title,
+            excerpt: article.excerpt,
+            pubDate: article.pubDate,
+            category: article.category || "Research", // Default category
+            link: article.link,
+          }))
+
+          // Sort by publication date (newest first) and take the first 3
+          const latestArticles = mappedArticles
+            .sort((a, b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime())
+            .slice(0, 3)
+
+          setArticles(latestArticles)
+        } else {
+          setArticles([])
+        }
       } catch (error) {
         console.error("Failed to fetch articles:", error)
+        setArticles([])
       } finally {
         setLoading(false)
       }
@@ -66,7 +88,7 @@ export function Articles() {
 
       <div className="max-w-6xl mx-auto">
         {/* Section Header */}
-        <div className="mb-16">
+        <div className="mb-16 text-center">
           <h2 className="font-display font-bold text-5xl sm:text-6xl text-foreground mb-4">
             Latest <span className="text-muted-foreground">Research</span>
           </h2>
@@ -86,15 +108,13 @@ export function Articles() {
               </div>
             ))}
           </div>
-        ) : (
+        ) : articles.length > 0 ? (
           <div className="grid md:grid-cols-3 gap-8 mb-12">
             {articles.map((article) => (
-              <a
+              <button
                 key={article.id}
-                href={article.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group relative p-6 rounded-2xl border-2 border-border hover:border-foreground bg-background hover:bg-muted/50 hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col"
+                onClick={() => handleArticleClick(article)}
+                className="group relative p-6 rounded-2xl border-2 border-border hover:border-foreground bg-background hover:bg-muted/50 hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col text-left cursor-pointer"
               >
                 <div className="absolute top-0 left-0 right-0 h-1 bg-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
 
@@ -122,21 +142,23 @@ export function Articles() {
                     →
                   </span>
                 </div>
-              </a>
+              </button>
             ))}
+          </div>
+        ) : (
+          <div className="text-center py-12">
+            <p className="text-muted-foreground">No articles available at the moment.</p>
           </div>
         )}
 
         {/* View All Button */}
         <div className="text-center">
-          <a
-            href="https://elysium.substack.com"
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            onClick={() => router.push("/writing")}
             className="inline-flex px-8 py-3 rounded-lg border-2 border-foreground text-foreground font-medium text-base hover:bg-foreground hover:text-white shadow-sm hover:shadow-md hover:translate-y-[-2px] transition-all"
           >
             View All Articles
-          </a>
+          </button>
         </div>
       </div>
     </section>

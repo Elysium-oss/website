@@ -31,19 +31,11 @@ export function Hero() {
 
             <div className="flex flex-col sm:flex-row gap-3 items-start">
               <Link
-                href="#articles"
+                href="/about"
                 className="inline-flex items-center justify-center px-6 py-3 rounded-lg bg-foreground text-white font-medium text-base hover:bg-accent-hover hover:shadow-lg transition-all duration-200 hover:translate-y-[-2px]"
               >
-                Explore Our Work
+                About
               </Link>
-              <a
-                href="https://elysium.substack.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center px-6 py-3 rounded-lg border-2 border-foreground text-foreground font-medium text-base hover:bg-foreground hover:text-white transition-all duration-200"
-              >
-                Read Our Research
-              </a>
             </div>
           </div>
 

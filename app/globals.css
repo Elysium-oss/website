@@ -3,12 +3,61 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Funnel Display Font - Static Weights */
+@font-face {
+  font-family: "Funnel Display";
+  src: url("/funnel_display/static/FunnelDisplay-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Funnel Display";
+  src: url("/funnel_display/static/FunnelDisplay-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Funnel Display";
+  src: url("/funnel_display/static/FunnelDisplay-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Funnel Display";
+  src: url("/funnel_display/static/FunnelDisplay-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Funnel Display";
+  src: url("/funnel_display/static/FunnelDisplay-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Funnel Display";
+  src: url("/funnel_display/static/FunnelDisplay-ExtraBold.ttf") format("truetype");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
-  --background: oklch(1 0 0);
+  --background: oklch(0.984 0 0);
   --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
+  --card: oklch(0.984 0 0);
   --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
+  --popover: oklch(0.984 0 0);
   --popover-foreground: oklch(0.145 0 0);
   --primary: oklch(0.205 0 0);
   --primary-foreground: oklch(0.985 0 0);
@@ -75,7 +124,7 @@
 }
 
 @theme {
-  --color-background: #ffffff;
+  --color-background: #F9FAFB;
   --color-foreground: #000000;
   --color-muted: #f5f5f5;
   --color-muted-foreground: #666666;
@@ -85,8 +134,9 @@
   --color-accent-light: #f5f5f5;
   --radius: 0.5rem;
 
-  --font-sans: "Inter", system-ui, sans-serif;
-  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --font-sans: "Urbanist", system-ui, sans-serif;
+  --font-display: "Urbanist", system-ui, sans-serif;
+  --font-funnel-display: "Funnel Display", system-ui, sans-serif;
 }
 
 @theme inline {
@@ -183,6 +233,37 @@ html {
 
 .animate-fade-in-up {
   animation: fadeInUp 0.6s ease-out;
+}
+
+/* Gentle accordion animations */
+@keyframes accordion-down {
+  from {
+    height: 0;
+    opacity: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+    opacity: 1;
+  }
+}
+
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+    opacity: 1;
+  }
+  to {
+    height: 0;
+    opacity: 0;
+  }
+}
+
+.animate-accordion-down {
+  animation: accordion-down 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.animate-accordion-up {
+  animation: accordion-up 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Smooth transitions */

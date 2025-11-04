@@ -1,6 +1,7 @@
 "use client"
 
 import { Header } from "@/components/header"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 
 export default function ContactPage() {
   const researchFormUrl = process.env.NEXT_PUBLIC_TYPEFORM_RESEARCH_URL || "https://form.typeform.com/to/research-form-id"
@@ -12,7 +13,7 @@ export default function ContactPage() {
       <main className="pt-24 pb-24">
         {/* Hero Section */}
         <section className="px-4 sm:px-6 lg:px-8 py-8">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-6xl mx-auto">
             <p className="text-xs font-semibold text-muted-foreground tracking-wider mb-2">CONTACT</p>
             <h1 className="font-display font-bold text-6xl sm:text-7xl text-foreground leading-tight mb-4 text-balance">
               Let's Build Together
@@ -113,11 +114,11 @@ export default function ContactPage() {
             <div className="mt-12 pt-12">
               <div className="grid md:grid-cols-3 gap-12">
                 {/* Email */}
-                <div>
+                <div className="text-center">
                   <p className="text-xs font-semibold text-muted-foreground tracking-wider mb-4 uppercase">Email</p>
                   <a
                     href="mailto:hello@elysium.dev"
-                    className="text-xl font-medium text-foreground hover:underline transition-all inline-flex items-center gap-2"
+                    className="text-xl font-medium text-foreground hover:underline transition-all inline-flex items-center gap-2 justify-center"
                   >
                     hello@elysium.dev
                     <span className="text-lg">↗</span>
@@ -125,7 +126,7 @@ export default function ContactPage() {
                 </div>
 
                 {/* Response Time */}
-                <div>
+                <div className="text-center">
                   <p className="text-xs font-semibold text-muted-foreground tracking-wider mb-4 uppercase">
                     Response Time
                   </p>
@@ -133,9 +134,9 @@ export default function ContactPage() {
                 </div>
 
                 {/* Social Links */}
-                <div>
+                <div className="text-center">
                   <p className="text-xs font-semibold text-muted-foreground tracking-wider mb-4 uppercase">Connect</p>
-                  <div className="flex flex-wrap gap-3">
+                  <div className="flex flex-wrap gap-3 justify-center">
                     <a
                       href="https://twitter.com"
                       target="_blank"
@@ -190,8 +191,8 @@ export default function ContactPage() {
         {/* FAQ Section */}
         <section className="px-4 sm:px-6 lg:px-8 py-20 border-t border-border bg-muted/30">
           <div className="max-w-4xl mx-auto">
-            <h2 className="font-display font-bold text-3xl text-foreground mb-8">Frequently Asked</h2>
-            <div className="space-y-8">
+            <h2 className="font-display font-bold text-3xl text-foreground mb-12">Frequently Asked</h2>
+            <Accordion type="single" collapsible className="w-full space-y-2">
               {[
                 {
                   q: "What types of projects do you work on?",
@@ -210,12 +211,16 @@ export default function ContactPage() {
                   a: "Rigorous testing, security audits, code reviews, and industry best practices throughout the development process.",
                 },
               ].map((faq, i) => (
-                <div key={i}>
-                  <h3 className="font-display font-bold text-lg text-foreground mb-2">{faq.q}</h3>
-                  <p className="text-base text-muted-foreground leading-relaxed">{faq.a}</p>
-                </div>
+                <AccordionItem key={i} value={`item-${i}`} className="border border-border rounded-lg px-6 py-2 bg-background hover:bg-muted/50 transition-all duration-500 ease-in-out">
+                  <AccordionTrigger className="text-left font-display font-bold text-lg text-foreground py-4 hover:no-underline transition-all duration-500">
+                    {faq.q}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-base text-muted-foreground leading-relaxed pb-4 pt-0 transition-all duration-700 ease-in-out">
+                    {faq.a}
+                  </AccordionContent>
+                </AccordionItem>
               ))}
-            </div>
+            </Accordion>
           </div>
         </section>
       </main>

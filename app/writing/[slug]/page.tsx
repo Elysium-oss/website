@@ -74,19 +74,19 @@ export default function ArticlePage() {
           }
           
           // Handle image loading errors gracefully (don't hide, show placeholder)
-          img.onerror = function() {
-            console.error('Image failed to load:', this.src)
+          img.onerror = () => {
+            console.error('Image failed to load:', img.src)
             // Instead of hiding, show a placeholder
-            this.style.backgroundColor = '#f0f0f0'
-            this.style.minHeight = '200px'
-            this.alt = this.alt || 'Image failed to load'
+            img.style.backgroundColor = '#f0f0f0'
+            img.style.minHeight = '200px'
+            img.alt = img.alt || 'Image failed to load'
           }
           
           // Ensure images maintain aspect ratio
-          img.onload = function() {
-            console.log('Image loaded successfully:', this.src)
-            this.style.opacity = '1'
-            this.style.visibility = 'visible'
+          img.onload = () => {
+            console.log('Image loaded successfully:', img.src)
+            img.style.opacity = '1'
+            img.style.visibility = 'visible'
           }
           
           // Force image to be visible - don't remove style, just override it
@@ -266,10 +266,10 @@ export default function ArticlePage() {
               The article you're looking for doesn't exist or has been removed.
             </p>
             <button
-              onClick={() => router.push("/writings")}
+              onClick={() => router.push("/writing")}
               className="px-6 py-3 rounded-lg bg-foreground text-white hover:bg-accent-hover transition-colors"
             >
-              Back to Writings
+              Back to Writing
             </button>
           </div>
         </main>

@@ -20,7 +20,7 @@ interface Article {
 
 const ITEMS_PER_PAGE = 9
 
-export default function WritingsPage() {
+export default function WritingPage() {
   const router = useRouter()
   const [selectedCategory, setSelectedCategory] = useState("All")
   const [articles, setArticles] = useState<Article[]>([])
@@ -47,7 +47,7 @@ export default function WritingsPage() {
   const handleArticleClick = (article: Article) => {
     const slug = getArticleSlug(article)
     // Navigate to the article page
-    router.push(`/writings/${slug}`)
+    router.push(`/writing/${slug}`)
   }
 
   useEffect(() => {
@@ -105,8 +105,24 @@ export default function WritingsPage() {
     fetchArticles()
   }, [])
 
-  const filteredArticles =
-    selectedCategory === "All" ? articles : articles.filter((article) => article.category === selectedCategory)
+  // Filter articles by category and search query
+  const filteredArticles = articles.filter((article) => {
+    // Category filter
+    const matchesCategory = selectedCategory === "All" || article.category === selectedCategory
+    
+    // Search filter - search in title, excerpt, and category
+    const matchesSearch = searchQuery.trim() === "" || 
+      article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      article.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      article.category.toLowerCase().includes(searchQuery.toLowerCase())
+    
+    return matchesCategory && matchesSearch
+  })
+  
+  // Reset to page 1 when search query or category changes
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [searchQuery, selectedCategory])
 
   const totalPages = Math.ceil(filteredArticles.length / ITEMS_PER_PAGE)
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
