@@ -10,50 +10,50 @@ export default function ContactPage() {
   return (
     <>
       <Header />
-      <main className="pt-24 pb-24">
+      <main className="pt-20 sm:pt-24 pb-12 sm:pb-16 lg:pb-24">
         {/* Hero Section */}
-        <section className="px-4 sm:px-6 lg:px-8 py-8">
+        <section className="px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
           <div className="max-w-6xl mx-auto">
             <p className="text-xs font-semibold text-muted-foreground tracking-wider mb-2">CONTACT</p>
-            <h1 className="font-display font-bold text-6xl sm:text-7xl text-foreground leading-tight mb-4 text-balance">
+            <h1 className="font-display font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-foreground leading-tight mb-3 sm:mb-4 text-balance">
               Let's Build Together
             </h1>
-            <p className="text-xl text-muted-foreground leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed">
               Have a project in mind? Want to collaborate? We'd love to hear from you.
             </p>
           </div>
         </section>
 
         {/* Contact Section */}
-        <section className="px-4 sm:px-6 lg:px-8 py-12">
+        <section className="px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
           <div className="max-w-6xl mx-auto">
             {/* Typeform Panels - Research & Projects */}
-            <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 lg:gap-12">
               {/* Research Panel */}
-              <div className="relative rounded-2xl border-2 border-border bg-background p-8 lg:p-10 hover:border-foreground transition-all duration-300 hover:shadow-lg">
-                <div className="mb-6">
-                  <h3 className="font-display font-bold text-3xl text-foreground mb-3">Research</h3>
-                  <p className="text-base text-muted-foreground leading-relaxed">
+              <div className="relative rounded-2xl border-2 border-border bg-background p-6 sm:p-8 lg:p-10 hover:border-foreground transition-all duration-300 hover:shadow-lg">
+                <div className="mb-4 sm:mb-6">
+                  <h3 className="font-display font-bold text-2xl sm:text-3xl text-foreground mb-2 sm:mb-3">Research</h3>
+                  <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                     Protocol analysis, technical audits, architecture reviews, and custom research tailored to your needs.
                   </p>
                 </div>
 
-                <div className="mb-8 space-y-3">
-                  <div className="flex items-start gap-3">
-                    <span className="text-foreground mt-1">✓</span>
-                    <span className="text-sm text-muted-foreground">In-depth protocol analysis</span>
+                <div className="mb-6 sm:mb-8 space-y-2 sm:space-y-3">
+                  <div className="flex items-start gap-2 sm:gap-3">
+                    <span className="text-foreground mt-1 text-sm sm:text-base">✓</span>
+                    <span className="text-xs sm:text-sm text-muted-foreground">In-depth protocol analysis</span>
                   </div>
-                  <div className="flex items-start gap-3">
-                    <span className="text-foreground mt-1">✓</span>
-                    <span className="text-sm text-muted-foreground">Technical audits and reviews</span>
+                  <div className="flex items-start gap-2 sm:gap-3">
+                    <span className="text-foreground mt-1 text-sm sm:text-base">✓</span>
+                    <span className="text-xs sm:text-sm text-muted-foreground">Technical audits and reviews</span>
                   </div>
-                  <div className="flex items-start gap-3">
-                    <span className="text-foreground mt-1">✓</span>
-                    <span className="text-sm text-muted-foreground">Architecture consultations</span>
+                  <div className="flex items-start gap-2 sm:gap-3">
+                    <span className="text-foreground mt-1 text-sm sm:text-base">✓</span>
+                    <span className="text-xs sm:text-sm text-muted-foreground">Architecture consultations</span>
                   </div>
-                  <div className="flex items-start gap-3">
-                    <span className="text-foreground mt-1">✓</span>
-                    <span className="text-sm text-muted-foreground">Custom research projects</span>
+                  <div className="flex items-start gap-2 sm:gap-3">
+                    <span className="text-foreground mt-1 text-sm sm:text-base">✓</span>
+                    <span className="text-xs sm:text-sm text-muted-foreground">Custom research projects</span>
                   </div>
                 </div>
 
@@ -61,39 +61,39 @@ export default function ContactPage() {
                   href={researchFormUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group inline-flex items-center justify-center w-full px-6 py-4 rounded-lg text-white font-medium bg-foreground hover:bg-accent-hover shadow-sm hover:shadow-lg transition-all duration-200 hover:translate-y-[-2px]"
+                  className="group inline-flex items-center justify-center w-full px-5 sm:px-6 py-3 sm:py-4 rounded-lg text-white font-medium text-sm sm:text-base bg-foreground hover:bg-accent-hover shadow-sm hover:shadow-lg transition-all duration-200 hover:translate-y-[-2px]"
                 >
                   <span>Start Research Inquiry</span>
-                  <span className="ml-2 text-lg group-hover:translate-x-1 transition-transform">→</span>
+                  <span className="ml-2 text-base sm:text-lg group-hover:translate-x-1 transition-transform">→</span>
                 </a>
-                <p className="text-xs text-muted-foreground mt-3 text-center">Opens in a new window</p>
+                <p className="text-xs text-muted-foreground mt-2 sm:mt-3 text-center">Opens in a new window</p>
               </div>
 
               {/* Projects Panel */}
-              <div className="relative rounded-2xl border-2 border-border bg-background p-8 lg:p-10 hover:border-foreground transition-all duration-300 hover:shadow-lg">
-                <div className="mb-6">
-                  <h3 className="font-display font-bold text-3xl text-foreground mb-3">Projects</h3>
-                  <p className="text-base text-muted-foreground leading-relaxed">
+              <div className="relative rounded-2xl border-2 border-border bg-background p-6 sm:p-8 lg:p-10 hover:border-foreground transition-all duration-300 hover:shadow-lg">
+                <div className="mb-4 sm:mb-6">
+                  <h3 className="font-display font-bold text-2xl sm:text-3xl text-foreground mb-2 sm:mb-3">Projects</h3>
+                  <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                     Full-stack Web3 development from smart contracts to dApp interfaces. Production-grade systems that scale.
                   </p>
                 </div>
 
-                <div className="mb-8 space-y-3">
-                  <div className="flex items-start gap-3">
-                    <span className="text-foreground mt-1">✓</span>
-                    <span className="text-sm text-muted-foreground">Smart contract development</span>
+                <div className="mb-6 sm:mb-8 space-y-2 sm:space-y-3">
+                  <div className="flex items-start gap-2 sm:gap-3">
+                    <span className="text-foreground mt-1 text-sm sm:text-base">✓</span>
+                    <span className="text-xs sm:text-sm text-muted-foreground">Smart contract development</span>
                   </div>
-                  <div className="flex items-start gap-3">
-                    <span className="text-foreground mt-1">✓</span>
-                    <span className="text-sm text-muted-foreground">Full-stack dApp building</span>
+                  <div className="flex items-start gap-2 sm:gap-3">
+                    <span className="text-foreground mt-1 text-sm sm:text-base">✓</span>
+                    <span className="text-xs sm:text-sm text-muted-foreground">Full-stack dApp building</span>
                   </div>
-                  <div className="flex items-start gap-3">
-                    <span className="text-foreground mt-1">✓</span>
-                    <span className="text-sm text-muted-foreground">Protocol design & implementation</span>
+                  <div className="flex items-start gap-2 sm:gap-3">
+                    <span className="text-foreground mt-1 text-sm sm:text-base">✓</span>
+                    <span className="text-xs sm:text-sm text-muted-foreground">Protocol design & implementation</span>
                   </div>
-                  <div className="flex items-start gap-3">
-                    <span className="text-foreground mt-1">✓</span>
-                    <span className="text-sm text-muted-foreground">Infrastructure & scalability</span>
+                  <div className="flex items-start gap-2 sm:gap-3">
+                    <span className="text-foreground mt-1 text-sm sm:text-base">✓</span>
+                    <span className="text-xs sm:text-sm text-muted-foreground">Infrastructure & scalability</span>
                   </div>
                 </div>
 
@@ -101,18 +101,18 @@ export default function ContactPage() {
                   href={projectsFormUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group inline-flex items-center justify-center w-full px-6 py-4 rounded-lg text-white font-medium bg-foreground hover:bg-accent-hover shadow-sm hover:shadow-lg transition-all duration-200 hover:translate-y-[-2px]"
+                  className="group inline-flex items-center justify-center w-full px-5 sm:px-6 py-3 sm:py-4 rounded-lg text-white font-medium text-sm sm:text-base bg-foreground hover:bg-accent-hover shadow-sm hover:shadow-lg transition-all duration-200 hover:translate-y-[-2px]"
                 >
                   <span>Start Project Inquiry</span>
-                  <span className="ml-2 text-lg group-hover:translate-x-1 transition-transform">→</span>
+                  <span className="ml-2 text-base sm:text-lg group-hover:translate-x-1 transition-transform">→</span>
                 </a>
-                <p className="text-xs text-muted-foreground mt-3 text-center">Opens in a new window</p>
+                <p className="text-xs text-muted-foreground mt-2 sm:mt-3 text-center">Opens in a new window</p>
               </div>
             </div>
 
             {/* Contact Info & Socials - Below Panels */}
-            <div className="mt-12 pt-12">
-              <div className="grid md:grid-cols-3 gap-12">
+            <div className="mt-8 sm:mt-12 pt-8 sm:pt-12">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-10 lg:gap-12">
                 {/* Email */}
                 <div className="text-center">
                   <p className="text-xs font-semibold text-muted-foreground tracking-wider mb-4 uppercase">Email</p>
@@ -189,9 +189,9 @@ export default function ContactPage() {
         </section>
 
         {/* FAQ Section */}
-        <section className="px-4 sm:px-6 lg:px-8 py-20 border-t border-border bg-muted/30">
+        <section className="px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 border-t border-border bg-muted/30">
           <div className="max-w-4xl mx-auto">
-            <h2 className="font-display font-bold text-3xl text-foreground mb-12">Frequently Asked</h2>
+            <h2 className="font-display font-bold text-2xl sm:text-3xl text-foreground mb-8 sm:mb-12">Frequently Asked</h2>
             <Accordion type="single" collapsible className="w-full space-y-2">
               {[
                 {

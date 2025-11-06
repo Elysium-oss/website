@@ -7,7 +7,7 @@ const urbanist = Urbanist({ subsets: ["latin"], variable: "--font-sans" })
 const urbanistDisplay = Urbanist({ subsets: ["latin"], variable: "--font-display" })
 
 export const metadata: Metadata = {
-  title: "elysium - Web3 Research & Development",
+  title: "Elysium - Web3 Research & Development",
   description: "Deep technical research and production-ready development. For builders. By builders.",
   metadataBase: new URL("https://elysium.dev"),
   icons: {

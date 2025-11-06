@@ -83,23 +83,23 @@ export function Articles() {
   }, [])
 
   return (
-    <section id="articles" className="relative py-24 px-4 sm:px-6 lg:px-8 bg-background border-b border-border">
+    <section id="articles" className="relative py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-background border-b border-border">
       <div className="absolute top-0 right-0 w-96 h-96 bg-muted rounded-full blur-3xl opacity-10 -z-10 pointer-events-none" />
 
       <div className="max-w-6xl mx-auto">
         {/* Section Header */}
-        <div className="mb-16 text-center">
-          <h2 className="font-display font-bold text-5xl sm:text-6xl text-foreground mb-4">
+        <div className="mb-8 sm:mb-12 lg:mb-16 text-center">
+          <h2 className="font-display font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-foreground mb-3 sm:mb-4">
             Latest <span className="text-muted-foreground">Research</span>
           </h2>
-          <p className="text-lg text-muted-foreground">
+          <p className="text-sm sm:text-base md:text-lg text-muted-foreground px-4">
             Cutting-edge analysis on Web3 protocols and decentralized technologies.
           </p>
         </div>
 
         {/* Articles Grid */}
         {loading ? (
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
             {[1, 2, 3].map((i) => (
               <div key={i} className="animate-pulse">
                 <div className="h-40 bg-muted rounded-lg mb-4" />
@@ -109,36 +109,34 @@ export function Articles() {
             ))}
           </div>
         ) : articles.length > 0 ? (
-          <div className="grid md:grid-cols-3 gap-8 mb-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 mb-8 sm:mb-12">
             {articles.map((article) => (
               <button
                 key={article.id}
                 onClick={() => handleArticleClick(article)}
-                className="group relative p-6 rounded-2xl border-2 border-border hover:border-foreground bg-background hover:bg-muted/50 hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col text-left cursor-pointer"
+                className="p-5 sm:p-6 rounded-2xl border-2 border-border bg-background overflow-hidden flex flex-col text-left cursor-pointer"
               >
-                <div className="absolute top-0 left-0 right-0 h-1 bg-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
-
                 {/* Category Tag */}
-                <div className="inline-flex mb-4 w-fit">
-                  <span className="px-3 py-1 text-xs font-semibold text-foreground bg-muted rounded-full group-hover:bg-foreground group-hover:text-white transition-all">
+                <div className="inline-flex mb-3 sm:mb-4 w-fit">
+                  <span className="px-2.5 sm:px-3 py-1 text-xs font-semibold text-foreground bg-muted rounded-full">
                     {article.category}
                   </span>
                 </div>
 
                 {/* Title */}
-                <h3 className="font-display font-bold text-xl text-foreground mb-3 line-clamp-2 transition-colors flex-grow">
+                <h3 className="font-display font-bold text-lg sm:text-xl text-foreground mb-2 sm:mb-3 line-clamp-2 flex-grow">
                   {article.title}
                 </h3>
 
                 {/* Excerpt */}
-                <p className="text-sm text-muted-foreground leading-relaxed mb-6 line-clamp-3">{article.excerpt}</p>
+                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mb-4 sm:mb-6 line-clamp-3">{article.excerpt}</p>
 
                 {/* Meta */}
-                <div className="flex items-center justify-between pt-4 border-t border-border">
+                <div className="flex items-center justify-between pt-3 sm:pt-4 border-t border-border">
                   <time className="text-xs text-muted-foreground">
                     {new Date(article.pubDate).toLocaleDateString()}
                   </time>
-                  <span className="text-foreground font-medium text-sm group-hover:translate-x-1 transition-transform">
+                  <span className="text-foreground font-medium text-sm">
                     →
                   </span>
                 </div>
@@ -152,10 +150,10 @@ export function Articles() {
         )}
 
         {/* View All Button */}
-        <div className="text-center">
+        <div className="text-center mt-8 sm:mt-12">
           <button
             onClick={() => router.push("/writing")}
-            className="inline-flex px-8 py-3 rounded-lg border-2 border-foreground text-foreground font-medium text-base hover:bg-foreground hover:text-white shadow-sm hover:shadow-md hover:translate-y-[-2px] transition-all"
+            className="inline-flex px-6 sm:px-8 py-2.5 sm:py-3 rounded-none border-2 border-foreground text-foreground font-medium text-sm sm:text-base shadow-sm"
           >
             View All Articles
           </button>

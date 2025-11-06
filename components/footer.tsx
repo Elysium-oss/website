@@ -6,8 +6,8 @@ import Image from "next/image"
 export function Footer() {
   return (
     <footer className="bg-foreground text-background">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid md:grid-cols-3 gap-12 mb-12">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 sm:gap-10 lg:gap-12 mb-8 sm:mb-12">
           {/* Column 1: Logo & Tagline */}
           <div>
             <div className="flex items-center gap-2 mb-4">
@@ -107,9 +107,9 @@ export function Footer() {
         </div>
 
         {/* Bottom Section */}
-        <div className="pt-8 border-t border-background/20 flex flex-col sm:flex-row items-center justify-between text-sm text-background/80">
+        <div className="pt-6 sm:pt-8 border-t border-background/20 flex flex-col sm:flex-row items-center justify-between text-xs sm:text-sm text-background/80 gap-4">
           <p>&copy; 2025 Elysium. All rights reserved.</p>
-          <div className="flex gap-6 mt-4 sm:mt-0">
+          <div className="flex gap-4 sm:gap-6 flex-wrap justify-center">
             <Link href="/privacy" className="hover:text-background transition-colors">
               Privacy Policy
             </Link>
