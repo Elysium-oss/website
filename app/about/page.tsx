@@ -6,15 +6,15 @@ export default function AboutPage() {
   return (
     <>
       <Header />
-      <main className="pt-24 pb-24">
+      <main className="pt-20 sm:pt-24 pb-12 sm:pb-16 lg:pb-24">
         {/* Hero Section */}
-        <section className="px-4 sm:px-6 lg:px-8 py-16 border-b border-border">
+        <section className="px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16 border-b border-border">
           <div className="max-w-4xl mx-auto">
-            <p className="text-xs font-semibold text-muted-foreground tracking-wider mb-4">ABOUT US</p>
-            <h1 className="font-display font-bold text-6xl sm:text-7xl text-foreground leading-tight mb-8 text-balance">
+            <p className="text-xs font-semibold text-muted-foreground tracking-wider mb-3 sm:mb-4">ABOUT US</p>
+            <h1 className="font-display font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-foreground leading-tight mb-6 sm:mb-8 text-balance">
               Building the Decentralized Future
             </h1>
-            <p className="text-xl text-muted-foreground leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed">
               We're a team of researchers, engineers, and architects dedicated to advancing Web3 infrastructure and
               knowledge.
             </p>
@@ -22,8 +22,8 @@ export default function AboutPage() {
         </section>
 
         {/* Mission & Values */}
-        <section className="px-4 sm:px-6 lg:px-8 py-20">
-          <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-16">
+        <section className="px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+          <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12 lg:gap-16">
             {/* Mission */}
             <div>
               <h2 className="font-display font-bold text-2xl text-foreground mb-4">Our Mission</h2>
@@ -45,30 +45,30 @@ export default function AboutPage() {
         </section>
 
         {/* Stats */}
-        <section className="px-4 sm:px-6 lg:px-8 py-20 border-t border-b border-border">
+        <section className="px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 border-t border-b border-border">
           <div className="max-w-4xl mx-auto">
-            <div className="grid grid-cols-3 gap-8 sm:gap-12">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 lg:gap-12">
               <div className="text-center">
-                <p className="font-display font-bold text-4xl sm:text-5xl text-foreground mb-2">50+</p>
-                <p className="text-sm text-muted-foreground">Articles Published</p>
+                <p className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-foreground mb-2">50+</p>
+                <p className="text-xs sm:text-sm text-muted-foreground">Articles Published</p>
               </div>
               <div className="text-center">
-                <p className="font-display font-bold text-4xl sm:text-5xl text-foreground mb-2">20+</p>
-                <p className="text-sm text-muted-foreground">Projects Delivered</p>
+                <p className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-foreground mb-2">20+</p>
+                <p className="text-xs sm:text-sm text-muted-foreground">Projects Delivered</p>
               </div>
               <div className="text-center">
-                <p className="font-display font-bold text-4xl sm:text-5xl text-foreground mb-2">10K+</p>
-                <p className="text-sm text-muted-foreground">Community Members</p>
+                <p className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-foreground mb-2">10K+</p>
+                <p className="text-xs sm:text-sm text-muted-foreground">Community Members</p>
               </div>
             </div>
           </div>
         </section>
 
         {/* Focus Areas */}
-        <section className="px-4 sm:px-6 lg:px-8 py-20">
+        <section className="px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
           <div className="max-w-4xl mx-auto">
-            <h2 className="font-display font-bold text-3xl text-foreground mb-12">What We Focus On</h2>
-            <div className="grid md:grid-cols-2 gap-8">
+            <h2 className="font-display font-bold text-2xl sm:text-3xl text-foreground mb-8 sm:mb-12">What We Focus On</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
               {[
                 { title: "Protocol Research", desc: "Deep analysis of blockchain architectures and mechanisms" },
                 { title: "Smart Contracts", desc: "Secure, optimized contracts for production use" },
@@ -77,10 +77,10 @@ export default function AboutPage() {
               ].map((item) => (
                 <div
                   key={item.title}
-                  className="p-6 border-2 border-border rounded-lg hover:border-foreground transition-colors"
+                  className="p-5 sm:p-6 border-2 border-border rounded-lg hover:border-foreground transition-colors"
                 >
-                  <h3 className="font-display font-bold text-lg text-foreground mb-2">{item.title}</h3>
-                  <p className="text-sm text-muted-foreground">{item.desc}</p>
+                  <h3 className="font-display font-bold text-base sm:text-lg text-foreground mb-2">{item.title}</h3>
+                  <p className="text-xs sm:text-sm text-muted-foreground">{item.desc}</p>
                 </div>
               ))}
             </div>

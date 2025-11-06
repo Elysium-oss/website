@@ -20,7 +20,7 @@ interface Article {
 
 const ITEMS_PER_PAGE = 9
 
-export default function WritingsPage() {
+export default function WritingPage() {
   const router = useRouter()
   const [selectedCategory, setSelectedCategory] = useState("All")
   const [articles, setArticles] = useState<Article[]>([])
@@ -47,7 +47,7 @@ export default function WritingsPage() {
   const handleArticleClick = (article: Article) => {
     const slug = getArticleSlug(article)
     // Navigate to the article page
-    router.push(`/writings/${slug}`)
+    router.push(`/writing/${slug}`)
   }
 
   useEffect(() => {
@@ -105,8 +105,24 @@ export default function WritingsPage() {
     fetchArticles()
   }, [])
 
-  const filteredArticles =
-    selectedCategory === "All" ? articles : articles.filter((article) => article.category === selectedCategory)
+  // Filter articles by category and search query
+  const filteredArticles = articles.filter((article) => {
+    // Category filter
+    const matchesCategory = selectedCategory === "All" || article.category === selectedCategory
+    
+    // Search filter - search in title, excerpt, and category
+    const matchesSearch = searchQuery.trim() === "" || 
+      article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      article.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      article.category.toLowerCase().includes(searchQuery.toLowerCase())
+    
+    return matchesCategory && matchesSearch
+  })
+  
+  // Reset to page 1 when search query or category changes
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [searchQuery, selectedCategory])
 
   const totalPages = Math.ceil(filteredArticles.length / ITEMS_PER_PAGE)
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
@@ -139,25 +155,25 @@ export default function WritingsPage() {
   return (
     <>
       <Header />
-      <main className="pt-24 pb-24 min-h-screen">
+      <main className="pt-20 sm:pt-24 pb-12 sm:pb-16 lg:pb-24 min-h-screen">
         {/* Search and Filters */}
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 py-8">
-          <div className="mb-12">
-            <p className="text-xs font-semibold text-muted-foreground tracking-wider mb-4">WRITING</p>
-            <h1 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-foreground leading-tight mb-6 text-balance">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+          <div className="mb-8 sm:mb-12">
+            <p className="text-xs font-semibold text-muted-foreground tracking-wider mb-3 sm:mb-4">WRITING</p>
+            <h1 className="font-display font-bold text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-foreground leading-tight mb-4 sm:mb-6 text-balance">
               We Focus Our Writing on Topics That Align with Our Core Interests
             </h1>
           </div>
 
-          <div className="flex flex-col md:flex-row gap-4 items-center justify-between mb-8">
+          <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center justify-between mb-6 sm:mb-8">
             {/* Search */}
-            <div className="relative w-full md:w-96">
+            <div className="relative w-full sm:w-80">
               <input
                 type="text"
                 placeholder="Search"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-muted border border-border rounded-lg px-4 py-3 pl-10 text-foreground placeholder-muted-foreground focus:outline-none focus:border-foreground"
+                className="w-full bg-muted border border-border rounded-lg px-4 py-1.5 sm:py-2 pl-10 text-foreground placeholder-muted-foreground focus:outline-none focus:border-foreground"
               />
               <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -173,7 +189,7 @@ export default function WritingsPage() {
             </div>
 
             {/* Category Filters */}
-            <div className="flex flex-wrap items-center gap-3">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
               {categories.map((category) => (
                 <button
                   key={category}
@@ -181,7 +197,7 @@ export default function WritingsPage() {
                     setSelectedCategory(category)
                     setCurrentPage(1)
                   }}
-                  className={`px-4 py-2 rounded-lg font-medium text-sm whitespace-nowrap transition-all duration-200 ${
+                  className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium text-xs sm:text-sm whitespace-nowrap transition-all duration-200 ${
                     selectedCategory === category
                       ? "bg-foreground text-white border border-foreground"
                       : "bg-transparent border border-border text-muted-foreground hover:border-foreground hover:text-foreground"
@@ -260,19 +276,19 @@ export default function WritingsPage() {
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="mt-12 mb-8">
-              <div className="flex items-center justify-between">
-                <p className="text-sm text-muted-foreground">
+            <div className="mt-8 sm:mt-12 mb-6 sm:mb-8">
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                <p className="text-xs sm:text-sm text-muted-foreground text-center sm:text-left">
                   Showing {startIndex + 1} - {Math.min(endIndex, filteredArticles.length)} of {filteredArticles.length} posts
                 </p>
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1 sm:gap-2 flex-wrap justify-center">
                   <button
                     onClick={() => handlePageChange(currentPage - 1)}
                     disabled={currentPage === 1}
-                    className="w-10 h-10 rounded-lg bg-background border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-foreground disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                    className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-background border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-foreground disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                   >
-                    <ChevronLeft className="w-5 h-5" />
+                    <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
                   </button>
 
                   {getPageNumbers().map((page, index) => (
@@ -280,7 +296,7 @@ export default function WritingsPage() {
                       key={index}
                       onClick={() => typeof page === 'number' && handlePageChange(page)}
                       disabled={page === '...'}
-                      className={`min-w-10 h-10 px-3 rounded-lg font-medium text-sm transition-all ${
+                      className={`min-w-8 h-8 sm:min-w-10 sm:h-10 px-2 sm:px-3 rounded-lg font-medium text-xs sm:text-sm transition-all ${
                         page === currentPage
                           ? "bg-foreground text-white"
                           : page === '...'
@@ -295,9 +311,9 @@ export default function WritingsPage() {
                   <button
                     onClick={() => handlePageChange(currentPage + 1)}
                     disabled={currentPage === totalPages}
-                    className="w-10 h-10 rounded-lg bg-background border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-foreground disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                    className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-background border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-foreground disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                   >
-                    <ChevronRight className="w-5 h-5" />
+                    <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
                   </button>
                 </div>
               </div>

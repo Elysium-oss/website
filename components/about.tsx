@@ -2,7 +2,7 @@
 
 export function About() {
   return (
-    <section id="about" className="relative py-24 px-4 sm:px-6 lg:px-8 bg-background overflow-hidden">
+    <section id="about" className="relative py-12 px-8 sm:px-12 lg:px-16 xl:px-20 bg-background overflow-hidden">
       <div className="absolute top-1/4 right-0 w-96 h-96 bg-muted rounded-full blur-3xl opacity-10 -z-10 pointer-events-none" />
 
       <div className="max-w-4xl mx-auto">

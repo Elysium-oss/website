@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 
 interface Article {
   id: string
@@ -12,46 +13,67 @@ interface Article {
 }
 
 export function Articles() {
+  const router = useRouter()
   const [articles, setArticles] = useState<Article[]>([])
   const [loading, setLoading] = useState(true)
+
+  /**
+   * Generate a slug from article ID or extract from link
+   */
+  const getArticleSlug = (article: Article): string => {
+    // Try to extract slug from link first
+    if (article.link) {
+      const slugMatch = article.link.match(/\/p\/([^/?]+)/)
+      if (slugMatch && slugMatch[1]) {
+        return slugMatch[1]
+      }
+    }
+    // Fallback to article ID (clean it up)
+    return article.id.replace(/^article-/, '').toLowerCase()
+  }
+
+  const handleArticleClick = (article: Article) => {
+    const slug = getArticleSlug(article)
+    router.push(`/writing/${slug}`)
+  }
 
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        // Mock articles - replace with actual RSS fetch in production
-        const mockArticles: Article[] = [
-          {
-            id: "1",
-            title: "Understanding Proof of Stake: A Deep Dive into Consensus Mechanisms",
-            excerpt:
-              "Explore the technical foundations of Proof of Stake and how it revolutionizes blockchain consensus. Learn the economics, security implications, and real-world implementations.",
-            pubDate: "2025-02-28",
-            link: "https://elysium.substack.com",
-            category: "Protocol Design",
-          },
-          {
-            id: "2",
-            title: "The Future of Smart Contract Security: Formal Verification and Beyond",
-            excerpt:
-              "Dive into the cutting-edge approaches to securing smart contracts. From formal verification to runtime monitoring, discover how projects are building bulletproof dApps.",
-            pubDate: "2025-02-21",
-            link: "https://elysium.substack.com",
-            category: "Security",
-          },
-          {
-            id: "3",
-            title: "Cross-Chain Communication: Bridges, Messaging, and Interoperability",
-            excerpt:
-              "As multi-chain becomes the norm, understanding cross-chain communication is essential. We break down bridges, messaging protocols, and the trade-offs involved.",
-            pubDate: "2025-02-14",
-            link: "https://elysium.substack.com",
-            category: "Infrastructure",
-          },
-        ]
+        setLoading(true)
+        // Fetch parsed articles from our API route
+        const response = await fetch("/api/substack")
+        
+        if (!response.ok) {
+          throw new Error("Failed to fetch articles")
+        }
 
-        setArticles(mockArticles)
+        const data = await response.json()
+        const parsedArticles = data.articles || []
+
+        if (parsedArticles.length > 0) {
+          // Map parsed articles to our Article interface
+          const mappedArticles: Article[] = parsedArticles.map((article: any) => ({
+            id: article.id,
+            title: article.title,
+            excerpt: article.excerpt,
+            pubDate: article.pubDate,
+            category: article.category || "Research", // Default category
+            link: article.link,
+          }))
+
+          // Sort by publication date (newest first) and take the first 3
+          const latestArticles = mappedArticles
+            .sort((a, b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime())
+            .slice(0, 3)
+
+          setArticles(latestArticles)
+        } else {
+          setArticles([])
+        }
       } catch (error) {
         console.error("Failed to fetch articles:", error)
+        setArticles([])
       } finally {
         setLoading(false)
       }
@@ -61,23 +83,23 @@ export function Articles() {
   }, [])
 
   return (
-    <section id="articles" className="relative py-24 px-4 sm:px-6 lg:px-8 bg-background border-b border-border">
+    <section id="articles" className="relative py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-background border-b border-border">
       <div className="absolute top-0 right-0 w-96 h-96 bg-muted rounded-full blur-3xl opacity-10 -z-10 pointer-events-none" />
 
       <div className="max-w-6xl mx-auto">
         {/* Section Header */}
-        <div className="mb-16">
-          <h2 className="font-display font-bold text-5xl sm:text-6xl text-foreground mb-4">
+        <div className="mb-8 sm:mb-12 lg:mb-16 text-center">
+          <h2 className="font-display font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-foreground mb-3 sm:mb-4">
             Latest <span className="text-muted-foreground">Research</span>
           </h2>
-          <p className="text-lg text-muted-foreground">
+          <p className="text-sm sm:text-base md:text-lg text-muted-foreground px-4">
             Cutting-edge analysis on Web3 protocols and decentralized technologies.
           </p>
         </div>
 
         {/* Articles Grid */}
         {loading ? (
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
             {[1, 2, 3].map((i) => (
               <div key={i} className="animate-pulse">
                 <div className="h-40 bg-muted rounded-lg mb-4" />
@@ -86,57 +108,55 @@ export function Articles() {
               </div>
             ))}
           </div>
-        ) : (
-          <div className="grid md:grid-cols-3 gap-8 mb-12">
+        ) : articles.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 mb-8 sm:mb-12">
             {articles.map((article) => (
-              <a
+              <button
                 key={article.id}
-                href={article.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group relative p-6 rounded-2xl border-2 border-border hover:border-foreground bg-background hover:bg-muted/50 hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col"
+                onClick={() => handleArticleClick(article)}
+                className="p-5 sm:p-6 rounded-2xl border-2 border-border bg-background overflow-hidden flex flex-col text-left cursor-pointer"
               >
-                <div className="absolute top-0 left-0 right-0 h-1 bg-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
-
                 {/* Category Tag */}
-                <div className="inline-flex mb-4 w-fit">
-                  <span className="px-3 py-1 text-xs font-semibold text-foreground bg-muted rounded-full group-hover:bg-foreground group-hover:text-white transition-all">
+                <div className="inline-flex mb-3 sm:mb-4 w-fit">
+                  <span className="px-2.5 sm:px-3 py-1 text-xs font-semibold text-foreground bg-muted rounded-full">
                     {article.category}
                   </span>
                 </div>
 
                 {/* Title */}
-                <h3 className="font-display font-bold text-xl text-foreground mb-3 line-clamp-2 transition-colors flex-grow">
+                <h3 className="font-display font-bold text-lg sm:text-xl text-foreground mb-2 sm:mb-3 line-clamp-2 flex-grow">
                   {article.title}
                 </h3>
 
                 {/* Excerpt */}
-                <p className="text-sm text-muted-foreground leading-relaxed mb-6 line-clamp-3">{article.excerpt}</p>
+                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mb-4 sm:mb-6 line-clamp-3">{article.excerpt}</p>
 
                 {/* Meta */}
-                <div className="flex items-center justify-between pt-4 border-t border-border">
+                <div className="flex items-center justify-between pt-3 sm:pt-4 border-t border-border">
                   <time className="text-xs text-muted-foreground">
                     {new Date(article.pubDate).toLocaleDateString()}
                   </time>
-                  <span className="text-foreground font-medium text-sm group-hover:translate-x-1 transition-transform">
+                  <span className="text-foreground font-medium text-sm">
                     →
                   </span>
                 </div>
-              </a>
+              </button>
             ))}
+          </div>
+        ) : (
+          <div className="text-center py-12">
+            <p className="text-muted-foreground">No articles available at the moment.</p>
           </div>
         )}
 
         {/* View All Button */}
-        <div className="text-center">
-          <a
-            href="https://elysium.substack.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex px-8 py-3 rounded-lg border-2 border-foreground text-foreground font-medium text-base hover:bg-foreground hover:text-white shadow-sm hover:shadow-md hover:translate-y-[-2px] transition-all"
+        <div className="text-center mt-8 sm:mt-12">
+          <button
+            onClick={() => router.push("/writing")}
+            className="inline-flex px-6 sm:px-8 py-2.5 sm:py-3 rounded-none border-2 border-foreground text-foreground font-medium text-sm sm:text-base shadow-sm"
           >
             View All Articles
-          </a>
+          </button>
         </div>
       </div>
     </section>
