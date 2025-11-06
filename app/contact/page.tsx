@@ -30,7 +30,7 @@ export default function ContactPage() {
             {/* Typeform Panels - Research & Projects */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 lg:gap-12">
               {/* Research Panel */}
-              <div className="relative rounded-2xl border-2 border-border bg-background p-6 sm:p-8 lg:p-10 hover:border-foreground transition-all duration-300 hover:shadow-lg">
+              <div className="relative rounded-none border-2 border-border bg-background p-6 sm:p-8 lg:p-10 hover:border-foreground transition-all duration-300 hover:shadow-lg">
                 <div className="mb-4 sm:mb-6">
                   <h3 className="font-display font-bold text-2xl sm:text-3xl text-foreground mb-2 sm:mb-3">Research</h3>
                   <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
@@ -61,7 +61,7 @@ export default function ContactPage() {
                   href={researchFormUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group inline-flex items-center justify-center w-full px-5 sm:px-6 py-3 sm:py-4 rounded-lg text-white font-medium text-sm sm:text-base bg-foreground hover:bg-accent-hover shadow-sm hover:shadow-lg transition-all duration-200 hover:translate-y-[-2px]"
+                  className="group inline-flex items-center justify-center w-full px-5 sm:px-6 py-3 sm:py-4 rounded-none text-white font-medium text-sm sm:text-base bg-foreground hover:bg-accent-hover shadow-sm hover:shadow-lg transition-all duration-200 hover:translate-y-[-2px]"
                 >
                   <span>Start Research Inquiry</span>
                   <span className="ml-2 text-base sm:text-lg group-hover:translate-x-1 transition-transform">→</span>
@@ -70,7 +70,7 @@ export default function ContactPage() {
               </div>
 
               {/* Projects Panel */}
-              <div className="relative rounded-2xl border-2 border-border bg-background p-6 sm:p-8 lg:p-10 hover:border-foreground transition-all duration-300 hover:shadow-lg">
+              <div className="relative rounded-none border-2 border-border bg-background p-6 sm:p-8 lg:p-10 hover:border-foreground transition-all duration-300 hover:shadow-lg">
                 <div className="mb-4 sm:mb-6">
                   <h3 className="font-display font-bold text-2xl sm:text-3xl text-foreground mb-2 sm:mb-3">Projects</h3>
                   <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
@@ -101,7 +101,7 @@ export default function ContactPage() {
                   href={projectsFormUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group inline-flex items-center justify-center w-full px-5 sm:px-6 py-3 sm:py-4 rounded-lg text-white font-medium text-sm sm:text-base bg-foreground hover:bg-accent-hover shadow-sm hover:shadow-lg transition-all duration-200 hover:translate-y-[-2px]"
+                  className="group inline-flex items-center justify-center w-full px-5 sm:px-6 py-3 sm:py-4 rounded-none text-white font-medium text-sm sm:text-base bg-foreground hover:bg-accent-hover shadow-sm hover:shadow-lg transition-all duration-200 hover:translate-y-[-2px]"
                 >
                   <span>Start Project Inquiry</span>
                   <span className="ml-2 text-base sm:text-lg group-hover:translate-x-1 transition-transform">→</span>
