@@ -6,13 +6,13 @@ import { motion } from "framer-motion"
 
 export function Services() {
   return (
-    <section id="research" className="relative py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-background overflow-hidden border-b border-border">
+    <section id="research" className="relative pt-16 pb-16 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-background overflow-hidden border-b border-border">
       <div className="absolute top-1/2 left-0 w-96 h-96 bg-muted rounded-full blur-3xl opacity-10 -z-10 pointer-events-none -translate-y-1/2" />
 
       <div className="max-w-6xl mx-auto">
         {/* Section Title */}
-        <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-          <h2 className="font-display font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-foreground mb-3 sm:mb-4">
+        <div className="text-center mb-12 sm:mb-12 lg:mb-16">
+          <h2 className="font-display font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-foreground mb-6 sm:mb-4">
             What We <span className="text-muted-foreground">Build</span>
           </h2>
           <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto px-4">
@@ -22,7 +22,7 @@ export function Services() {
 
         {/* Services Grid */}
         <motion.div
-          className="grid sm:grid-cols-2 gap-6 sm:gap-8 lg:gap-12"
+          className="grid sm:grid-cols-2 gap-8 sm:gap-8 lg:gap-12"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
@@ -36,7 +36,7 @@ export function Services() {
             viewport={{ once: true }}
             className="h-full"
           >
-            <div className="relative h-full p-6 sm:p-8 rounded-2xl border border-border bg-background overflow-hidden flex flex-col">
+            <div className="relative h-full p-8 sm:p-8 rounded-none border border-border bg-background overflow-hidden flex flex-col">
 
               {/* Icon */}
               {/* <div className="relative w-14 h-14 rounded-xl bg-muted/50 backdrop-blur-sm border border-border/50 flex items-center justify-center mb-6 group-hover:bg-foreground group-hover:border-foreground group-hover:shadow-lg group-hover:shadow-foreground/20 transition-all duration-500 p-2">
@@ -49,10 +49,10 @@ export function Services() {
                 />
               </div> */}
 
-              <h3 className="font-display font-bold text-2xl sm:text-3xl text-foreground mb-3">
+              <h3 className="font-display font-bold text-2xl sm:text-3xl text-foreground mb-6 sm:mb-3">
                 Writing
               </h3>
-              <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-4 sm:mb-6 flex-grow">
+              <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-6 sm:mb-6 flex-grow">
                 In-depth analysis of protocols, mechanisms, and infrastructure. Published on Substack with thousands of
                 subscribers reaching builders worldwide.
               </p>
@@ -74,7 +74,7 @@ export function Services() {
             viewport={{ once: true }}
             className="h-full"
           >
-            <div className="relative h-full p-6 sm:p-8 rounded-2xl border border-border bg-background overflow-hidden flex flex-col">
+            <div className="relative h-full p-8 sm:p-8 rounded-none border border-border bg-background overflow-hidden flex flex-col">
 
               {/* Icon */}
               {/* <div className="relative w-14 h-14 rounded-xl bg-muted/50 backdrop-blur-sm border border-border/50 flex items-center justify-center mb-6 group-hover:bg-foreground group-hover:border-foreground group-hover:shadow-lg group-hover:shadow-foreground/20 transition-all duration-500">
@@ -93,10 +93,10 @@ export function Services() {
                 </svg>
               </div> */}
 
-              <h3 className="font-display font-bold text-2xl sm:text-3xl text-foreground mb-3">
+              <h3 className="font-display font-bold text-2xl sm:text-3xl text-foreground mb-6 sm:mb-3">
                 Product Development
               </h3>
-              <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-4 sm:mb-6 flex-grow">
+              <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-6 sm:mb-6 flex-grow">
                 Full-stack Web3 development from smart contracts to dApp interfaces. We ship production-grade systems that
                 scale.
               </p>

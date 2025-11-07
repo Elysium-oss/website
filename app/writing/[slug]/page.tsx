@@ -493,7 +493,7 @@ export default function ArticlePage() {
             </p>
             <button
               onClick={() => router.push("/writing")}
-              className="px-6 py-3 rounded-lg bg-foreground text-white hover:bg-accent-hover transition-colors"
+              className="px-6 py-3 rounded-none bg-foreground text-white hover:bg-accent-hover transition-colors"
             >
               Back to Writing
             </button>
@@ -584,11 +584,13 @@ export default function ArticlePage() {
               </button>
               
               <header className="mb-8">
-                <div className="mb-4">
-                  <span className="inline-block px-4 py-2 rounded-full bg-muted text-sm font-semibold text-foreground">
-                    {article.category || "Article"}
-                  </span>
-                </div>
+                {article.category ? (
+                  <div className="mb-4">
+                    <span className="inline-block px-4 py-2 rounded-full bg-muted text-sm font-semibold text-foreground">
+                      {article.category}
+                    </span>
+                  </div>
+                ) : null}
                 
                 <h1 className="font-display font-bold text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-foreground leading-tight mb-4 sm:mb-6">
                   {article.title}
@@ -653,7 +655,7 @@ export default function ArticlePage() {
                   {/* Twitter/X */}
                   <button
                     onClick={() => handleShare('twitter')}
-                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-background border border-border text-muted-foreground hover:text-foreground hover:border-foreground transition-all group"
+                    className="flex items-center gap-2 px-4 py-2 rounded-none bg-background border border-border text-muted-foreground hover:text-foreground hover:border-foreground transition-all group"
                     aria-label="Share on X (Twitter)"
                   >
                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -665,7 +667,7 @@ export default function ArticlePage() {
                   {/* LinkedIn */}
                   <button
                     onClick={() => handleShare('linkedin')}
-                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-background border border-border text-muted-foreground hover:text-foreground hover:border-foreground transition-all group"
+                    className="flex items-center gap-2 px-4 py-2 rounded-none bg-background border border-border text-muted-foreground hover:text-foreground hover:border-foreground transition-all group"
                     aria-label="Share on LinkedIn"
                   >
                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -677,7 +679,7 @@ export default function ArticlePage() {
                   {/* Facebook */}
                   <button
                     onClick={() => handleShare('facebook')}
-                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-background border border-border text-muted-foreground hover:text-foreground hover:border-foreground transition-all group"
+                    className="flex items-center gap-2 px-4 py-2 rounded-none bg-background border border-border text-muted-foreground hover:text-foreground hover:border-foreground transition-all group"
                     aria-label="Share on Facebook"
                   >
                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -689,7 +691,7 @@ export default function ArticlePage() {
                   {/* Reddit */}
                   <button
                     onClick={() => handleShare('reddit')}
-                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-background border border-border text-muted-foreground hover:text-foreground hover:border-foreground transition-all group"
+                    className="flex items-center gap-2 px-4 py-2 rounded-none bg-background border border-border text-muted-foreground hover:text-foreground hover:border-foreground transition-all group"
                     aria-label="Share on Reddit"
                   >
                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -701,7 +703,7 @@ export default function ArticlePage() {
                   {/* Copy Link */}
                   <button
                     onClick={handleCopyLink}
-                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-background border border-border text-muted-foreground hover:text-foreground hover:border-foreground transition-all group"
+                    className="flex items-center gap-2 px-4 py-2 rounded-none bg-background border border-border text-muted-foreground hover:text-foreground hover:border-foreground transition-all group"
                     aria-label="Copy link"
                   >
                     {copied ? (

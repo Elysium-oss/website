@@ -9,24 +9,29 @@ export function Newsletter() {
   }
 
   return (
-    <section className="relative py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-background">
+    <section className="relative pt-8 pb-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-background">
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-muted rounded-full blur-3xl opacity-10 -z-10 pointer-events-none" />
 
       <div className="max-w-2xl mx-auto text-center">
-        <h2 className="font-display font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-foreground mb-3 sm:mb-4">
+        <h2 className="font-display font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-foreground mb-6 sm:mb-4">
           Stay <span className="text-muted-foreground">Ahead</span>
         </h2>
-        <p className="text-sm sm:text-base md:text-lg text-muted-foreground mb-6 sm:mb-8 px-4">
+        <p className="text-sm sm:text-base md:text-lg text-muted-foreground mb-8 sm:mb-8 px-4">
           Join thousands of builders getting deep technical insights on Web3
         </p>
 
         <div className="max-w-md mx-auto px-4">
-          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
+          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4 sm:gap-3">
             <input
               type="email"
               placeholder="Enter your email"
               required
-              className="flex-1 px-4 py-2.5 sm:py-3 rounded-lg border-2 border-border bg-background text-foreground placeholder:text-muted-foreground focus:border-foreground focus:ring-2 focus:ring-foreground/20 outline-none transition-all text-sm sm:text-base"
+              className="flex-1 px-4 py-2.5 sm:py-3 rounded-none border-2 border-border bg-background text-foreground placeholder:text-muted-foreground focus:border-foreground focus:ring-0 focus:outline-none focus:shadow-none outline-none transition-all text-sm sm:text-base"
+              style={{ outline: 'none', boxShadow: 'none' }}
+              onFocus={(e) => {
+                e.target.style.outline = 'none'
+                e.target.style.boxShadow = 'none'
+              }}
             />
             <button
               type="submit"

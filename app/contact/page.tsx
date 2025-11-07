@@ -141,7 +141,7 @@ export default function ContactPage() {
                       href="https://twitter.com"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group p-3 rounded-lg border border-border hover:border-foreground bg-background hover:bg-muted/30 transition-all duration-200"
+                      className="group p-3 rounded-none border border-border hover:border-foreground bg-background hover:bg-muted/30 transition-all duration-200"
                       aria-label="Twitter"
                     >
                       <svg className="w-5 h-5 text-foreground" fill="currentColor" viewBox="0 0 24 24">
@@ -152,7 +152,7 @@ export default function ContactPage() {
                       href="https://github.com"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group p-3 rounded-lg border border-border hover:border-foreground bg-background hover:bg-muted/30 transition-all duration-200"
+                      className="group p-3 rounded-none border border-border hover:border-foreground bg-background hover:bg-muted/30 transition-all duration-200"
                       aria-label="GitHub"
                     >
                       <svg className="w-5 h-5 text-foreground" fill="currentColor" viewBox="0 0 24 24">
@@ -163,7 +163,7 @@ export default function ContactPage() {
                       href="https://elysium.substack.com"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group p-3 rounded-lg border border-border hover:border-foreground bg-background hover:bg-muted/30 transition-all duration-200"
+                      className="group p-3 rounded-none border border-border hover:border-foreground bg-background hover:bg-muted/30 transition-all duration-200"
                       aria-label="Substack"
                     >
                       <svg className="w-5 h-5 text-foreground" fill="currentColor" viewBox="0 0 24 24">
@@ -174,7 +174,7 @@ export default function ContactPage() {
                       href="https://farcaster.cast"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group p-3 rounded-lg border border-border hover:border-foreground bg-background hover:bg-muted/30 transition-all duration-200"
+                      className="group p-3 rounded-none border border-border hover:border-foreground bg-background hover:bg-muted/30 transition-all duration-200"
                       aria-label="Farcaster"
                     >
                       <svg className="w-5 h-5 text-foreground" fill="currentColor" viewBox="0 0 24 24">
@@ -211,7 +211,7 @@ export default function ContactPage() {
                   a: "Rigorous testing, security audits, code reviews, and industry best practices throughout the development process.",
                 },
               ].map((faq, i) => (
-                <AccordionItem key={i} value={`item-${i}`} className="border border-border rounded-lg px-6 py-2 bg-background hover:bg-muted/50 transition-all duration-500 ease-in-out">
+                <AccordionItem key={i} value={`item-${i}`} className="border border-border rounded-none px-6 py-2 bg-background hover:bg-muted/50 transition-all duration-500 ease-in-out">
                   <AccordionTrigger className="text-left font-display font-bold text-lg text-foreground py-4 hover:no-underline transition-all duration-500">
                     {faq.q}
                   </AccordionTrigger>

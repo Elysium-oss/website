@@ -77,7 +77,7 @@ export default function AboutPage() {
               ].map((item) => (
                 <div
                   key={item.title}
-                  className="p-5 sm:p-6 border-2 border-border rounded-lg hover:border-foreground transition-colors"
+                  className="p-5 sm:p-6 border-2 border-border rounded-none hover:border-foreground transition-colors"
                 >
                   <h3 className="font-display font-bold text-base sm:text-lg text-foreground mb-2">{item.title}</h3>
                   <p className="text-xs sm:text-sm text-muted-foreground">{item.desc}</p>

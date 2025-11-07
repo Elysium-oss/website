@@ -173,7 +173,7 @@ export default function WritingPage() {
                 placeholder="Search"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-muted border border-border rounded-lg px-4 py-1.5 sm:py-2 pl-10 text-foreground placeholder-muted-foreground focus:outline-none focus:border-foreground"
+                className="w-full bg-muted border border-border rounded-none px-4 py-1.5 sm:py-2 pl-10 text-foreground placeholder-muted-foreground focus:outline-none focus:border-foreground"
               />
               <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -197,7 +197,7 @@ export default function WritingPage() {
                     setSelectedCategory(category)
                     setCurrentPage(1)
                   }}
-                  className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium text-xs sm:text-sm whitespace-nowrap transition-all duration-200 ${
+                  className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-none font-medium text-xs sm:text-sm whitespace-nowrap transition-all duration-200 ${
                     selectedCategory === category
                       ? "bg-foreground text-white border border-foreground"
                       : "bg-transparent border border-border text-muted-foreground hover:border-foreground hover:text-foreground"
@@ -228,7 +228,7 @@ export default function WritingPage() {
                 <article
                   key={article.id}
                   onClick={() => handleArticleClick(article)}
-                  className="group cursor-pointer bg-background rounded-lg overflow-hidden border border-border hover:border-foreground transition-all hover:shadow-lg"
+                  className="group cursor-pointer bg-background rounded-none overflow-hidden border border-border hover:border-foreground transition-all hover:shadow-lg"
                 >
                   {/* Article Image */}
                   <div className="relative h-48 bg-muted overflow-hidden border-b border-border">
@@ -286,7 +286,7 @@ export default function WritingPage() {
                   <button
                     onClick={() => handlePageChange(currentPage - 1)}
                     disabled={currentPage === 1}
-                    className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-background border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-foreground disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                    className="w-8 h-8 sm:w-10 sm:h-10 rounded-none bg-background border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-foreground disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                   >
                     <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
                   </button>
@@ -296,7 +296,7 @@ export default function WritingPage() {
                       key={index}
                       onClick={() => typeof page === 'number' && handlePageChange(page)}
                       disabled={page === '...'}
-                      className={`min-w-8 h-8 sm:min-w-10 sm:h-10 px-2 sm:px-3 rounded-lg font-medium text-xs sm:text-sm transition-all ${
+                      className={`min-w-8 h-8 sm:min-w-10 sm:h-10 px-2 sm:px-3 rounded-none font-medium text-xs sm:text-sm transition-all ${
                         page === currentPage
                           ? "bg-foreground text-white"
                           : page === '...'
@@ -311,7 +311,7 @@ export default function WritingPage() {
                   <button
                     onClick={() => handlePageChange(currentPage + 1)}
                     disabled={currentPage === totalPages}
-                    className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-background border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-foreground disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                    className="w-8 h-8 sm:w-10 sm:h-10 rounded-none bg-background border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-foreground disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                   >
                     <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
                   </button>

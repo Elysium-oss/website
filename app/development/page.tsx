@@ -34,7 +34,7 @@ export default function DevelopmentPage() {
                   <button
                     key={category}
                     onClick={() => setSelectedCategory(category)}
-                    className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium text-xs sm:text-sm whitespace-nowrap transition-all duration-200 ${
+                    className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-none font-medium text-xs sm:text-sm whitespace-nowrap transition-all duration-200 ${
                       selectedCategory === category
                         ? "bg-foreground text-white border border-foreground"
                         : "bg-transparent border border-border text-muted-foreground hover:border-foreground hover:text-foreground"
@@ -56,7 +56,7 @@ export default function DevelopmentPage() {
             <p className="text-sm sm:text-base md:text-lg text-muted-foreground mb-6 sm:mb-8 px-4">
               Let's collaborate on your next Web3 project. From concept to production, we deliver.
             </p>
-            <button className="px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg text-white font-medium text-sm sm:text-base bg-foreground hover:bg-accent-hover shadow-sm hover:shadow-md hover:translate-y-[-2px] transition-all">
+            <button className="px-6 sm:px-8 py-2.5 sm:py-3 rounded-none text-white font-medium text-sm sm:text-base bg-foreground hover:bg-accent-hover shadow-sm hover:shadow-md hover:translate-y-[-2px] transition-all">
               Start a Project
             </button>
           </div>

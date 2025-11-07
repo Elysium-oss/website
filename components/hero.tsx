@@ -12,27 +12,27 @@ export function Hero() {
   }, [])
 
   return (
-    <section className="relative pt-24 sm:pt-32 md:pt-40 pb-16 sm:pb-24 md:pb-32 bg-background overflow-hidden border-b border-border">
+    <section className="relative pt-24 sm:pt-32 md:pt-40 pb-12 sm:pb-24 md:pb-32 bg-background overflow-hidden border-b border-border">
       <div className="max-w-full">
         <div className="grid grid-cols-1 lg:grid-cols-[40%_60%] gap-0 items-center">
           {/* Left: Content - Clean white space */}
           <div
-            className={`px-4 sm:px-8 lg:px-16 py-8 sm:py-12 lg:py-0 flex flex-col justify-center transition-all duration-700 ${
+            className={`px-4 sm:px-8 lg:px-16 py-5 sm:py-12 lg:py-0 flex flex-col justify-center transition-all duration-700 ${
               isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
             }`}
           >
-            <h1 className="font-display font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-foreground mb-4 sm:mb-6 leading-tight text-pretty">
+            <h1 className="font-display font-bold text-5xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl text-foreground mb-3 sm:mb-6 leading-tight text-pretty">
               Building the Decentralized Future
             </h1>
 
-            <p className="text-sm sm:text-base md:text-lg text-muted-foreground mb-6 sm:mb-8 leading-relaxed max-w-xl font-light">
+            <p className="text-sm sm:text-base md:text-lg text-muted-foreground mb-5 sm:mb-8 leading-relaxed max-w-xl font-light">
               Deep technical research and production-ready development. For builders. By builders.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-3 items-start">
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-3 items-start">
               <Link
                 href="/about"
-                className="inline-flex items-center justify-center px-8 sm:px-10 py-2.5 sm:py-3 rounded-none bg-foreground text-white font-medium text-base sm:text-lg min-w-[120px] sm:min-w-[140px]"
+                className="flex items-center justify-center w-full sm:w-auto px-8 sm:px-10 py-2.5 sm:py-3 mb-4 sm:mb-0 rounded-none bg-foreground text-white font-medium text-base sm:text-lg min-w-[120px] sm:min-w-[140px]"
               >
                 About Us
               </Link>
@@ -46,7 +46,7 @@ export function Hero() {
             }`}
           >
             <Image
-              src="/twitter-banner.png"
+              src="/banner-new.png"
               alt="Elysium - Decentralized Architecture"
               fill
               className="object-cover object-center"
