@@ -114,7 +114,7 @@ export default function ArticlePage() {
         const iframes = contentContainerRef.current.querySelectorAll('iframe')
         iframes.forEach((frame) => {
           const src = frame.getAttribute('src')?.toLowerCase() || ''
-          if (src.includes('substack') || src.includes('subscribe') || src.includes('newsletter') || src.includes('embed')) {
+          if (src.includes('substack') || src.includes('youtube') || src.includes('youtu.be') || src.includes('subscribe') || src.includes('newsletter') || src.includes('embed')) {
             frame.remove()
           }
         })
@@ -179,6 +179,42 @@ export default function ArticlePage() {
         img.setAttribute('style', `${existingStyle}; display: block !important; max-width: 100% !important; width: 100% !important; height: auto !important; margin: 1.5rem auto !important; border-radius: 0.5rem !important; opacity: 1 !important; visibility: visible !important;`)
         img.classList.add('article-image')
       })
+
+      // Force long URLs and words to wrap and prevent horizontal overflow
+      if (contentContainerRef.current) {
+        const root = contentContainerRef.current
+
+        const nodes = root.querySelectorAll('p, li, blockquote, a, h1, h2, h3, h4, h5, h6, code')
+        nodes.forEach((el) => {
+          const s = (el as HTMLElement).style
+          s.wordBreak = 'break-word'
+          s.overflowWrap = 'anywhere'
+          s.maxWidth = '100%'
+        })
+
+        const pres = root.querySelectorAll('pre')
+        pres.forEach((pre) => {
+          pre.style.whiteSpace = 'pre-wrap'
+          pre.style.wordBreak = 'break-word'
+          pre.style.maxWidth = '100%'
+          pre.style.overflowX = 'auto'
+        })
+
+        const tables = root.querySelectorAll('table')
+        tables.forEach((table) => {
+          const parent = table.parentElement
+          if (!parent || !parent.classList.contains('article-table-wrapper')) {
+            const wrapper = document.createElement('div')
+            wrapper.className = 'article-table-wrapper'
+            wrapper.style.overflowX = 'auto'
+            wrapper.style.width = '100%'
+            wrapper.style.marginTop = '1rem'
+            wrapper.style.marginBottom = '1rem'
+            parent?.insertBefore(wrapper, table)
+            wrapper.appendChild(table)
+          }
+        })
+      }
       
       // Generate table of contents
       const headings = Array.from(contentContainerRef.current.querySelectorAll('h1, h2'))
@@ -392,6 +428,16 @@ export default function ArticlePage() {
               ''
             )
             
+            // Remove YouTube iframes and embeds
+            cleanedContent = cleanedContent.replace(
+              /<iframe[^>]*(?:youtube|youtu\.be)[^>]*>[\s\S]*?<\/iframe>/gi,
+              ''
+            )
+            cleanedContent = cleanedContent.replace(
+              /<div[^>]*(?:class|id)=[^>]*(?:youtube|youtu\.be)[^>]*>[\s\S]*?<\/div>/gi,
+              ''
+            )
+            
             cleanedArticle.content = cleanedContent
           }
           
@@ -429,6 +475,16 @@ export default function ArticlePage() {
                   
                   cleanedContent = cleanedContent.replace(
                     /<(?:div|section)[^>]*>[\s\S]*?<input[^>]*type=["']email["'][^>]*>[\s\S]*?<button[^>]*>[\s\S]*?(?:subscribe|Subscribe)[\s\S]*?<\/button>[\s\S]*?<\/(?:div|section)>/gi,
+                    ''
+                  )
+                  
+                  // Remove YouTube iframes and embeds
+                  cleanedContent = cleanedContent.replace(
+                    /<iframe[^>]*(?:youtube|youtu\.be)[^>]*>[\s\S]*?<\/iframe>/gi,
+                    ''
+                  )
+                  cleanedContent = cleanedContent.replace(
+                    /<div[^>]*(?:class|id)=[^>]*(?:youtube|youtu\.be)[^>]*>[\s\S]*?<\/div>/gi,
                     ''
                   )
                   
@@ -506,69 +562,73 @@ export default function ArticlePage() {
   return (
     <>
       <Header />
-      <main className="pt-20 sm:pt-24 pb-12 sm:pb-16 lg:pb-24 min-h-screen">
+      <main className="pt-20 sm:pt-24 pb-12 sm:pb-16 lg:pb-24 min-h-screen overflow-x-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12">
-            <aside className="hidden lg:block lg:col-span-3">
-              <div className="sticky top-1/2 -translate-y-1/2">
+            <aside className="hidden lg:block lg:col-span-3 relative">
+              <div className="fixed left-16 top-0 h-screen w-[calc((100vw-80rem)/2+14rem)] max-w-[20rem] px-4 py-4">
                 <button
                   onClick={() => router.back()}
-                  className="hidden lg:inline-flex mb-8 items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  className="inline-flex mt-24 mb-4 items-center gap-3 text-lg text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                   </svg>
                   <span>Back</span>
                 </button>
-                
-                {tableOfContents.length > 0 ? (
-                  <>
-                    <h2 className="text-xs font-bold text-foreground uppercase tracking-wider mb-2 pl-2">
-                      TABLE OF CONTENTS
-                    </h2>
-                    <nav className="space-y-0">
-                      {tableOfContents.map((item) => (
-                        <button
-                          key={item.id}
-                          onClick={() => scrollToSection(item.id)}
-                          className={`block w-full text-left py-0.5 px-2 rounded text-sm transition-all ${
-                            activeSection === item.id
-                              ? 'text-foreground font-semibold'
-                              : 'text-muted-foreground hover:text-foreground hover:underline'
-                          }`}
-                          style={{
-                            paddingLeft: `${(item.level - 1) * 0.4 + 0.5}rem`
-                          }}
-                        >
-                          {activeSection === item.id ? '◆ ' : ''}
-                          {item.text}
-                        </button>
-                      ))}
-                    </nav>
-                  </>
-                ) : article?.content ? (
-                  <nav className="space-y-0">
-                    {[1, 2, 3, 4, 5].map((i) => {
-                      const widths = [85, 75, 90, 70, 80]
-                      return (
-                        <div
-                          key={i}
-                          className="animate-pulse py-0.5 px-2 rounded text-xs"
-                          style={{
-                            paddingLeft: '0.5rem'
-                          }}
-                        >
-                          <div
-                            className="h-3.5 bg-muted rounded"
+
+                <div className="h-[calc(100vh-12rem)] flex items-center">
+                  {tableOfContents.length > 0 ? (
+                    <div className="w-full">
+                      <h2 className="text-xs font-bold text-foreground uppercase tracking-wider mb-2 pl-2">
+                        TABLE OF CONTENTS
+                      </h2>
+                      <nav className="space-y-0 max-h-[60vh] overflow-auto pr-2">
+                        {tableOfContents.map((item) => (
+                          <button
+                            key={item.id}
+                            onClick={() => scrollToSection(item.id)}
+                            className={`block w-full text-left py-0.5 px-2 rounded text-base transition-all ${
+                              activeSection === item.id
+                                ? 'text-foreground font-semibold'
+                                : 'text-muted-foreground hover:text-foreground hover:underline'
+                            }`}
                             style={{
-                              width: `${widths[i - 1]}%`
+                              paddingLeft: `${(item.level - 1) * 0.4 + 0.5}rem`
                             }}
-                          />
-                        </div>
-                      )
-                    })}
-                  </nav>
-                ) : null}
+                          >
+                            {activeSection === item.id ? '◆ ' : ''}
+                            {item.text}
+                          </button>
+                        ))}
+                      </nav>
+                    </div>
+                  ) : article?.content ? (
+                    <div className="w-full">
+                      <nav className="space-y-0 max-h-[60vh] overflow-auto pr-2">
+                        {[1, 2, 3, 4, 5].map((i) => {
+                          const widths = [85, 75, 90, 70, 80]
+                          return (
+                            <div
+                              key={i}
+                              className="animate-pulse py-0.5 px-2 rounded text-xs"
+                              style={{
+                                paddingLeft: '0.5rem'
+                              }}
+                            >
+                              <div
+                                className="h-3.5 bg-muted rounded"
+                                style={{
+                                  width: `${widths[i - 1]}%`
+                                }}
+                              />
+                            </div>
+                          )
+                        })}
+                      </nav>
+                    </div>
+                  ) : null}
+                </div>
               </div>
             </aside>
 
@@ -592,7 +652,7 @@ export default function ArticlePage() {
                   </div>
                 ) : null}
                 
-                <h1 className="font-display font-bold text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-foreground leading-tight mb-4 sm:mb-6">
+                <h1 className="font-display font-bold text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-foreground leading-tight mb-4 sm:mb-6">
                   {article.title}
                 </h1>
                 
@@ -602,9 +662,9 @@ export default function ArticlePage() {
                     month: 'long', 
                     day: 'numeric' 
                   })}</span>
-                  <span>•</span>
+                  <span className="h-3 w-px bg-border"></span>
                   <span>By {sanitizeText(article.author)}</span>
-                  <span>•</span>
+                  <span className="h-3 w-px bg-border"></span>
                   <span>{article.readTime}</span>
                 </div>
               </header>
@@ -620,10 +680,13 @@ export default function ArticlePage() {
                 ) : article.content ? (
                   <div 
                     ref={contentContainerRef}
-                    className="article-content"
+                    className="article-content break-words overflow-x-hidden"
                     dangerouslySetInnerHTML={{ __html: article.content }}
                     style={{
                       lineHeight: '1.75',
+                      wordBreak: 'break-word',
+                      overflowWrap: 'anywhere',
+                      maxWidth: '100%',
                     }}
                   />
                 ) : (

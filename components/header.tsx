@@ -35,9 +35,14 @@ export function Header() {
     }
   }, [isMobileMenuOpen])
 
+  // Ensure mobile menu is closed on mount
+  useEffect(() => {
+    setIsMobileMenuOpen(false)
+  }, [])
+
   return (
     <header
-      className="fixed top-0 left-0 right-0 z-50 bg-background transition-all duration-300"
+      className="fixed top-0 left-0 right-0 z-50 bg-background transition-all duration-300 border-b border-border md:border-b-0"
       style={{
         width: '100vw',
         maxWidth: '100%',
@@ -53,12 +58,12 @@ export function Header() {
           transition: 'opacity 0.1s ease-out',
         }}
       />
-      <div className="relative z-10 w-full max-w-full overflow-hidden">
-        <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-          <div className="flex items-center justify-between h-20">
+      <div className="relative z-10 w-full max-w-full overflow-hidden mb-2 md:mb-0">
+        <div className="px-4 sm:px-8 lg:px-16">
+          <div className="flex items-center justify-between h-12 md:h-16">
             {/* Logo */}
             <Link href="/" className="group flex-shrink-0" onClick={() => setIsMobileMenuOpen(false)}>
-              <span className="text-2xl sm:text-3xl text-foreground transition-colors" style={{ fontFamily: 'var(--font-funnel-display)', fontWeight: 700 }}>
+              <span className="text-3xl sm:text-3xl text-foreground transition-colors" style={{ fontFamily: 'var(--font-funnel-display)', fontWeight: 700 }}>
                 elysium
               </span>
             </Link>
@@ -67,25 +72,25 @@ export function Header() {
           <nav className="hidden md:flex items-center gap-2 lg:gap-3 flex-shrink-0">
             <Link
               href="/about"
-              className="px-3 lg:px-4 py-2 rounded-none text-sm lg:text-base font-medium bg-[#F9FAFB] text-[#070707] focus:outline-none whitespace-nowrap"
+              className="px-3 lg:px-4 py-2 rounded-none text-sm lg:text-base font-medium bg-[#F9FAFB] text-[#070707] focus:outline-none whitespace-nowrap transition-all duration-200 hover:bg-[#E5E7EB] hover:scale-105 active:scale-100"
             >
               <span className="inline-block animate-softpulse">About</span>
             </Link>
             <Link
               href="/writing"
-              className="px-3 lg:px-4 py-2 rounded-none text-sm lg:text-base font-medium bg-[#F9FAFB] text-[#070707] focus:outline-none whitespace-nowrap"
+              className="px-3 lg:px-4 py-2 rounded-none text-sm lg:text-base font-medium bg-[#F9FAFB] text-[#070707] focus:outline-none whitespace-nowrap transition-all duration-200 hover:bg-[#E5E7EB] hover:scale-105 active:scale-100"
             >
               <span className="inline-block animate-softpulse">Writing</span>
             </Link>
             <Link
               href="/development"
-              className="px-3 lg:px-4 py-2 rounded-none text-sm lg:text-base font-medium bg-[#F9FAFB] text-[#070707] focus:outline-none whitespace-nowrap"
+              className="px-3 lg:px-4 py-2 rounded-none text-sm lg:text-base font-medium bg-[#F9FAFB] text-[#070707] focus:outline-none whitespace-nowrap transition-all duration-200 hover:bg-[#E5E7EB] hover:scale-105 active:scale-100"
             >
               <span className="inline-block animate-softpulse">Development</span>
             </Link>
             <Link
               href="/contact"
-              className="px-4 lg:px-5 py-2 rounded-none text-sm lg:text-base font-medium bg-[#070707] text-[#F9FAFB] focus:outline-none whitespace-nowrap"
+              className="px-4 lg:px-5 py-2 rounded-none text-sm lg:text-base font-medium bg-[#070707] text-[#F9FAFB] focus:outline-none whitespace-nowrap transition-all duration-200 hover:bg-[#1F2937] hover:scale-105 active:scale-100"
             >
               <span className="inline-block animate-softpulse">Contact</span>
             </Link>
@@ -93,7 +98,7 @@ export function Header() {
 
           {/* Mobile menu button */}
           <button 
-            className="md:hidden p-2 text-foreground z-50 flex-shrink-0"
+            className="md:hidden p-2 text-foreground z-50 flex-shrink-0 transition-all duration-200 hover:opacity-70 active:opacity-50"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle menu"
           >
@@ -120,39 +125,39 @@ export function Header() {
 
       {/* Mobile Menu */}
       <div
-        className={`fixed inset-x-0 top-20 bottom-0 bg-background border-t border-border transition-transform duration-300 md:hidden z-40 overflow-y-auto ${
-          isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
-        }`}
+        className={`fixed inset-x-0 top-12 bottom-0 bg-background border-t border-border transition-transform duration-300 md:hidden z-40 overflow-y-auto ${
+          isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full hidden'
+        } ${!isMobileMenuOpen ? 'pointer-events-none' : ''}`}
         style={{
           maxWidth: '100vw',
         }}
       >
-        <nav className="flex flex-col p-4 space-y-2 max-w-full">
+        <nav className="flex flex-col p-4 space-y-2 w-full max-w-md mx-auto">
           <Link
             href="/about"
             onClick={() => setIsMobileMenuOpen(false)}
-            className="px-4 py-3 rounded-none text-base font-medium bg-[#F9FAFB] text-[#070707] w-full"
+            className="px-4 py-3 rounded-none text-base font-medium bg-[#F9FAFB] text-[#070707] w-full transition-all duration-200 hover:bg-[#E5E7EB] active:bg-[#D1D5DB]"
           >
             About
           </Link>
           <Link
             href="/writing"
             onClick={() => setIsMobileMenuOpen(false)}
-            className="px-4 py-3 rounded-none text-base font-medium bg-[#F9FAFB] text-[#070707] w-full"
+            className="px-4 py-3 rounded-none text-base font-medium bg-[#F9FAFB] text-[#070707] w-full transition-all duration-200 hover:bg-[#E5E7EB] active:bg-[#D1D5DB]"
           >
             Writing
           </Link>
           <Link
             href="/development"
             onClick={() => setIsMobileMenuOpen(false)}
-            className="px-4 py-3 rounded-none text-base font-medium bg-[#F9FAFB] text-[#070707] w-full"
+            className="px-4 py-3 rounded-none text-base font-medium bg-[#F9FAFB] text-[#070707] w-full transition-all duration-200 hover:bg-[#E5E7EB] active:bg-[#D1D5DB]"
           >
             Development
           </Link>
           <Link
             href="/contact"
             onClick={() => setIsMobileMenuOpen(false)}
-            className="w-full px-4 py-3 rounded-none text-base font-medium bg-[#070707] text-[#F9FAFB] text-center mt-4"
+            className="w-full px-4 py-3 rounded-none text-base font-medium bg-[#070707] text-[#F9FAFB] text-center mt-4 transition-all duration-200 hover:bg-[#1F2937] active:bg-[#111827]"
           >
             Contact
           </Link>

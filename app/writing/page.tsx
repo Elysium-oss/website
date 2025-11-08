@@ -247,11 +247,6 @@ export default function WritingPage() {
                         />
                       </svg>
                     </div>
-                    <div className="absolute top-3 left-3">
-                      <span className="bg-foreground text-white text-xs font-semibold px-3 py-1 rounded-full uppercase">
-                        {article.category}
-                      </span>
-                    </div>
                     <div className="absolute top-3 right-3 text-muted-foreground text-xs font-medium">
                       {new Date(article.pubDate).toLocaleDateString("en-US", {
                         month: "short",
@@ -262,6 +257,9 @@ export default function WritingPage() {
 
                   {/* Article Content */}
                   <div className="p-5">
+                    <span className="inline-block bg-foreground text-white text-xs font-semibold px-3 py-1 rounded-full uppercase mb-3">
+                      {article.category}
+                    </span>
                     <h3 className="font-display font-bold text-lg text-foreground mb-2 line-clamp-2 group-hover:text-muted-foreground transition-colors">
                       {article.title}
                     </h3>

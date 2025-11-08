@@ -7,11 +7,11 @@ const urbanist = Urbanist({ subsets: ["latin"], variable: "--font-sans" })
 const urbanistDisplay = Urbanist({ subsets: ["latin"], variable: "--font-display" })
 
 export const metadata: Metadata = {
-  title: "Elysium - Web3 Research & Development",
+  title: "Elysium",
   description: "Deep technical research and production-ready development. For builders. By builders.",
   metadataBase: new URL("https://elysium.dev"),
   icons: {
-    icon: "/elysium-logo.png",
+    icon: "/logo-dark.png",
   },
   openGraph: {
     type: "website",
@@ -42,7 +42,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={`${urbanist.variable} ${urbanistDisplay.variable} font-sans bg-background text-foreground`}>
+      <body className={`${urbanist.variable} ${urbanistDisplay.variable} font-sans bg-background text-foreground overflow-x-hidden`}>
         {children}
       </body>
     </html>
