@@ -652,7 +652,7 @@ export default function ArticlePage() {
                   </div>
                 ) : null}
                 
-                <h1 className="font-display font-bold text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-foreground leading-tight mb-4 sm:mb-6">
+                <h1 className="font-display font-bold text-3xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-foreground leading-tight mb-4 sm:mb-6">
                   {article.title}
                 </h1>
                 

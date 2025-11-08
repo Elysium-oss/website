@@ -41,7 +41,7 @@ export function Hero() {
                     })
                   }
                 }}
-                className="flex items-center justify-center w-full sm:w-auto px-8 sm:px-10 py-2.5 sm:py-3 mb-4 sm:mb-0 rounded-none bg-foreground text-white font-medium text-base sm:text-lg min-w-[120px] sm:min-w-[140px]"
+                className="flex items-center justify-center w-full sm:w-auto px-8 sm:px-10 py-2.5 sm:py-3 mb-4 sm:mb-0 rounded-sm sm:rounded-none bg-foreground text-white font-medium text-base sm:text-lg min-w-[120px] sm:min-w-[140px]"
               >
                 About Us
               </Link>
