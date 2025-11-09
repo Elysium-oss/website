@@ -26,7 +26,7 @@ export function Hero() {
               Building the Decentralized Future
             </h1>
 
-            <p className="text-sm sm:text-base md:text-lg text-muted-foreground mb-5 sm:mb-8 leading-relaxed max-w-xl font-light">
+            <p className="text-md sm:text-base md:text-lg text-muted-foreground mb-5 sm:mb-8 leading-relaxed max-w-xl font-light">
               Deep technical research and production-ready development. For builders. By builders.
             </p>
 

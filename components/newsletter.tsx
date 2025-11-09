@@ -101,7 +101,7 @@ export function Newsletter() {
             <button
               type="submit"
               disabled={isLoading || isSubscribed}
-              className={`px-5 sm:px-6 py-2.5 sm:py-3 rounded-none font-medium text-sm sm:text-base shadow-md transition-all duration-300 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 ${
+              className={`px-5 sm:px-6 py-2.5 sm:py-3 rounded-sm sm:rounded-none font-medium text-sm sm:text-base shadow-md transition-all duration-300 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 ${
                 isSubscribed
                   ? 'bg-gray-400 text-white'
                   : 'bg-foreground text-white'

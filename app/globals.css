@@ -375,7 +375,7 @@ button {
   @apply italic;
 }
 
-/* Force article images to be visible */
+/* Force article images to be visible and clear */
 .article-content img,
 .article-image {
   display: block !important;
@@ -387,4 +387,58 @@ button {
   opacity: 1 !important;
   visibility: visible !important;
   border: none !important;
+  filter: none !important;
+  background-color: transparent !important;
+}
+
+/* AGGRESSIVE: Hide ALL buttons and links after images */
+.article-content img + button,
+.article-content img + a,
+.article-content img ~ button,
+.article-content img ~ a {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  position: absolute !important;
+  left: -9999px !important;
+}
+
+/* Hide buttons/links in ANY div after images */
+.article-content img + div button,
+.article-content img + div a,
+.article-content img + div + div button,
+.article-content img + div + div a {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+/* Hide ALL buttons/icons in figure elements */
+.article-content figure button,
+.article-content figure a:not(:has(img)) {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Hide any divs with buttons after images */
+.article-content img ~ div:has(button),
+.article-content img ~ div:has(a),
+.article-content div:has(> img) + div:has(button),
+.article-content div:has(> img) + div:has(a) {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+/* Hide ALL buttons in article content (they're likely expand/refresh icons) */
+.article-content button {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  position: absolute !important;
+  left: -9999px !important;
 }

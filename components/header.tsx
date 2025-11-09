@@ -157,7 +157,7 @@ export function Header() {
           <Link
             href="/contact"
             onClick={() => setIsMobileMenuOpen(false)}
-            className="w-full px-4 py-3 rounded-none text-base font-medium bg-[#070707] text-[#F9FAFB] text-center mt-4 transition-colors duration-200 hover:bg-[#1F2937]"
+            className="w-full px-4 py-3 rounded-sm text-base font-medium bg-[#070707] text-[#F9FAFB] text-center mt-4 transition-colors duration-200 hover:bg-[#1F2937]"
           >
             Contact
           </Link>
