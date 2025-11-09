@@ -58,7 +58,7 @@ export function Header() {
           transition: 'opacity 0.1s ease-out',
         }}
       />
-      <div className="relative z-10 w-full max-w-full overflow-hidden mb-2 md:mb-0">
+      <div className="relative z-10 w-full max-w-full overflow-hidden">
         <div className="px-4 sm:px-8 lg:px-16">
           <div className="flex items-center justify-between h-12 md:h-16">
             {/* Logo */}
