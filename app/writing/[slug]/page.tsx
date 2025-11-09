@@ -118,121 +118,11 @@ export default function ArticlePage() {
             frame.remove()
           }
         })
-        
-        // Remove buttons/icons that appear below images (expand, refresh, etc.)
-        const images = contentContainerRef.current.querySelectorAll('img')
-        images.forEach((img) => {
-          // REMOVE ICONS/BUTTONS BELOW IMAGES
-          // Check next siblings for buttons/icons
-          let nextSibling = img.nextElementSibling
-          const siblingsToCheck = []
-          
-          // Check next 3 siblings
-          let count = 0
-          while (nextSibling && count < 3) {
-            siblingsToCheck.push(nextSibling)
-            nextSibling = nextSibling.nextElementSibling
-            count++
-          }
-          
-          siblingsToCheck.forEach((sibling) => {
-            const isButton = sibling.tagName === 'BUTTON'
-            const isLink = sibling.tagName === 'A'
-            const isDiv = sibling.tagName === 'DIV'
-            const hasButton = sibling.querySelectorAll('button').length > 0
-            const hasLink = sibling.querySelectorAll('a').length > 0
-            const textContent = sibling.textContent?.trim() || ''
-            
-            // AGGRESSIVE: Remove ALL buttons and links after images
-            if (isButton || isLink) {
-              sibling.remove()
-              return
-            }
-            
-            // Remove divs that contain buttons/links with little text
-            if (isDiv && (hasButton || hasLink) && textContent.length < 50) {
-              sibling.remove()
-              return
-            }
-          })
-          
-          // Check parent for buttons/icons
-          const parent = img.parentElement
-          if (parent) {
-            const imgIndex = Array.from(parent.children).indexOf(img)
-            for (let i = imgIndex + 1; i < Math.min(imgIndex + 5, parent.children.length); i++) {
-              const sibling = parent.children[i]
-              const isButton = sibling.tagName === 'BUTTON'
-              const isLink = sibling.tagName === 'A'
-              
-              // Remove ALL buttons and links after images
-              if (isButton || isLink) {
-                sibling.remove()
-              }
-            }
-          }
-          
-          // Check inside figure elements
-          const figure = img.closest('figure')
-          if (figure) {
-            // Remove ALL buttons and links in figures (except those containing images)
-            const buttonsInFigure = figure.querySelectorAll('button, a[href]')
-            buttonsInFigure.forEach((btn) => {
-              const hasImage = btn.querySelector('img')
-              if (!hasImage) {
-                btn.remove()
-              }
-            })
-            
-            // Remove divs with buttons in figures
-            const divsInFigure = figure.querySelectorAll('div')
-            divsInFigure.forEach((div) => {
-              const hasButtons = div.querySelectorAll('button, a[href]').length > 0
-              const textContent = div.textContent?.trim() || ''
-              
-              if (hasButtons && textContent.length < 50) {
-                div.remove()
-              }
-            })
-          }
-        })
       }
       
       cleanup()
-      setTimeout(cleanup, 100)
-      setTimeout(cleanup, 300)
-      setTimeout(cleanup, 500)
+      setTimeout(cleanup, 200)
       setTimeout(cleanup, 1000)
-      setTimeout(cleanup, 2000)
-      setTimeout(cleanup, 3000)
-      
-      // Setup MutationObserver to catch dynamically added buttons/icons
-      if (contentContainerRef.current) {
-        const observer = new MutationObserver((mutations) => {
-          mutations.forEach((mutation) => {
-            mutation.addedNodes.forEach((node) => {
-              if (node.nodeType === 1) {
-                const element = node as Element
-                // Check if it's a button or link
-                if (element.tagName === 'BUTTON' || element.tagName === 'A') {
-                  element.remove()
-                }
-                // Check if it contains buttons or links
-                const buttons = element.querySelectorAll('button, a')
-                buttons.forEach(btn => btn.remove())
-              }
-            })
-          })
-        })
-        
-        observer.observe(contentContainerRef.current, {
-          childList: true,
-          subtree: true
-        })
-        
-        // Store observer to disconnect later
-        return () => observer.disconnect()
-      }
     }
   }, [article?.content])
 
@@ -261,8 +151,6 @@ export default function ArticlePage() {
         img.style.borderRadius = '0.5rem'
         img.style.opacity = '1'
         img.style.visibility = 'visible'
-        img.style.filter = 'none'
-        img.style.backgroundColor = 'transparent'
         
         if (!img.getAttribute('loading')) {
           img.loading = 'lazy'
@@ -290,80 +178,6 @@ export default function ArticlePage() {
         const existingStyle = img.getAttribute('style') || ''
         img.setAttribute('style', `${existingStyle}; display: block !important; max-width: 100% !important; width: 100% !important; height: auto !important; margin: 1.5rem auto !important; border-radius: 0.5rem !important; opacity: 1 !important; visibility: visible !important;`)
         img.classList.add('article-image')
-        
-        // REMOVE ICONS/BUTTONS BELOW IMAGES
-        // Check next siblings for buttons/icons
-        let nextSibling = img.nextElementSibling
-        const siblingsToCheck = []
-        
-        // Check next 3 siblings
-        let count = 0
-        while (nextSibling && count < 3) {
-          siblingsToCheck.push(nextSibling)
-          nextSibling = nextSibling.nextElementSibling
-          count++
-        }
-        
-        siblingsToCheck.forEach((sibling) => {
-          const isButton = sibling.tagName === 'BUTTON'
-          const isLink = sibling.tagName === 'A'
-          const isDiv = sibling.tagName === 'DIV'
-          const hasButton = sibling.querySelectorAll('button').length > 0
-          const hasLink = sibling.querySelectorAll('a').length > 0
-          const textContent = sibling.textContent?.trim() || ''
-          
-          // AGGRESSIVE: Remove ALL buttons and links after images
-          if (isButton || isLink) {
-            sibling.remove()
-            return
-          }
-          
-          // Remove divs that contain buttons/links with little text
-          if (isDiv && (hasButton || hasLink) && textContent.length < 50) {
-            sibling.remove()
-            return
-          }
-        })
-        
-        // Check parent for buttons/icons
-        const parent = img.parentElement
-        if (parent) {
-          const imgIndex = Array.from(parent.children).indexOf(img)
-          for (let i = imgIndex + 1; i < Math.min(imgIndex + 5, parent.children.length); i++) {
-            const sibling = parent.children[i]
-            const isButton = sibling.tagName === 'BUTTON'
-            const isLink = sibling.tagName === 'A'
-            
-            // Remove ALL buttons and links after images
-            if (isButton || isLink) {
-              sibling.remove()
-            }
-          }
-        }
-        
-        // Check inside figure elements
-        const figure = img.closest('figure')
-        if (figure) {
-          // Remove ALL buttons and links in figures (except those containing images)
-          const buttonsInFigure = figure.querySelectorAll('button, a[href]')
-          buttonsInFigure.forEach((btn) => {
-            const hasImage = btn.querySelector('img')
-            if (!hasImage) {
-              btn.remove()
-            }
-          })
-          
-          // Remove divs with buttons in figures
-          const divsInFigure = figure.querySelectorAll('div')
-          divsInFigure.forEach((div) => {
-            const hasButtons = div.querySelectorAll('button, a[href]').length > 0
-            const textContent = div.textContent?.trim() || ''
-            
-            if (hasButtons && textContent.length < 50) {
-              div.remove()
-            }
-          })
-        }
       })
 
       // Force long URLs and words to wrap and prevent horizontal overflow
