@@ -3,7 +3,7 @@
 import Link from "next/link"
 import Image from "next/image"
 import { useState, useEffect } from "react"
-import posthog from "posthog-js"
+// import posthog from "posthog-js"
 
 export function Hero() {
   const [isLoaded, setIsLoaded] = useState(false)
@@ -34,12 +34,12 @@ export function Hero() {
               <Link
                 href="/about"
                 onClick={() => {
-                  if (typeof window !== 'undefined') {
-                    posthog.capture('cta_clicked', {
-                      cta_name: 'About Us',
-                      location: 'hero'
-                    })
-                  }
+                  // if (typeof window !== 'undefined') {
+                  //   posthog.capture('cta_clicked', {
+                  //     cta_name: 'About Us',
+                  //     location: 'hero'
+                  //   })
+                  // }
                 }}
                 className="flex items-center justify-center w-full sm:w-auto px-8 sm:px-10 py-2.5 sm:py-3 mb-4 sm:mb-0 rounded-sm sm:rounded-none bg-foreground text-white font-medium text-base sm:text-lg min-w-[120px] sm:min-w-[140px]"
               >

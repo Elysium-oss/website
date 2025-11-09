@@ -569,7 +569,7 @@ export default function ArticlePage() {
               <div className="fixed left-16 top-0 h-screen w-[calc((100vw-80rem)/2+14rem)] max-w-[20rem] px-4 py-4">
                 <button
                   onClick={() => router.back()}
-                  className="inline-flex mt-24 mb-4 items-center gap-3 text-lg text-muted-foreground hover:text-foreground transition-colors"
+                  className="inline-flex mt-24 mb-4 items-center gap-3 text-lg text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
                 >
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -588,7 +588,7 @@ export default function ArticlePage() {
                           <button
                             key={item.id}
                             onClick={() => scrollToSection(item.id)}
-                            className={`block w-full text-left py-0.5 px-2 rounded text-base transition-all ${
+                            className={`block w-full text-left py-0.5 px-2 rounded text-base transition-all cursor-pointer ${
                               activeSection === item.id
                                 ? 'text-foreground font-semibold'
                                 : 'text-muted-foreground hover:text-foreground hover:underline'
@@ -635,7 +635,7 @@ export default function ArticlePage() {
             <article className="lg:col-span-9">
               <button
                 onClick={() => router.back()}
-                className="lg:hidden mb-6 sm:mb-8 inline-flex items-center gap-2 text-sm sm:text-base text-muted-foreground hover:text-foreground transition-colors"
+                className="lg:hidden mb-6 sm:mb-8 inline-flex items-center gap-2 text-sm sm:text-base text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
               >
                 <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />

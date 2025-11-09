@@ -72,25 +72,25 @@ export function Header() {
           <nav className="hidden md:flex items-center gap-2 lg:gap-3 flex-shrink-0">
             <Link
               href="/about"
-              className="px-3 lg:px-4 py-2 rounded-none text-sm lg:text-base font-medium bg-[#F9FAFB] text-[#070707] focus:outline-none whitespace-nowrap transition-all duration-200 hover:bg-[#E5E7EB] hover:scale-105 active:scale-100"
+              className="px-3 lg:px-4 py-2 rounded-none text-sm lg:text-base font-medium bg-[#F9FAFB] text-[#070707] focus:outline-none whitespace-nowrap transition-colors duration-200 hover:text-[#4B5563]"
             >
               <span className="inline-block animate-softpulse">About</span>
             </Link>
             <Link
               href="/writing"
-              className="px-3 lg:px-4 py-2 rounded-none text-sm lg:text-base font-medium bg-[#F9FAFB] text-[#070707] focus:outline-none whitespace-nowrap transition-all duration-200 hover:bg-[#E5E7EB] hover:scale-105 active:scale-100"
+              className="px-3 lg:px-4 py-2 rounded-none text-sm lg:text-base font-medium bg-[#F9FAFB] text-[#070707] focus:outline-none whitespace-nowrap transition-colors duration-200 hover:text-[#4B5563]"
             >
               <span className="inline-block animate-softpulse">Writing</span>
             </Link>
             <Link
               href="/development"
-              className="px-3 lg:px-4 py-2 rounded-none text-sm lg:text-base font-medium bg-[#F9FAFB] text-[#070707] focus:outline-none whitespace-nowrap transition-all duration-200 hover:bg-[#E5E7EB] hover:scale-105 active:scale-100"
+              className="px-3 lg:px-4 py-2 rounded-none text-sm lg:text-base font-medium bg-[#F9FAFB] text-[#070707] focus:outline-none whitespace-nowrap transition-colors duration-200 hover:text-[#4B5563]"
             >
               <span className="inline-block animate-softpulse">Development</span>
             </Link>
             <Link
               href="/contact"
-              className="px-4 lg:px-5 py-2 rounded-none text-sm lg:text-base font-medium bg-[#070707] text-[#F9FAFB] focus:outline-none whitespace-nowrap transition-all duration-200 hover:bg-[#1F2937] hover:scale-105 active:scale-100"
+              className="px-4 lg:px-5 py-2 rounded-none text-sm lg:text-base font-medium bg-[#070707] text-[#F9FAFB] focus:outline-none whitespace-nowrap transition-colors duration-200 hover:bg-[#1F2937]"
             >
               <span className="inline-block animate-softpulse">Contact</span>
             </Link>
@@ -136,28 +136,28 @@ export function Header() {
           <Link
             href="/about"
             onClick={() => setIsMobileMenuOpen(false)}
-            className="px-4 py-3 rounded-none text-base font-medium bg-[#F9FAFB] text-[#070707] w-full transition-all duration-200 hover:bg-[#E5E7EB] active:bg-[#D1D5DB]"
+            className="px-4 py-3 rounded-none text-base font-medium bg-[#F9FAFB] text-[#070707] w-full transition-colors duration-200 hover:text-[#4B5563]"
           >
             About
           </Link>
           <Link
             href="/writing"
             onClick={() => setIsMobileMenuOpen(false)}
-            className="px-4 py-3 rounded-none text-base font-medium bg-[#F9FAFB] text-[#070707] w-full transition-all duration-200 hover:bg-[#E5E7EB] active:bg-[#D1D5DB]"
+            className="px-4 py-3 rounded-none text-base font-medium bg-[#F9FAFB] text-[#070707] w-full transition-colors duration-200 hover:text-[#4B5563]"
           >
             Writing
           </Link>
           <Link
             href="/development"
             onClick={() => setIsMobileMenuOpen(false)}
-            className="px-4 py-3 rounded-none text-base font-medium bg-[#F9FAFB] text-[#070707] w-full transition-all duration-200 hover:bg-[#E5E7EB] active:bg-[#D1D5DB]"
+            className="px-4 py-3 rounded-none text-base font-medium bg-[#F9FAFB] text-[#070707] w-full transition-colors duration-200 hover:text-[#4B5563]"
           >
             Development
           </Link>
           <Link
             href="/contact"
             onClick={() => setIsMobileMenuOpen(false)}
-            className="w-full px-4 py-3 rounded-none text-base font-medium bg-[#070707] text-[#F9FAFB] text-center mt-4 transition-all duration-200 hover:bg-[#1F2937] active:bg-[#111827]"
+            className="w-full px-4 py-3 rounded-none text-base font-medium bg-[#070707] text-[#F9FAFB] text-center mt-4 transition-colors duration-200 hover:bg-[#1F2937]"
           >
             Contact
           </Link>

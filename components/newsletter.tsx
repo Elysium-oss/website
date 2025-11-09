@@ -1,11 +1,73 @@
 "use client"
 
 import type React from "react"
+import { useState } from "react"
 
 export function Newsletter() {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const [isSubscribed, setIsSubscribed] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [email, setEmail] = useState("")
+  const [errorMessage, setErrorMessage] = useState("")
+  const [isAlreadySubscribed, setIsAlreadySubscribed] = useState(false)
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    // Newsletter signup would be handled here or via Substack embed
+    
+    if (!email) return
+    
+    // Clear previous errors
+    setErrorMessage("")
+    setIsAlreadySubscribed(false)
+    setIsLoading(true)
+    
+    try {
+      // Call our server-side API route to handle subscription
+      const response = await fetch("/api/newsletter/subscribe", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      })
+      
+      const data = await response.json()
+      
+      if (response.ok && data.success) {
+        // Success - trigger subscribe animation
+        setIsSubscribed(true)
+        setErrorMessage("")
+        
+        // Revert back after 2.5 seconds
+        setTimeout(() => {
+          setIsSubscribed(false)
+          setEmail("")
+        }, 2500)
+      } else {
+        // Handle different error types gracefully
+        if (data.alreadySubscribed) {
+          setIsAlreadySubscribed(true)
+          setErrorMessage(data.error || "You're already subscribed!")
+        } else {
+          setErrorMessage(data.error || "Failed to subscribe. Please try again.")
+        }
+        
+        // Clear error message after 5 seconds
+        setTimeout(() => {
+          setErrorMessage("")
+          setIsAlreadySubscribed(false)
+        }, 5000)
+      }
+    } catch (error) {
+      console.error("Error subscribing to newsletter:", error)
+      setErrorMessage("An error occurred. Please try again later.")
+      
+      // Clear error message after 5 seconds
+      setTimeout(() => {
+        setErrorMessage("")
+      }, 5000)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -26,7 +88,10 @@ export function Newsletter() {
               type="email"
               placeholder="Enter your email"
               required
-              className="flex-1 px-4 py-2.5 sm:py-3 rounded-none border-2 border-border bg-background text-foreground placeholder:text-muted-foreground focus:border-foreground focus:ring-0 focus:outline-none focus:shadow-none outline-none transition-all text-sm sm:text-base"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              disabled={isLoading || isSubscribed}
+              className="flex-1 px-4 py-2.5 sm:py-3 rounded-none border-2 border-border bg-background text-foreground placeholder:text-muted-foreground focus:border-foreground focus:ring-0 focus:outline-none focus:shadow-none outline-none transition-all text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed"
               style={{ outline: 'none', boxShadow: 'none' }}
               onFocus={(e) => {
                 e.target.style.outline = 'none'
@@ -35,14 +100,33 @@ export function Newsletter() {
             />
             <button
               type="submit"
-              className="px-5 sm:px-6 py-2.5 sm:py-3 rounded-none text-white font-medium text-sm sm:text-base shadow-md bg-foreground"
+              disabled={isLoading || isSubscribed}
+              className={`px-5 sm:px-6 py-2.5 sm:py-3 rounded-none font-medium text-sm sm:text-base shadow-md transition-all duration-300 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 ${
+                isSubscribed
+                  ? 'bg-gray-400 text-white'
+                  : 'bg-foreground text-white'
+              }`}
             >
-              Subscribe
+              {isLoading ? 'Subscribing...' : isSubscribed ? 'Subscribed!' : 'Subscribe'}
             </button>
           </form>
-          <p className="text-xs text-muted-foreground mt-3 sm:mt-4">
-            Weekly deep dives on Web3 tech. Unsubscribe anytime.
-          </p>
+          
+          {/* Success/Error Messages */}
+          {errorMessage && (
+            <div className={`mt-3 sm:mt-4 p-3 rounded-none text-sm transition-all ${
+              isAlreadySubscribed
+                ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-800 dark:text-blue-200 border border-blue-200 dark:border-blue-800'
+                : 'bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-200 border border-red-200 dark:border-red-800'
+            }`}>
+              {errorMessage}
+            </div>
+          )}
+          
+          {!errorMessage && (
+            <p className="text-xs text-muted-foreground mt-3 sm:mt-4">
+              Weekly deep dives on Web3 tech. Unsubscribe anytime.
+            </p>
+          )}
         </div>
 
         {/* Alternative: Substack iFrame embed */}
