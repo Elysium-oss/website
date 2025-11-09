@@ -22,7 +22,7 @@ export function Hero() {
               isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
             }`}
           >
-            <h1 className="font-display font-bold text-5xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl text-foreground mb-3 sm:mb-6 leading-tight text-pretty">
+            <h1 className="font-display font-bold text-5xl sm:text-5xl md:text-5xl lg:text-5xl xl:text-6xl text-foreground mb-3 sm:mb-6 leading-tight text-pretty">
               Building the Decentralized Future
             </h1>
 
