@@ -55,7 +55,7 @@ export function Hero() {
             }`}
           >
             <Image
-              src="/banner-new.png"
+              src="/new.png"
               alt="Elysium - Decentralized Architecture"
               fill
               className="object-cover object-center"

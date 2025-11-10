@@ -580,7 +580,7 @@ export default function ArticlePage() {
                 <div className="h-[calc(100vh-12rem)] flex items-center">
                   {tableOfContents.length > 0 ? (
                     <div className="w-full">
-                      <h2 className="text-xs font-bold text-foreground uppercase tracking-wider mb-2 pl-2">
+                      <h2 className="text-sm font-bold text-foreground uppercase tracking-wider mb-2 pl-2">
                         TABLE OF CONTENTS
                       </h2>
                       <nav className="space-y-0 max-h-[60vh] overflow-auto pr-2">

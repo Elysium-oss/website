@@ -117,8 +117,16 @@ export default function ContactPage() {
                 <div className="text-center">
                   <p className="text-xs font-semibold text-muted-foreground tracking-wider mb-4 uppercase">Email</p>
                   <a
-                    href="mailto:elysiumxfoundation@gmail.com"
-                    className="text-xl font-medium text-foreground hover:underline transition-all inline-flex items-center gap-2 justify-center"
+                    href="mailto:elysiumxfoundation@gmail.com?subject=Contact%20from%20Elysium%20Website"
+                    className="text-xl font-medium text-foreground hover:underline transition-all inline-flex items-center gap-2 justify-center cursor-pointer"
+                    onClick={(e) => {
+                      // Force the mailto link to open
+                      const mailtoLink = 'mailto:elysiumxfoundation@gmail.com?subject=Contact%20from%20Elysium%20Website'
+                      // Try window.location.href first
+                      window.location.href = mailtoLink
+                      // Also try window.open as fallback
+                      window.open(mailtoLink)
+                    }}
                   >
                     elysiumxfoundation@gmail.com
                     <span className="text-lg">↗</span>
