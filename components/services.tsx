@@ -100,10 +100,13 @@ export function Services() {
                 Full-stack Web3 development from smart contracts to dApp interfaces. We ship production-grade systems that
                 scale.
               </p>
-              <button className="font-medium text-xs sm:text-sm inline-flex items-center gap-2 text-foreground mt-auto">
+              <Link
+                href="/development"
+                className="font-medium text-xs sm:text-sm inline-flex items-center gap-2 text-foreground mt-auto"
+              >
                 View Our Work
                 <span className="text-base sm:text-lg">→</span>
-              </button>
+              </Link>
             </div>
           </motion.div>
         </motion.div>
