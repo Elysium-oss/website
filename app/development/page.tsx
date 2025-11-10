@@ -5,8 +5,34 @@ import { Header } from "@/components/header"
 
 const CATEGORIES = ["All", "DeFi Infrastructure", "Security", "Interoperability", "Governance"]
 
+interface Project {
+  id: string
+  title: string
+  description: string
+  category: string
+  githubUrl: string
+  appUrl?: string
+  tags: string[]
+}
+
+const PROJECTS: Project[] = [
+  {
+    id: "reactor",
+    title: "ReacDEFI",
+    description: "A No-Code DeFi Automation Platform Powered by Reactive Smart Contracts. ReacDEFI democratizes DeFi automation by removing technical barriers, providing intuitive tools to protect and grow investments without requiring any coding knowledge.",
+    category: "DeFi Infrastructure",
+    githubUrl: "https://github.com/harshkas4na/REACTOR",
+    appUrl: "https://reacdefi.app/",
+    tags: ["DeFi", "Automation", "Smart Contracts", "No-Code", "Cross-Chain"]
+  }
+]
+
 export default function DevelopmentPage() {
   const [selectedCategory, setSelectedCategory] = useState("All")
+  
+  const filteredProjects = PROJECTS.filter(project => 
+    selectedCategory === "All" || project.category === selectedCategory
+  )
 
   return (
     <>
@@ -46,6 +72,77 @@ export default function DevelopmentPage() {
               </div>
             </div>
           </aside>
+
+          {/* Projects Section */}
+          <div className="lg:w-1/2 px-4 sm:px-6 lg:px-12 py-6 sm:py-8 lg:py-16">
+            {filteredProjects.length > 0 ? (
+              <div className="space-y-6 sm:space-y-8">
+                {filteredProjects.map((project) => (
+                  <div
+                    key={project.id}
+                    className="border border-border rounded-none p-6 sm:p-8 hover:border-foreground transition-all duration-200 hover:shadow-lg"
+                  >
+                    <div className="mb-4">
+                      <h2 className="font-display font-bold text-2xl sm:text-3xl text-foreground mb-2">
+                        {project.title}
+                      </h2>
+                      <span className="inline-block bg-muted text-muted-foreground text-xs font-semibold px-3 py-1 rounded-full uppercase">
+                        {project.category}
+                      </span>
+                    </div>
+                    
+                    <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-4 sm:mb-6">
+                      {project.description}
+                    </p>
+
+                    {/* Tags */}
+                    {project.tags && project.tags.length > 0 && (
+                      <div className="flex flex-wrap gap-2 mb-4 sm:mb-6">
+                        {project.tags.map((tag, index) => (
+                          <span
+                            key={index}
+                            className="text-xs px-2 py-1 bg-muted/50 text-muted-foreground rounded"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Links */}
+                    <div className="flex flex-wrap gap-3 sm:gap-4">
+                      {project.appUrl && (
+                        <a
+                          href={project.appUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 px-4 py-2 rounded-none bg-foreground text-white text-sm font-medium hover:bg-accent-hover transition-colors"
+                        >
+                          Visit App
+                          <span className="text-base">↗</span>
+                        </a>
+                      )}
+                      <a
+                        href={project.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-none border border-border text-foreground text-sm font-medium hover:border-foreground transition-colors"
+                      >
+                        View on GitHub
+                        <span className="text-base">↗</span>
+                      </a>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12 sm:py-16">
+                <p className="text-muted-foreground text-sm sm:text-base">
+                  No projects found in this category.
+                </p>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* CTA Section */}
