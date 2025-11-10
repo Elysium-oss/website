@@ -3,12 +3,46 @@
 import { Header } from "@/components/header"
 import { useSearchParams } from "next/navigation"
 import Link from "next/link"
-import { Suspense } from "react"
+import { Suspense, useEffect } from "react"
 import { motion } from "framer-motion"
 
 function ThankYouContent() {
   const searchParams = useSearchParams()
   const type = searchParams.get("type") || "inquiry"
+
+  useEffect(() => {
+    // Prevent scrolling on mobile devices
+    const preventScroll = () => {
+      const isMobile = window.innerWidth < 768 // sm breakpoint
+      if (isMobile) {
+        document.body.style.overflow = "hidden"
+        document.documentElement.style.overflow = "hidden"
+      }
+    }
+
+    preventScroll()
+    
+    // Handle resize events
+    const handleResize = () => {
+      const isMobile = window.innerWidth < 768
+      if (isMobile) {
+        document.body.style.overflow = "hidden"
+        document.documentElement.style.overflow = "hidden"
+      } else {
+        document.body.style.overflow = ""
+        document.documentElement.style.overflow = ""
+      }
+    }
+
+    window.addEventListener("resize", handleResize)
+
+    return () => {
+      // Cleanup: restore scrolling when component unmounts
+      document.body.style.overflow = ""
+      document.documentElement.style.overflow = ""
+      window.removeEventListener("resize", handleResize)
+    }
+  }, [])
 
   const getTitle = () => {
     if (type === "research") {
@@ -31,7 +65,7 @@ function ThankYouContent() {
   return (
     <>
       <Header />
-      <main className="pt-20 sm:pt-24 pb-12 sm:pb-16 lg:pb-24 min-h-screen">
+      <main className="pt-20 sm:pt-24 pb-12 sm:pb-16 lg:pb-24 min-h-screen max-h-screen overflow-hidden sm:max-h-none sm:overflow-visible">
         <section className="px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
           <div className="max-w-2xl mx-auto text-center">
             {/* Success Icon */}
@@ -167,7 +201,7 @@ export default function ThankYouPage() {
     <Suspense fallback={
       <>
         <Header />
-        <main className="pt-20 sm:pt-24 pb-12 sm:pb-16 lg:pb-24 min-h-screen">
+        <main className="pt-20 sm:pt-24 pb-12 sm:pb-16 lg:pb-24 min-h-screen max-h-screen overflow-hidden sm:max-h-none sm:overflow-visible">
           <section className="px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
             <div className="max-w-2xl mx-auto text-center">
               <div className="animate-pulse">
