@@ -268,7 +268,7 @@ export default function WritingPage() {
 
                   {/* Article Content */}
                   <div className="p-5">
-                    <span className="inline-block bg-foreground text-white text-xs font-semibold px-3 py-1 rounded-full uppercase mb-3">
+                    <span className="inline-block bg-muted text-muted-foreground text-xs font-semibold px-3 py-1 rounded-full uppercase mb-3">
                       {article.category}
                     </span>
                     <h3 className="font-display font-bold text-lg text-foreground mb-2 line-clamp-2 group-hover:text-muted-foreground transition-colors">

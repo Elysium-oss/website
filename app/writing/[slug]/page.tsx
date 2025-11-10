@@ -646,7 +646,7 @@ export default function ArticlePage() {
               <header className="mb-8">
                 {article.category ? (
                   <div className="mb-4">
-                    <span className="inline-block px-4 py-2 rounded-full bg-muted text-sm font-semibold text-foreground">
+                    <span className="inline-block px-4 py-2 rounded-full bg-muted text-sm font-semibold text-muted-foreground">
                       {article.category}
                     </span>
                   </div>

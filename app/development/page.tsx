@@ -40,7 +40,6 @@ export default function DevelopmentPage() {
                         : "bg-transparent border border-border text-muted-foreground hover:border-foreground hover:text-foreground"
                     }`}
                   >
-                    {selectedCategory === category && "◆ "}
                     {category}
                   </button>
                 ))}
