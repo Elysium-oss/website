@@ -173,7 +173,19 @@ export default function WritingPage() {
                 placeholder="Search"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-muted border border-border rounded-none px-4 py-1.5 sm:py-2 pl-10 text-foreground placeholder-muted-foreground focus:outline-none focus:border-foreground"
+                className="w-full bg-muted rounded-none px-4 py-1.5 sm:py-2 pl-10 text-foreground placeholder-muted-foreground focus:outline-none focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                style={{ 
+                  border: 'none',
+                  borderWidth: '0',
+                  borderStyle: 'none',
+                  boxShadow: 'inset 0 0 0 1px var(--border)',
+                }}
+                onFocus={(e) => {
+                  e.currentTarget.style.boxShadow = 'inset 0 0 0 1px var(--foreground)';
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.boxShadow = 'inset 0 0 0 1px var(--border)';
+                }}
               />
               <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -203,7 +215,6 @@ export default function WritingPage() {
                       : "bg-transparent border border-border text-muted-foreground hover:border-foreground hover:text-foreground"
                   }`}
                 >
-                  {selectedCategory === category && "◆ "}
                   {category}
                 </button>
               ))}

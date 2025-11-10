@@ -4,8 +4,8 @@ import { Header } from "@/components/header"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 
 export default function ContactPage() {
-  const researchFormUrl = process.env.NEXT_PUBLIC_TYPEFORM_RESEARCH_URL || "https://form.typeform.com/to/research-form-id"
-  const projectsFormUrl = process.env.NEXT_PUBLIC_TYPEFORM_PROJECTS_URL || "https://form.typeform.com/to/projects-form-id"
+  const researchFormUrl = process.env.NEXT_PUBLIC_TALLY_RESEARCH_URL || "https://tally.so/r/1AP99b"
+  const projectsFormUrl = process.env.NEXT_PUBLIC_TALLY_PROJECTS_URL || "https://tally.so/r/0QrAJ9"
 
   return (
     <>
@@ -117,10 +117,10 @@ export default function ContactPage() {
                 <div className="text-center">
                   <p className="text-xs font-semibold text-muted-foreground tracking-wider mb-4 uppercase">Email</p>
                   <a
-                    href="mailto:hello@elysium.dev"
+                    href="mailto:elysiumxfoundation@gmail.com"
                     className="text-xl font-medium text-foreground hover:underline transition-all inline-flex items-center gap-2 justify-center"
                   >
-                    hello@elysium.dev
+                    elysiumxfoundation@gmail.com
                     <span className="text-lg">↗</span>
                   </a>
                 </div>
@@ -138,7 +138,7 @@ export default function ContactPage() {
                   <p className="text-xs font-semibold text-muted-foreground tracking-wider mb-4 uppercase">Connect</p>
                   <div className="flex flex-wrap gap-3 justify-center">
                     <a
-                      href="https://twitter.com"
+                      href="https://x.com/elysium_re"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="group p-3 rounded-none border border-border hover:border-foreground bg-background hover:bg-muted/30 transition-all duration-200"
@@ -149,7 +149,7 @@ export default function ContactPage() {
                       </svg>
                     </a>
                     <a
-                      href="https://github.com"
+                      href="https://github.com/Elysium-oss"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="group p-3 rounded-none border border-border hover:border-foreground bg-background hover:bg-muted/30 transition-all duration-200"
@@ -160,7 +160,7 @@ export default function ContactPage() {
                       </svg>
                     </a>
                     <a
-                      href="https://elysium.substack.com"
+                      href="https://substack.com/@elysiumre"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="group p-3 rounded-none border border-border hover:border-foreground bg-background hover:bg-muted/30 transition-all duration-200"
@@ -171,7 +171,7 @@ export default function ContactPage() {
                       </svg>
                     </a>
                     <a
-                      href="https://t.me"
+                      href="https://t.me/naman4502"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="group p-3 rounded-none border border-border hover:border-foreground bg-background hover:bg-muted/30 transition-all duration-200"

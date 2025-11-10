@@ -56,9 +56,14 @@ export default function DevelopmentPage() {
             <p className="text-sm sm:text-base md:text-lg text-muted-foreground mb-6 sm:mb-8 px-4">
               Let's collaborate on your next Web3 project. From concept to production, we deliver.
             </p>
-            <button className="px-6 sm:px-8 py-2.5 sm:py-3 rounded-none text-white font-medium text-sm sm:text-base bg-foreground hover:bg-accent-hover shadow-sm hover:shadow-md hover:translate-y-[-2px] transition-all">
+            <a
+              href={process.env.NEXT_PUBLIC_TALLY_PROJECTS_URL || "https://tally.so/r/0QrAJ9"}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block px-6 sm:px-8 py-2.5 sm:py-3 rounded-none text-white font-medium text-sm sm:text-base bg-foreground hover:bg-accent-hover shadow-sm hover:shadow-md hover:translate-y-[-2px] transition-all"
+            >
               Start a Project
-            </button>
+            </a>
           </div>
         </section>
       </main>
