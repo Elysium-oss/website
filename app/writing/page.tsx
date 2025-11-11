@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { Header } from "@/components/header"
+import { usePostHog } from "posthog-js/react"
 
 interface Article {
   id: string
@@ -22,6 +23,7 @@ const ITEMS_PER_PAGE = 9
 
 export default function WritingPage() {
   const router = useRouter()
+  const posthog = usePostHog()
   const [selectedCategory, setSelectedCategory] = useState("All")
   const [articles, setArticles] = useState<Article[]>([])
   const [loading, setLoading] = useState(true)
@@ -47,6 +49,12 @@ export default function WritingPage() {
   const handleArticleClick = (article: Article) => {
     const slug = getArticleSlug(article)
     // Navigate to the article page
+    posthog?.capture("article_open", {
+      id: article.id,
+      title: article.title,
+      category: article.category,
+      location: "writing_list",
+    })
     router.push(`/writing/${slug}`)
   }
 
@@ -192,7 +200,10 @@ export default function WritingPage() {
               </svg>
               {searchQuery && (
                 <button
-                  onClick={() => setSearchQuery("")}
+                  onClick={() => {
+                    posthog?.capture("writing_search_clear")
+                    setSearchQuery("")
+                  }}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                 >
                   ×
@@ -206,10 +217,11 @@ export default function WritingPage() {
                 <button
                   key={category}
                   onClick={() => {
+                    posthog?.capture("writing_category_select", { category })
                     setSelectedCategory(category)
                     setCurrentPage(1)
                   }}
-                  className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-none font-medium text-xs sm:text-sm whitespace-nowrap transition-all duration-200 ${
+                  className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-none font-medium text-xs sm:text-sm whitespace-nowrap transition-all duration-200 cursor-pointer ${
                     selectedCategory === category
                       ? "bg-foreground text-white border border-foreground"
                       : "bg-transparent border border-border text-muted-foreground hover:border-foreground hover:text-foreground"
@@ -293,7 +305,10 @@ export default function WritingPage() {
 
                 <div className="flex items-center gap-1 sm:gap-2 flex-wrap justify-center">
                   <button
-                    onClick={() => handlePageChange(currentPage - 1)}
+                  onClick={() => {
+                    posthog?.capture("writing_page_change", { to: currentPage - 1, action: "prev" })
+                    handlePageChange(currentPage - 1)
+                  }}
                     disabled={currentPage === 1}
                     className="w-8 h-8 sm:w-10 sm:h-10 rounded-none bg-background border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-foreground disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                   >
@@ -303,7 +318,12 @@ export default function WritingPage() {
                   {getPageNumbers().map((page, index) => (
                     <button
                       key={index}
-                      onClick={() => typeof page === 'number' && handlePageChange(page)}
+                    onClick={() => {
+                      if (typeof page === 'number') {
+                        posthog?.capture("writing_page_change", { to: page, action: "page" })
+                        handlePageChange(page)
+                      }
+                    }}
                       disabled={page === '...'}
                       className={`min-w-8 h-8 sm:min-w-10 sm:h-10 px-2 sm:px-3 rounded-none font-medium text-xs sm:text-sm transition-all ${
                         page === currentPage
@@ -318,7 +338,10 @@ export default function WritingPage() {
                   ))}
 
                   <button
-                    onClick={() => handlePageChange(currentPage + 1)}
+                  onClick={() => {
+                    posthog?.capture("writing_page_change", { to: currentPage + 1, action: "next" })
+                    handlePageChange(currentPage + 1)
+                  }}
                     disabled={currentPage === totalPages}
                     className="w-8 h-8 sm:w-10 sm:h-10 rounded-none bg-background border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-foreground disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                   >

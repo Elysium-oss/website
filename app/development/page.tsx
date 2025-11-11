@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { Header } from "@/components/header"
+import { usePostHog } from "posthog-js/react"
 
 const CATEGORIES = ["All", "DeFi Infrastructure", "Security", "Interoperability", "Governance"]
 
@@ -29,6 +30,7 @@ const PROJECTS: Project[] = [
 
 export default function DevelopmentPage() {
   const [selectedCategory, setSelectedCategory] = useState("All")
+  const posthog = usePostHog()
   
   const filteredProjects = PROJECTS.filter(project => 
     selectedCategory === "All" || project.category === selectedCategory
@@ -59,8 +61,11 @@ export default function DevelopmentPage() {
                 {CATEGORIES.map((category) => (
                   <button
                     key={category}
-                    onClick={() => setSelectedCategory(category)}
-                    className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-none font-medium text-xs sm:text-sm whitespace-nowrap transition-all duration-200 ${
+                    onClick={() => {
+                      posthog?.capture("dev_category_select", { category })
+                      setSelectedCategory(category)
+                    }}
+                    className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-none font-medium text-xs sm:text-sm whitespace-nowrap transition-all duration-200 cursor-pointer ${
                       selectedCategory === category
                         ? "bg-foreground text-white border border-foreground"
                         : "bg-transparent border border-border text-muted-foreground hover:border-foreground hover:text-foreground"
@@ -116,6 +121,7 @@ export default function DevelopmentPage() {
                           href={project.appUrl}
                           target="_blank"
                           rel="noopener noreferrer"
+                          onClick={() => posthog?.capture("dev_project_visit_app", { id: project.id })}
                           className="inline-flex items-center gap-2 px-4 py-2 rounded-none bg-foreground text-white text-sm font-medium hover:bg-accent-hover transition-colors"
                         >
                           Visit App
@@ -126,6 +132,7 @@ export default function DevelopmentPage() {
                         href={project.githubUrl}
                         target="_blank"
                         rel="noopener noreferrer"
+                        onClick={() => posthog?.capture("dev_project_view_github", { id: project.id })}
                         className="inline-flex items-center gap-2 px-4 py-2 rounded-none border border-border text-foreground text-sm font-medium hover:border-foreground transition-colors"
                       >
                         View on GitHub
@@ -156,6 +163,7 @@ export default function DevelopmentPage() {
               href={process.env.NEXT_PUBLIC_TALLY_PROJECTS_URL || "https://tally.so/r/0QrAJ9"}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => posthog?.capture("dev_start_project_click")}
               className="inline-block px-6 sm:px-8 py-2.5 sm:py-3 rounded-none text-white font-medium text-sm sm:text-base bg-foreground hover:bg-accent-hover shadow-sm hover:shadow-md hover:translate-y-[-2px] transition-all"
             >
               Start a Project

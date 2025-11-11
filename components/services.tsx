@@ -3,8 +3,10 @@
 import Link from "next/link"
 import Image from "next/image"
 import { motion } from "framer-motion"
+import { usePostHog } from "posthog-js/react"
 
 export function Services() {
+  const posthog = usePostHog()
   return (
     <section id="research" className="relative pt-16 pb-16 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-background overflow-hidden border-b border-border">
       <div className="absolute top-1/2 left-0 w-96 h-96 bg-muted rounded-full blur-3xl opacity-10 -z-10 pointer-events-none -translate-y-1/2" />
@@ -58,6 +60,12 @@ export function Services() {
               </p>
               <Link
                 href="/writing"
+                onClick={() => {
+                  posthog?.capture("cta_clicked", {
+                    cta_name: "Read Latest Articles",
+                    location: "services_writing",
+                  })
+                }}
                 className="font-medium text-xs sm:text-sm inline-flex items-center gap-2 text-foreground mt-auto"
               >
                 Read Latest Articles
@@ -102,6 +110,12 @@ export function Services() {
               </p>
               <Link
                 href="/development"
+                onClick={() => {
+                  posthog?.capture("cta_clicked", {
+                    cta_name: "View Our Work",
+                    location: "services_development",
+                  })
+                }}
                 className="font-medium text-xs sm:text-sm inline-flex items-center gap-2 text-foreground mt-auto"
               >
                 View Our Work

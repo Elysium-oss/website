@@ -2,6 +2,7 @@
 
 import type React from "react"
 import { useState } from "react"
+import { usePostHog } from "posthog-js/react"
 
 export function Newsletter() {
   const [isSubscribed, setIsSubscribed] = useState(false)
@@ -9,11 +10,13 @@ export function Newsletter() {
   const [email, setEmail] = useState("")
   const [errorMessage, setErrorMessage] = useState("")
   const [isAlreadySubscribed, setIsAlreadySubscribed] = useState(false)
+  const posthog = usePostHog()
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     
     if (!email) return
+    posthog?.capture("newsletter_submit", { location: "newsletter_section" })
     
     // Clear previous errors
     setErrorMessage("")
@@ -36,6 +39,7 @@ export function Newsletter() {
         // Success - trigger subscribe animation
         setIsSubscribed(true)
         setErrorMessage("")
+        posthog?.capture("newsletter_subscribe_success", { location: "newsletter_section" })
         
         // Revert back after 2.5 seconds
         setTimeout(() => {
@@ -47,8 +51,10 @@ export function Newsletter() {
         if (data.alreadySubscribed) {
           setIsAlreadySubscribed(true)
           setErrorMessage(data.error || "You're already subscribed!")
+          posthog?.capture("newsletter_subscribe_error", { reason: "already_subscribed" })
         } else {
           setErrorMessage(data.error || "Failed to subscribe. Please try again.")
+          posthog?.capture("newsletter_subscribe_error", { reason: "api_error" })
         }
         
         // Clear error message after 5 seconds
@@ -60,6 +66,7 @@ export function Newsletter() {
     } catch (error) {
       console.error("Error subscribing to newsletter:", error)
       setErrorMessage("An error occurred. Please try again later.")
+      posthog?.capture("newsletter_subscribe_error", { reason: "network_error" })
       
       // Clear error message after 5 seconds
       setTimeout(() => {

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
+import { usePostHog } from "posthog-js/react"
 
 interface Article {
   id: string
@@ -14,6 +15,7 @@ interface Article {
 
 export function Articles() {
   const router = useRouter()
+  const posthog = usePostHog()
   const [articles, setArticles] = useState<Article[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -34,6 +36,12 @@ export function Articles() {
 
   const handleArticleClick = (article: Article) => {
     const slug = getArticleSlug(article)
+    posthog?.capture("article_open", {
+      id: article.id,
+      title: article.title,
+      category: article.category,
+      location: "home_latest_articles",
+    })
     router.push(`/writing/${slug}`)
   }
 
@@ -152,7 +160,10 @@ export function Articles() {
         {/* View All Button */}
         <div className="text-center mt-8 sm:mt-12">
           <button
-            onClick={() => router.push("/writing")}
+            onClick={() => {
+              posthog?.capture("view_all_articles_click", { location: "home_latest_articles" })
+              router.push("/writing")
+            }}
             className="inline-flex px-6 sm:px-8 py-2.5 sm:py-3 rounded-none border-2 border-foreground text-foreground font-medium text-sm sm:text-base shadow-sm"
           >
             View All Articles

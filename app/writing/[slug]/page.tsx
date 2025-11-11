@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react"
 import { useParams, useRouter } from "next/navigation"
 import { Header } from "@/components/header"
+import { usePostHog } from "posthog-js/react"
 
 interface Article {
   id: string
@@ -27,6 +28,7 @@ export default function ArticlePage() {
   const params = useParams()
   const router = useRouter()
   const slug = params.slug as string
+  const posthog = usePostHog()
   
   const [article, setArticle] = useState<Article | null>(null)
   const [loading, setLoading] = useState(true)
@@ -316,6 +318,7 @@ export default function ArticlePage() {
 
   // Handle social media sharing
   const handleShare = (platform: string) => {
+    posthog?.capture("article_share_click", { platform, id: article?.id, title: article?.title })
     const url = getShareUrl()
     const text = getShareText()
     
@@ -335,6 +338,7 @@ export default function ArticlePage() {
   const handleCopyLink = async () => {
     const url = getShareUrl()
     try {
+      posthog?.capture("article_copy_link", { id: article?.id })
       await navigator.clipboard.writeText(url)
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
@@ -345,6 +349,7 @@ export default function ArticlePage() {
 
   // Handle clicking on a TOC item
   const scrollToSection = useCallback((id: string) => {
+    posthog?.capture("toc_item_click", { target: id, id: article?.id })
     // Try multiple methods to find the element
     let element = document.getElementById(id)
     
@@ -548,7 +553,10 @@ export default function ArticlePage() {
               The article you're looking for doesn't exist or has been removed.
             </p>
             <button
-              onClick={() => router.push("/writing")}
+              onClick={() => {
+                posthog?.capture("article_back_to_list")
+                router.push("/writing")
+              }}
               className="px-6 py-3 rounded-none bg-foreground text-white hover:bg-accent-hover transition-colors"
             >
               Back to Writing
@@ -568,7 +576,10 @@ export default function ArticlePage() {
             <aside className="hidden lg:block lg:col-span-3 relative">
               <div className="fixed left-16 top-0 h-screen w-[calc((100vw-80rem)/2+14rem)] max-w-[20rem] px-4 py-4">
                 <button
-                  onClick={() => router.back()}
+                  onClick={() => {
+                    posthog?.capture("article_back_click")
+                    router.back()
+                  }}
                   className="inline-flex mt-24 mb-4 items-center gap-3 text-lg text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
                 >
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -634,7 +645,10 @@ export default function ArticlePage() {
 
             <article className="lg:col-span-9">
               <button
-                onClick={() => router.back()}
+                onClick={() => {
+                  posthog?.capture("article_back_click")
+                  router.back()
+                }}
                 className="lg:hidden mb-6 sm:mb-8 inline-flex items-center gap-2 text-sm sm:text-base text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
               >
                 <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -668,6 +682,8 @@ export default function ArticlePage() {
                   <span>{article.readTime}</span>
                 </div>
               </header>
+
+              <div className="border-t border-border mb-3"></div>
 
               <div className="prose dark:prose-invert max-w-none">
                 {loadingContent ? (

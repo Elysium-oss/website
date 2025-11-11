@@ -2,6 +2,7 @@
 
 import { useEffect } from "react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { usePostHog } from "posthog-js/react"
 
 interface Article {
   id: string
@@ -24,6 +25,7 @@ interface ArticleModalProps {
 }
 
 export function ArticleModal({ article, isOpen, onClose, isLoading = false }: ArticleModalProps) {
+  const posthog = usePostHog()
   useEffect(() => {
     const handleEsc = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -35,6 +37,15 @@ export function ArticleModal({ article, isOpen, onClose, isLoading = false }: Ar
       window.removeEventListener("keydown", handleEsc)
     }
   }, [onClose])
+
+  useEffect(() => {
+    if (isOpen && article) {
+      posthog?.capture("article_modal_open", {
+        id: article.id,
+        title: article.title,
+      })
+    }
+  }, [isOpen, article, posthog])
 
   if (!article) return null
 
@@ -80,6 +91,12 @@ export function ArticleModal({ article, isOpen, onClose, isLoading = false }: Ar
                       href={article.link}
                       target="_blank"
                       rel="noopener noreferrer"
+                      onClick={() => {
+                        posthog?.capture("article_external_open", {
+                          id: article.id,
+                          link: article.link,
+                        })
+                      }}
                       className="inline-flex items-center gap-2 text-foreground hover:text-muted-foreground transition-colors underline"
                     >
                       Read full article on Substack

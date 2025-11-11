@@ -2,10 +2,12 @@
 
 import { Header } from "@/components/header"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import { usePostHog } from "posthog-js/react"
 
 export default function ContactPage() {
   const researchFormUrl = process.env.NEXT_PUBLIC_TALLY_RESEARCH_URL || "https://tally.so/r/1AP99b"
   const projectsFormUrl = process.env.NEXT_PUBLIC_TALLY_PROJECTS_URL || "https://tally.so/r/0QrAJ9"
+  const posthog = usePostHog()
 
   return (
     <>
@@ -61,6 +63,9 @@ export default function ContactPage() {
                   href={researchFormUrl}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => {
+                    posthog?.capture("contact_cta_click", { type: "research" })
+                  }}
                   className="group inline-flex items-center justify-center w-full px-5 sm:px-6 py-3 sm:py-4 rounded-none text-white font-medium text-sm sm:text-base bg-foreground hover:bg-accent-hover shadow-sm hover:shadow-lg transition-all duration-200 hover:translate-y-[-2px]"
                 >
                   <span>Start Research Inquiry</span>
@@ -101,6 +106,9 @@ export default function ContactPage() {
                   href={projectsFormUrl}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => {
+                    posthog?.capture("contact_cta_click", { type: "projects" })
+                  }}
                   className="group inline-flex items-center justify-center w-full px-5 sm:px-6 py-3 sm:py-4 rounded-none text-white font-medium text-sm sm:text-base bg-foreground hover:bg-accent-hover shadow-sm hover:shadow-lg transition-all duration-200 hover:translate-y-[-2px]"
                 >
                   <span>Start Project Inquiry</span>
@@ -120,6 +128,7 @@ export default function ContactPage() {
                     href="mailto:elysiumxfoundation@gmail.com?subject=Contact%20from%20Elysium%20Website"
                     className="text-xl font-medium text-foreground hover:underline transition-all inline-flex items-center gap-2 justify-center cursor-pointer"
                     onClick={(e) => {
+                      posthog?.capture("contact_email_click")
                       // Force the mailto link to open
                       const mailtoLink = 'mailto:elysiumxfoundation@gmail.com?subject=Contact%20from%20Elysium%20Website'
                       // Try window.location.href first
@@ -149,6 +158,7 @@ export default function ContactPage() {
                       href="https://x.com/elysium_re"
                       target="_blank"
                       rel="noopener noreferrer"
+                    onClick={() => posthog?.capture("social_link_click", { network: "Twitter" })}
                       className="group p-3 rounded-none border border-border hover:border-foreground bg-background hover:bg-muted/30 transition-all duration-200"
                       aria-label="Twitter"
                     >
@@ -160,6 +170,7 @@ export default function ContactPage() {
                       href="https://github.com/Elysium-oss"
                       target="_blank"
                       rel="noopener noreferrer"
+                    onClick={() => posthog?.capture("social_link_click", { network: "GitHub" })}
                       className="group p-3 rounded-none border border-border hover:border-foreground bg-background hover:bg-muted/30 transition-all duration-200"
                       aria-label="GitHub"
                     >
@@ -171,6 +182,7 @@ export default function ContactPage() {
                       href="https://substack.com/@elysiumre"
                       target="_blank"
                       rel="noopener noreferrer"
+                    onClick={() => posthog?.capture("social_link_click", { network: "Substack" })}
                       className="group p-3 rounded-none border border-border hover:border-foreground bg-background hover:bg-muted/30 transition-all duration-200"
                       aria-label="Substack"
                     >
@@ -182,6 +194,7 @@ export default function ContactPage() {
                       href="https://t.me/naman4502"
                       target="_blank"
                       rel="noopener noreferrer"
+                    onClick={() => posthog?.capture("social_link_click", { network: "Telegram" })}
                       className="group p-3 rounded-none border border-border hover:border-foreground bg-background hover:bg-muted/30 transition-all duration-200"
                       aria-label="Telegram"
                     >

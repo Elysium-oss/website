@@ -1,7 +1,9 @@
 import type React from "react"
+import { Suspense } from "react"
 import type { Metadata } from "next"
 import { Urbanist } from "next/font/google"
 import "./globals.css"
+import PostHogProviderClient from "@/components/posthog-provider"
 
 const urbanist = Urbanist({ subsets: ["latin"], variable: "--font-sans" })
 const urbanistDisplay = Urbanist({ subsets: ["latin"], variable: "--font-display" })
@@ -41,9 +43,13 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className="scroll-smooth" data-scroll-behavior="smooth">
       <body className={`${urbanist.variable} ${urbanistDisplay.variable} font-sans bg-background text-foreground overflow-x-hidden`}>
-        {children}
+        <Suspense fallback={null}>
+          <PostHogProviderClient>
+            {children}
+          </PostHogProviderClient>
+        </Suspense>
       </body>
     </html>
   )
