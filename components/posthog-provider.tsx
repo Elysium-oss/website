@@ -24,6 +24,14 @@ export default function PostHogProviderClient({ children }: PostHogProviderClien
   useEffect(() => {
     if (isPostHogInitialized) return
     if (typeof window !== "undefined" && window.__POSTHOG_INITIALIZED) return
+    // If another initializer (e.g. wizard/instrumentation) already set the token, skip re-init
+    if ((posthog as any)?.config?.token) {
+      isPostHogInitialized = true
+      if (typeof window !== "undefined") {
+        window.__POSTHOG_INITIALIZED = true
+      }
+      return
+    }
     const key = process.env.NEXT_PUBLIC_POSTHOG_KEY
     if (!key) return
 
