@@ -12,6 +12,7 @@ interface Article {
   pubDate: string
   category: string
   author: string
+  authorImage?: string
   readTime: string
   image?: string
   link?: string
@@ -682,7 +683,16 @@ export default function ArticlePage() {
                     day: 'numeric' 
                   })}</span>
                   <span className="h-3 w-px bg-border"></span>
-                  <span>By {sanitizeText(article.author)}</span>
+                  <div className="flex items-center gap-2">
+                    {article.authorImage && (
+                      <img 
+                        src={article.authorImage} 
+                        alt={sanitizeText(article.author)}
+                        className="w-6 h-6 rounded-full object-cover"
+                      />
+                    )}
+                    <span>By {sanitizeText(article.author)}</span>
+                  </div>
                   <span className="h-3 w-px bg-border"></span>
                   <span>{article.readTime}</span>
                 </div>
@@ -812,11 +822,20 @@ export default function ArticlePage() {
 
               <footer className="mt-8 pt-8 border-t border-border">
                 <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-                  <span>Published on {new Date(article.pubDate).toLocaleDateString("en-US", { 
-                    year: 'numeric', 
-                    month: 'long', 
-                    day: 'numeric' 
-                  })}</span>
+                  <div className="flex items-center gap-2">
+                    {article.authorImage && (
+                      <img 
+                        src={article.authorImage} 
+                        alt={sanitizeText(article.author)}
+                        className="w-8 h-8 rounded-full object-cover"
+                      />
+                    )}
+                    <span>Published by {sanitizeText(article.author)} on {new Date(article.pubDate).toLocaleDateString("en-US", { 
+                      year: 'numeric', 
+                      month: 'long', 
+                      day: 'numeric' 
+                    })}</span>
+                  </div>
                   {article.link && (
                     <>
                       <span>•</span>

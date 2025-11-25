@@ -43,15 +43,15 @@ export default function ContactPage() {
                 <div className="mb-6 sm:mb-8 space-y-2 sm:space-y-3">
                   <div className="flex items-start gap-2 sm:gap-3">
                     <span className="text-foreground mt-1 text-sm sm:text-base">✓</span>
-                    <span className="text-xs sm:text-sm text-muted-foreground">In-depth protocol analysis</span>
+                    <span className="text-xs sm:text-sm text-muted-foreground">Infrastructure analysis</span>
                   </div>
                   <div className="flex items-start gap-2 sm:gap-3">
                     <span className="text-foreground mt-1 text-sm sm:text-base">✓</span>
-                    <span className="text-xs sm:text-sm text-muted-foreground">Technical audits and reviews</span>
+                    <span className="text-xs sm:text-sm text-muted-foreground">Protocol Spotlight</span>
                   </div>
                   <div className="flex items-start gap-2 sm:gap-3">
                     <span className="text-foreground mt-1 text-sm sm:text-base">✓</span>
-                    <span className="text-xs sm:text-sm text-muted-foreground">Architecture consultations</span>
+                    <span className="text-xs sm:text-sm text-muted-foreground">Strategic Breakdown</span>
                   </div>
                   <div className="flex items-start gap-2 sm:gap-3">
                     <span className="text-foreground mt-1 text-sm sm:text-base">✓</span>

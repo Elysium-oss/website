@@ -9,32 +9,51 @@ const urbanist = Urbanist({ subsets: ["latin"], variable: "--font-sans" })
 const urbanistDisplay = Urbanist({ subsets: ["latin"], variable: "--font-display" })
 
 export const metadata: Metadata = {
-  title: "Elysium",
-  description: "Deep technical research and production-ready development. For builders. By builders.",
+  title: "Elysium - Decoding the Decentralized Future",
+  description: "A research firm dedicated to distilling clarity from the chaos of the blockchain industry. Deep technical research and strategic analysis for Web3 infrastructure.",
   metadataBase: new URL("https://elysium.org.in"),
   icons: {
     icon: "/logo-dark.png",
   },
   openGraph: {
     type: "website",
-    url: "https://elysium.dev",
-    title: "Elysium - Web3 Research & Development",
-    description: "Deep technical research and production-ready development.",
+    locale: "en_US",
+    url: "https://elysium.org.in",
+    siteName: "Elysium",
+    title: "Elysium - Decoding the Decentralized Future",
+    description: "A research firm dedicated to distilling clarity from the chaos of the blockchain industry. Deep technical research and strategic analysis for Web3 infrastructure.",
     images: [
       {
-        url: "/og-image.png",
+        url: "/twitter-banner.png",
         width: 1200,
         height: 630,
+        alt: "Elysium - Web3 Research & Development",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Elysium - Web3 Research & Development",
-    description: "Deep technical research and production-ready development.",
+    title: "Elysium - Decoding the Decentralized Future",
+    description: "A research firm dedicated to distilling clarity from the chaos of the blockchain industry. Deep technical research and strategic analysis for Web3 infrastructure.",
+    images: ["/twitter-banner.png"],
+    // Uncomment and add your Twitter handle when available
+    // creator: "@elysium",
+    // site: "@elysium",
   },
-  
-    generator: 'v0.app'
+  alternates: {
+    canonical: "https://elysium.org.in",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 }
 
 export default function RootLayout({

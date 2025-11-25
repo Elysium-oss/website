@@ -1,18 +1,19 @@
 "use client"
 
 import { Header } from "@/components/header"
+import Image from "next/image"
 
 export default function AboutPage() {
   return (
     <>
       <Header />
-      <main className="pt-20 sm:pt-24 pb-12 sm:pb-16 lg:pb-24">
+      <main className="pt-20 sm:pt-24 pb-0">
         {/* Hero Section */}
         <section className="px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16 border-b border-border">
           <div className="max-w-4xl mx-auto">
             <p className="text-xs font-semibold text-muted-foreground tracking-wider mb-3 sm:mb-4">ABOUT US</p>
             <h1 className="font-display font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-foreground leading-tight mb-6 sm:mb-8 text-balance">
-              Building the Decentralized Future
+              Decoding the Decentralized Future
             </h1>
             <p className="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed">
               We're a team of researchers, engineers, and architects dedicated to advancing Web3 infrastructure and
@@ -21,71 +22,37 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Mission & Values */}
+        {/* Content */}
         <section className="px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
-          <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12 lg:gap-16">
-            {/* Mission */}
-            <div>
-              <h2 className="font-display font-bold text-2xl text-foreground mb-4">Our Mission</h2>
-              <p className="text-base text-muted-foreground leading-relaxed">
-                We simplify complexity. Through deep technical research and production-ready development, we help
-                builders and enterprises understand and implement blockchain solutions that matter.
+          <div className="max-w-4xl mx-auto">
+            <div className="text-base sm:text-lg md:text-xl text-muted-foreground leading-[1.8] sm:leading-[1.9] space-y-8 sm:space-y-10 font-light">
+              <p>
+                We believe that every protocol deserves to be understood, but not every protocol deserves your attention. In the current market, it is easy to overlook a revolutionary solution because its value proposition is buried in a niche forum, or conversely, to buy into a flawed project because no one took the time to critically analyze its economic sustainability. We established Elysium to be the bridge that connects complex code to clear, strategic understanding.
               </p>
-            </div>
-
-            {/* Values */}
-            <div>
-              <h2 className="font-display font-bold text-2xl text-foreground mb-4">Our Approach</h2>
-              <p className="text-base text-muted-foreground leading-relaxed">
-                Technical rigor meets editorial excellence. We don't oversimplify—we make the complex accessible. Every
-                protocol deserves to be understood. Every solution deserves to be built right.
+              <p>
+                Our approach combines technical rigor with editorial excellence. We don't just list transactions-per-second (TPS) or copy-paste press releases. We dive deep into infrastructure analysis, examining the critical trade-offs between security, interoperability, and speed. We look at the "meta" of the current cycle and determine where new architectures truly fit, ensuring that we don't oversimplify the tech, but rather make the complex accessible.
+              </p>
+              <p>
+                Beyond just the code, we analyze the human and economic elements that drive Web3. This includes "Strategic Breakdowns" of how protocols acquire liquidity and users. We examine the difference between sustainable growth and temporary incentives, offering unfiltered takes on the direction of the market. We view analysis as a two-way street, often collaborating with the architects of the future to help the world understand why their build matters.
+              </p>
+              <p>
+                Ultimately, Elysium is a research firm built for clarity. We are here for the builders who need their vision articulated, the investors who demand unbiased due diligence, and the curious observers who want to look past the marketing fluff. We offer a high-signal environment where deep research meets plain English, giving you the tools to navigate the decentralized future with confidence.
               </p>
             </div>
           </div>
         </section>
-
-        {/* Stats */}
-        <section className="px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 border-t border-b border-border">
-          <div className="max-w-4xl mx-auto">
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 lg:gap-12">
-              <div className="text-center">
-                <p className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-foreground mb-2">50+</p>
-                <p className="text-xs sm:text-sm text-muted-foreground">Articles Published</p>
-              </div>
-              <div className="text-center">
-                <p className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-foreground mb-2">20+</p>
-                <p className="text-xs sm:text-sm text-muted-foreground">Projects Delivered</p>
-              </div>
-              <div className="text-center">
-                <p className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-foreground mb-2">10K+</p>
-                <p className="text-xs sm:text-sm text-muted-foreground">Community Members</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Focus Areas */}
-        <section className="px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="font-display font-bold text-2xl sm:text-3xl text-foreground mb-8 sm:mb-12">What We Focus On</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
-              {[
-                { title: "Protocol Research", desc: "Deep analysis of blockchain architectures and mechanisms" },
-                { title: "Smart Contracts", desc: "Secure, optimized contracts for production use" },
-                { title: "Infrastructure", desc: "Scalable solutions for Web3 applications" },
-                { title: "Developer Education", desc: "Clear documentation and educational content" },
-              ].map((item) => (
-                <div
-                  key={item.title}
-                  className="p-5 sm:p-6 border-2 border-border rounded-none hover:border-foreground transition-colors"
-                >
-                  <h3 className="font-display font-bold text-base sm:text-lg text-foreground mb-2">{item.title}</h3>
-                  <p className="text-xs sm:text-sm text-muted-foreground">{item.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+        
+        {/* Banner Image */}
+        <div className="mt-16 sm:mt-20 lg:mt-24 w-full">
+          <Image
+            src="/banner.png"
+            alt="Elysium Banner"
+            width={1920}
+            height={640}
+            className="w-full h-auto object-cover"
+            priority
+          />
+        </div>
       </main>
     </>
   )

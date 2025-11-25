@@ -25,11 +25,11 @@ export function Hero() {
             }`}
           >
             <h1 className="font-display font-bold text-5xl sm:text-5xl md:text-5xl lg:text-5xl xl:text-6xl text-foreground mb-3 sm:mb-6 leading-tight text-pretty">
-              Building the Decentralized Future
+              Decoding the Decentralized Future
             </h1>
 
-            <p className="text-md sm:text-base md:text-lg text-muted-foreground mb-5 sm:mb-8 leading-relaxed max-w-xl font-light">
-              Deep technical research and production-ready development. For builders. By builders.
+            <p className="text-md sm:text-base md:text-lg text-muted-foreground mb-5 sm:mb-8 leading-relaxed max-w-xl font-normal">
+              A research firm dedicated to distilling clarity from the chaos of the blockchain industry.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 sm:gap-3 items-start">

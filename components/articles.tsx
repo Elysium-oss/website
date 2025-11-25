@@ -100,8 +100,8 @@ export function Articles() {
           <h2 className="font-display font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-foreground mb-3 sm:mb-4">
             Latest <span className="text-muted-foreground">Research</span>
           </h2>
-          <p className="text-sm sm:text-base md:text-lg text-muted-foreground px-4">
-            Cutting-edge analysis on Web3 protocols and decentralized technologies.
+          <p className="text-sm sm:text-base md:text-lg text-muted-foreground px-4 max-w-4xl mx-auto">
+            Rigorous deep dives into emerging infrastructure and DeFi mechanisms. We strip away the marketing narratives to provide the unfiltered, high-signal analysis that investors and builders actually need.
           </p>
         </div>
 

@@ -15,7 +15,7 @@ export function Services() {
         {/* Section Title */}
         <div className="text-center mb-12 sm:mb-12 lg:mb-16">
           <h2 className="font-display font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-foreground mb-6 sm:mb-4">
-            What We <span className="text-muted-foreground">Build</span>
+            Areas Of <span className="text-muted-foreground">Focus</span>
           </h2>
           <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto px-4">
             We combine research rigor with engineering excellence
@@ -118,7 +118,7 @@ export function Services() {
                 }}
                 className="font-medium text-xs sm:text-sm inline-flex items-center gap-2 text-foreground mt-auto"
               >
-                View Our Work
+                Coming Soon
                 <span className="text-base sm:text-lg">→</span>
               </Link>
             </div>

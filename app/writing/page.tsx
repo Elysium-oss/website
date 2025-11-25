@@ -13,6 +13,7 @@ interface Article {
   pubDate: string
   category: string
   author: string
+  authorImage?: string
   readTime: string
   image?: string
   link?: string
@@ -90,6 +91,7 @@ export default function WritingPage() {
             pubDate: article.pubDate,
             category: article.category || "Research", // Default category
             author: article.author,
+            authorImage: article.authorImage,
             readTime: article.readTime,
             image: article.image,
             link: article.link,
@@ -218,11 +220,19 @@ export default function WritingPage() {
                   
                   {/* Author */}
                   <div className="flex items-center gap-3">
-                    <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-muted flex items-center justify-center">
-                      <span className="text-xs font-medium text-foreground">
-                        {sanitizeText(latestArticle.author).charAt(0).toUpperCase()}
-                      </span>
-                    </div>
+                    {latestArticle.authorImage ? (
+                      <img 
+                        src={latestArticle.authorImage} 
+                        alt={sanitizeText(latestArticle.author)}
+                        className="w-6 h-6 sm:w-7 sm:h-7 rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-muted flex items-center justify-center">
+                        <span className="text-xs font-medium text-foreground">
+                          {sanitizeText(latestArticle.author).charAt(0).toUpperCase()}
+                        </span>
+                      </div>
+                    )}
                     <span className="text-base sm:text-lg text-foreground font-medium">
                       {sanitizeText(latestArticle.author)}
                     </span>

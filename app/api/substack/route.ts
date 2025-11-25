@@ -10,6 +10,20 @@ import { NextResponse } from "next/server"
 function parseRSSServer(rssText: string) {
   const articles: any[] = []
   
+  // Extract channel/publication-level author image (logo)
+  let channelAuthorImage: string | undefined
+  const channelImageMatch = rssText.match(/<image>\s*<url>(.*?)<\/url>\s*<\/image>/i)
+  if (channelImageMatch) {
+    channelAuthorImage = channelImageMatch[1]
+  }
+  // Also try iTunes image format
+  if (!channelAuthorImage) {
+    const itunesImageMatch = rssText.match(/<itunes:image[^>]+href=["']([^"']+)["']/i)
+    if (itunesImageMatch) {
+      channelAuthorImage = itunesImageMatch[1]
+    }
+  }
+  
   // Split by </item> tag to handle very long articles with complex nested content
   // This is more reliable than regex for articles with lots of HTML
   const itemSections = rssText.split('</item>')
@@ -105,6 +119,7 @@ function parseRSSServer(rssText: string) {
       pubDate: pubDate || new Date().toISOString(),
       link,
       author: creator || "Elysium",
+      authorImage: channelAuthorImage, // Add author/publication logo
       category: category || undefined,
       readTime: `${readTime} min read`,
       image,
@@ -158,6 +173,7 @@ async function fetchFromSubstackAPI(apiKey: string, publicationUrl: string, forc
         pubDate: post.created_at || post.published_at || new Date().toISOString(),
         link: post.post_url || post.canonical_url || `${publicationUrl}/p/${post.slug}`,
         author: post.author?.name || "Elysium",
+        authorImage: post.author?.photo_url || post.author?.avatar_url || post.publication?.logo_url || undefined,
         category: post.tags?.[0] || undefined,
         readTime: post.read_time ? `${post.read_time} min read` : "5 min read",
         image: post.cover_image || post.thumbnail_image || undefined,
