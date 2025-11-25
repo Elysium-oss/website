@@ -150,9 +150,10 @@ export default function ArticlePage() {
         img.style.marginRight = 'auto'
         img.style.marginTop = '1.5rem'
         img.style.marginBottom = '1.5rem'
-        img.style.borderRadius = '0.5rem'
+        img.style.borderRadius = '0'
         img.style.opacity = '1'
         img.style.visibility = 'visible'
+        img.style.border = 'none'
         
         if (!img.getAttribute('loading')) {
           img.loading = 'lazy'
@@ -174,11 +175,12 @@ export default function ArticlePage() {
         img.onload = () => {
           img.style.opacity = '1'
           img.style.visibility = 'visible'
+          img.style.display = 'block'
         }
         
         img.removeAttribute('hidden')
         const existingStyle = img.getAttribute('style') || ''
-        img.setAttribute('style', `${existingStyle}; display: block !important; max-width: 100% !important; width: 100% !important; height: auto !important; margin: 1.5rem auto !important; border-radius: 0.5rem !important; opacity: 1 !important; visibility: visible !important;`)
+        img.setAttribute('style', `${existingStyle}; display: block !important; max-width: 100% !important; width: 100% !important; height: auto !important; margin: 1.5rem auto !important; border-radius: 0 !important; border: none !important; opacity: 1 !important; visibility: visible !important;`)
         img.classList.add('article-image')
       })
 
@@ -219,7 +221,7 @@ export default function ArticlePage() {
       }
       
       // Generate table of contents
-      const headings = Array.from(contentContainerRef.current.querySelectorAll('h1, h2'))
+      const headings = Array.from(contentContainerRef.current.querySelectorAll('h3'))
       
       if (headings.length === 0) {
         retryCount++
@@ -356,7 +358,7 @@ export default function ArticlePage() {
     if (!element && contentContainerRef.current) {
       // Try finding by index from the TOC
       const index = parseInt(id.replace('heading-', ''))
-      const headings = contentContainerRef.current.querySelectorAll('h1, h2')
+      const headings = contentContainerRef.current.querySelectorAll('h3')
       element = headings[index] as HTMLElement
       
       if (element) {
@@ -604,9 +606,6 @@ export default function ArticlePage() {
                                 ? 'text-foreground font-semibold'
                                 : 'text-muted-foreground hover:text-foreground hover:underline'
                             }`}
-                            style={{
-                              paddingLeft: `${(item.level - 1) * 0.4 + 0.5}rem`
-                            }}
                           >
                             {activeSection === item.id ? '◆ ' : ''}
                             {item.text}
@@ -670,6 +669,12 @@ export default function ArticlePage() {
                   {article.title}
                 </h1>
                 
+                {article.excerpt && (
+                  <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed mb-6 sm:mb-8">
+                    {article.excerpt}
+                  </p>
+                )}
+                
                 <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-muted-foreground mb-4 sm:mb-6">
                   <span>{new Date(article.pubDate).toLocaleDateString("en-US", { 
                     year: 'numeric', 
@@ -699,7 +704,8 @@ export default function ArticlePage() {
                     className="article-content break-words overflow-x-hidden"
                     dangerouslySetInnerHTML={{ __html: article.content }}
                     style={{
-                      lineHeight: '1.75',
+                      fontSize: '1.125rem',
+                      lineHeight: '1.8',
                       wordBreak: 'break-word',
                       overflowWrap: 'anywhere',
                       maxWidth: '100%',

@@ -43,10 +43,6 @@ export function Header() {
   return (
     <header
       className="fixed top-0 left-0 right-0 z-50 bg-background transition-all duration-300 border-b border-border md:border-b-0"
-      style={{
-        width: '100vw',
-        maxWidth: '100%',
-      }}
     >
       {/* Border and shadow overlay that fades in gradually */}
       <div
@@ -58,8 +54,8 @@ export function Header() {
           transition: 'opacity 0.1s ease-out',
         }}
       />
-      <div className="relative z-10 w-full max-w-full overflow-hidden">
-        <div className="px-4 sm:px-8 lg:px-16">
+      <div className="relative z-10 w-full overflow-hidden">
+        <div className="max-w-[100vw] mx-auto px-4 sm:px-8 lg:px-16">
           <div className="flex items-center justify-between h-12 md:h-16">
             {/* Logo */}
             <Link href="/" className="group flex-shrink-0" onClick={() => setIsMobileMenuOpen(false)}>
