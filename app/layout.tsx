@@ -47,7 +47,7 @@ export default function RootLayout({
       <body className={`${urbanist.variable} ${urbanistDisplay.variable} font-sans bg-background text-foreground overflow-x-hidden`}>
         <Suspense fallback={null}>
           <PostHogProviderClient>
-            {children}
+        {children}
           </PostHogProviderClient>
         </Suspense>
       </body>

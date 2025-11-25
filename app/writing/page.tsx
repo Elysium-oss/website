@@ -32,6 +32,14 @@ export default function WritingPage() {
   const [searchQuery, setSearchQuery] = useState("")
 
   /**
+   * Sanitize text by removing CDATA wrappers
+   */
+  const sanitizeText = (text: string): string => {
+    if (!text) return ''
+    return text.replace(/<!\[CDATA\[(.*?)\]\]>/g, '$1').trim()
+  }
+
+  /**
    * Generate a slug from article ID or extract from link
    */
   const getArticleSlug = (article: Article): string => {
@@ -132,10 +140,17 @@ export default function WritingPage() {
     setCurrentPage(1)
   }, [searchQuery, selectedCategory])
 
-  const totalPages = Math.ceil(filteredArticles.length / ITEMS_PER_PAGE)
+  // Get the latest article (first one from sorted articles by date)
+  const sortedByDate = [...articles].sort((a, b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime())
+  const latestArticle = sortedByDate.length > 0 ? sortedByDate[0] : null
+
+  // Filter out the latest article from the grid (only if it matches current filters)
+  const articlesWithoutLatest = filteredArticles.filter(article => article.id !== latestArticle?.id)
+  
+  const totalPages = Math.ceil(articlesWithoutLatest.length / ITEMS_PER_PAGE)
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
   const endIndex = startIndex + ITEMS_PER_PAGE
-  const currentArticles = filteredArticles.slice(startIndex, endIndex)
+  const currentArticles = articlesWithoutLatest.slice(startIndex, endIndex)
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page)
@@ -166,12 +181,99 @@ export default function WritingPage() {
       <main className="pt-20 sm:pt-24 pb-12 sm:pb-16 lg:pb-24 min-h-screen">
         {/* Search and Filters */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-          <div className="mb-8 sm:mb-12">
-            <p className="text-xs font-semibold text-muted-foreground tracking-wider mb-3 sm:mb-4">WRITING</p>
-            <h1 className="font-display font-bold text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-foreground leading-tight mb-4 sm:mb-6 text-balance">
-              We Focus Our Writing on Topics That Align with Our Core Interests
-            </h1>
-          </div>
+          {/* Featured Latest Article */}
+          {!loading && latestArticle && (
+            <div 
+              onClick={() => handleArticleClick(latestArticle)}
+              className="mb-8 sm:mb-12 cursor-pointer"
+            >
+              <div className="bg-gradient-to-br from-white/50 via-white/30 to-white/10 dark:from-white/5 dark:via-white/10 dark:to-white/5 border border-border overflow-hidden flex flex-col lg:flex-row">
+                {/* Left: Text Content */}
+                <div className="flex-1 p-6 sm:p-8 lg:p-10 flex flex-col justify-between">
+                  <div>
+                    {/* Category Tag and Date */}
+                    <div className="mb-4 sm:mb-6 flex items-center justify-between gap-4">
+                      <span className="inline-block bg-muted text-foreground text-xs font-semibold px-3 sm:px-4 py-1.5 sm:py-2 rounded-full uppercase">
+                        {latestArticle.category || "RESEARCH"}
+                      </span>
+                      <span className="text-xs sm:text-sm text-muted-foreground">
+                        {new Date(latestArticle.pubDate).toLocaleDateString("en-US", {
+                          month: "short",
+                          day: "numeric",
+                          year: "numeric",
+                        })}
+                      </span>
+                    </div>
+                    
+                    {/* Title */}
+                    <h2 className="font-display font-bold text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-foreground mb-3 sm:mb-4 leading-tight">
+                      {latestArticle.title}
+                    </h2>
+                    
+                    {/* Excerpt */}
+                    <p className="text-sm sm:text-base md:text-lg text-muted-foreground leading-relaxed mb-6 sm:mb-8 line-clamp-3">
+                      {latestArticle.excerpt}
+                    </p>
+                  </div>
+                  
+                  {/* Author */}
+                  <div className="flex items-center gap-3">
+                    <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-muted flex items-center justify-center">
+                      <span className="text-xs font-medium text-foreground">
+                        {sanitizeText(latestArticle.author).charAt(0).toUpperCase()}
+                      </span>
+                    </div>
+                    <span className="text-base sm:text-lg text-foreground font-medium">
+                      {sanitizeText(latestArticle.author)}
+                    </span>
+                  </div>
+                </div>
+                
+                {/* Right: Image */}
+                <div className="w-full lg:w-96 h-64 sm:h-80 lg:h-auto bg-muted relative overflow-hidden my-6 sm:my-8 lg:my-10 mx-4 sm:mx-6 lg:mx-8 lg:mx-10">
+                  {latestArticle.image ? (
+                    <img
+                      src={latestArticle.image}
+                      alt={latestArticle.title}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <svg
+                        className="w-16 h-16 sm:w-24 sm:h-24 text-foreground opacity-40"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={1.5}
+                          d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                        />
+                      </svg>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Loading state for featured article */}
+          {loading && (
+            <div className="mb-8 sm:mb-12 animate-pulse">
+              <div className="bg-gradient-to-br from-white/50 via-white/30 to-white/10 dark:from-white/5 dark:via-white/10 dark:to-white/5 border border-border flex flex-col lg:flex-row">
+                <div className="flex-1 p-6 sm:p-8 lg:p-10">
+                  <div className="h-6 bg-muted rounded w-32 mb-4"></div>
+                  <div className="h-8 bg-muted rounded w-3/4 mb-4"></div>
+                  <div className="h-4 bg-muted rounded w-full mb-2"></div>
+                  <div className="h-4 bg-muted rounded w-5/6 mb-6"></div>
+                  <div className="h-10 bg-muted rounded w-1/2"></div>
+                </div>
+                <div className="w-full lg:w-96 h-64 sm:h-80 lg:h-auto bg-muted my-6 sm:my-8 lg:my-10 mx-4 sm:mx-6 lg:mx-8 lg:mx-10"></div>
+              </div>
+            </div>
+          )}
 
           <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center justify-between mb-6 sm:mb-8">
             {/* Search */}
@@ -251,7 +353,7 @@ export default function WritingPage() {
                 <article
                   key={article.id}
                   onClick={() => handleArticleClick(article)}
-                  className="group cursor-pointer bg-background rounded-none overflow-hidden border border-border hover:border-foreground transition-all hover:shadow-lg"
+                  className="cursor-pointer bg-background rounded-none overflow-hidden border border-border"
                 >
                   {/* Article Image */}
                   <div className="relative h-48 bg-muted overflow-hidden border-b border-border">
@@ -283,7 +385,7 @@ export default function WritingPage() {
                     <span className="inline-block bg-muted text-muted-foreground text-xs font-semibold px-3 py-1 rounded-full uppercase mb-3">
                       {article.category}
                     </span>
-                    <h3 className="font-display font-bold text-lg text-foreground mb-2 line-clamp-2 group-hover:text-muted-foreground transition-colors">
+                    <h3 className="font-display font-bold text-lg text-foreground mb-2 line-clamp-2">
                       {article.title}
                     </h3>
                     <p className="text-muted-foreground text-sm leading-relaxed mb-4 line-clamp-2">

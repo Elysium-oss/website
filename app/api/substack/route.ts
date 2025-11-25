@@ -48,7 +48,9 @@ function parseRSSServer(rssText: string) {
     const link = (linkMatch?.[1] || "").trim()
     const pubDate = (pubDateMatch?.[1] || "").trim()
     const description = (descMatch?.[1] || descMatch?.[2] || "").trim()
-    const creator = (creatorMatch?.[1] || creatorMatch?.[2] || creatorMatch?.[3] || "").trim()
+    let creator = (creatorMatch?.[1] || creatorMatch?.[2] || creatorMatch?.[3] || "").trim()
+    // Remove CDATA wrappers from creator/author
+    creator = creator.replace(/<!\[CDATA\[(.*?)\]\]>/g, '$1').trim()
     const category = (categoryMatch?.[1] || "").trim()
 
     if (!title || !link) return
