@@ -23,6 +23,7 @@ interface TocItem {
   id: string
   text: string
   level: number
+  relativeLevel: number // Relative level for display (0 = primary, 1 = secondary, etc.)
 }
 
 export default function ArticlePage() {
@@ -38,6 +39,7 @@ export default function ArticlePage() {
   const [tableOfContents, setTableOfContents] = useState<TocItem[]>([])
   const [activeSection, setActiveSection] = useState<string>("")
   const observerRef = useRef<IntersectionObserver | null>(null)
+  const tocContainerRef = useRef<HTMLDivElement | null>(null)
   const [copied, setCopied] = useState(false)
 
   // Sanitize text coming from feeds (e.g., CDATA wrappers)
@@ -221,10 +223,11 @@ export default function ArticlePage() {
         })
       }
       
-      // Generate table of contents
-      const headings = Array.from(contentContainerRef.current.querySelectorAll('h3'))
+      // Generate table of contents with hierarchical logic
+      // Find all headings (h1-h6) in the content
+      const allHeadings = Array.from(contentContainerRef.current.querySelectorAll('h1, h2, h3, h4, h5, h6'))
       
-      if (headings.length === 0) {
+      if (allHeadings.length === 0) {
         retryCount++
         if (retryCount < maxRetries) {
           nestedTimer = setTimeout(processContent, 500)
@@ -235,22 +238,46 @@ export default function ArticlePage() {
         return
       }
       
+      // Determine the highest level heading present (primary level)
+      let primaryLevel = 6 // Start with h6 (highest number = lowest priority)
+      allHeadings.forEach((heading) => {
+        const level = parseInt(heading.tagName.charAt(1))
+        if (level < primaryLevel) {
+          primaryLevel = level
+        }
+      })
+      
+      // Build hierarchical TOC structure
       const toc: TocItem[] = []
       
-      headings.forEach((heading, index) => {
-        const level = parseInt(heading.tagName.charAt(1))
+      allHeadings.forEach((heading, index) => {
+        const absoluteLevel = parseInt(heading.tagName.charAt(1))
         const text = heading.textContent || ''
-        const id = `heading-${index}`
+        
+        // Generate a unique ID based on heading text (slugified) or index
+        const slug = text
+          .toLowerCase()
+          .replace(/[^\w\s-]/g, '') // Remove special characters
+          .replace(/\s+/g, '-') // Replace spaces with hyphens
+          .replace(/-+/g, '-') // Replace multiple hyphens with single
+          .trim()
+          .replace(/^-+|-+$/g, '') // Remove leading/trailing hyphens
+        
+        const id = slug ? `heading-${slug}-${index}` : `heading-${index}`
         const headingEl = heading as HTMLElement
         
         // Set ID and add scroll margin
         headingEl.id = id
         headingEl.style.scrollMarginTop = '120px'
         
+        // Calculate relative level (0 = primary, 1 = secondary, etc.)
+        const relativeLevel = absoluteLevel - primaryLevel
+        
         toc.push({
           id,
           text,
-          level
+          level: absoluteLevel,
+          relativeLevel
         })
       })
       
@@ -285,7 +312,7 @@ export default function ArticlePage() {
       })
 
       // Observe all headings
-      headings.forEach((heading) => {
+      allHeadings.forEach((heading) => {
         if (observerRef.current) {
           observerRef.current.observe(heading)
         }
@@ -357,14 +384,32 @@ export default function ArticlePage() {
     let element = document.getElementById(id)
     
     if (!element && contentContainerRef.current) {
-      // Try finding by index from the TOC
-      const index = parseInt(id.replace('heading-', ''))
-      const headings = contentContainerRef.current.querySelectorAll('h3')
-      element = headings[index] as HTMLElement
+      // Try finding by ID in all headings
+      const headings = Array.from(contentContainerRef.current.querySelectorAll('h1, h2, h3, h4, h5, h6'))
       
-      if (element) {
-        // Set the ID if it's missing
-        element.id = id
+      // First pass: Check if any heading has the ID (in case getElementById failed for some reason)
+      const foundById = headings.find(h => h.id === id)
+      if (foundById) {
+        element = foundById as HTMLElement
+      }
+      
+      // Second pass: Fallback to index matching
+      if (!element) {
+        // Extract the index from the end of the ID string (e.g., "heading-slug-5" -> 5)
+        // We use the last number after a hyphen to handle slugs with hyphens
+        const indexMatch = id.match(/-(\d+)$/)
+        
+        if (indexMatch) {
+          const index = parseInt(indexMatch[1])
+          if (headings[index]) {
+            element = headings[index] as HTMLElement
+            // Restore the ID if it was missing
+            if (element.id !== id) {
+              element.id = id
+              element.style.scrollMarginTop = '120px'
+            }
+          }
+        }
       }
     }
     
@@ -374,13 +419,31 @@ export default function ArticlePage() {
 
     const headerOffset = 100
     const elementPosition = element.getBoundingClientRect().top
-    const offsetPosition = elementPosition + window.pageYOffset - headerOffset
+    const offsetPosition = elementPosition + window.scrollY - headerOffset
 
     window.scrollTo({
       top: offsetPosition,
       behavior: 'smooth'
     })
-  }, [])
+    
+    // Manually set active section on click for instant feedback
+    setActiveSection(id)
+  }, [article?.id])
+
+  // This effect runs when the active section changes. It scrolls the TOC
+  // container to make sure the active TOC item is visible.
+  useEffect(() => {
+    if (activeSection && tocContainerRef.current) {
+      const activeTocItem = document.getElementById(`toc-item-${activeSection}`)
+      if (activeTocItem) {
+        activeTocItem.scrollIntoView({
+          block: "nearest",
+          inline: "nearest",
+          behavior: "smooth"
+        })
+      }
+    }
+  }, [activeSection])
 
   useEffect(() => {
     const fetchArticle = async () => {
@@ -597,21 +660,34 @@ export default function ArticlePage() {
                       <h2 className="text-sm font-bold text-foreground uppercase tracking-wider mb-2 pl-2">
                         TABLE OF CONTENTS
                       </h2>
-                      <nav className="space-y-0 max-h-[60vh] overflow-auto pr-2">
-                        {tableOfContents.map((item) => (
-                          <button
-                            key={item.id}
-                            onClick={() => scrollToSection(item.id)}
-                            className={`block w-full text-left py-0.5 px-2 rounded text-base transition-all cursor-pointer ${
-                              activeSection === item.id
-                                ? 'text-foreground font-semibold'
-                                : 'text-muted-foreground hover:text-foreground hover:underline'
-                            }`}
-                          >
-                            {activeSection === item.id ? '◆ ' : ''}
-                            {item.text}
-                          </button>
-                        ))}
+                      <nav ref={tocContainerRef} className="space-y-0 max-h-[60vh] overflow-auto pr-2">
+                        {tableOfContents.map((item) => {
+                          const isPrimary = item.relativeLevel === 0
+                          const isActive = activeSection === item.id
+                          
+                          return (
+                            <button
+                              key={item.id}
+                              id={`toc-item-${item.id}`}
+                              onClick={() => scrollToSection(item.id)}
+                              className={`block w-full text-left py-0.5 px-2 rounded transition-all cursor-pointer ${
+                                isActive
+                                  ? 'text-foreground font-semibold'
+                                  : isPrimary
+                                  ? 'text-foreground font-medium hover:text-foreground hover:underline'
+                                  : 'text-muted-foreground hover:text-foreground hover:underline'
+                              }`}
+                              style={{
+                                paddingLeft: `${0.5 + item.relativeLevel * 1}rem`, // Indent based on relative level
+                                fontSize: isPrimary ? '0.9375rem' : '0.875rem', // Slightly larger for primary items
+                                fontWeight: isPrimary ? '500' : '400'
+                              }}
+                            >
+                              {isActive ? '◆ ' : ''}
+                              {item.text}
+                            </button>
+                          )
+                        })}
                       </nav>
                     </div>
                   ) : article?.content ? (

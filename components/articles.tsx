@@ -10,7 +10,7 @@ interface Article {
   excerpt: string
   pubDate: string
   link: string
-  category: string
+  category?: string
 }
 
 export function Articles() {
@@ -66,7 +66,7 @@ export function Articles() {
             title: article.title,
             excerpt: article.excerpt,
             pubDate: article.pubDate,
-            category: article.category || "Research", // Default category
+            category: article.category || undefined,
             link: article.link,
           }))
 
@@ -125,11 +125,13 @@ export function Articles() {
                 className="p-5 sm:p-6 rounded-2xl border-2 border-border bg-background overflow-hidden flex flex-col text-left cursor-pointer"
               >
                 {/* Category Tag */}
-                <div className="inline-flex mb-3 sm:mb-4 w-fit">
-                  <span className="px-2.5 sm:px-3 py-1 text-xs font-semibold text-foreground bg-muted rounded-full">
-                    {article.category}
-                  </span>
-                </div>
+                {article.category && (
+                  <div className="inline-flex mb-3 sm:mb-4 w-fit">
+                    <span className="px-2.5 sm:px-3 py-1 text-xs font-semibold text-foreground bg-muted rounded-full">
+                      {article.category}
+                    </span>
+                  </div>
+                )}
 
                 {/* Title */}
                 <h3 className="font-display font-bold text-lg sm:text-xl text-foreground mb-2 sm:mb-3 line-clamp-2 flex-grow">

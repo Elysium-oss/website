@@ -11,7 +11,7 @@ interface Article {
   title: string
   excerpt: string
   pubDate: string
-  category: string
+  category?: string
   author: string
   authorImage?: string
   readTime: string
@@ -89,7 +89,7 @@ export default function WritingPage() {
             title: article.title,
             excerpt: article.excerpt,
             pubDate: article.pubDate,
-            category: article.category || "Research", // Default category
+            category: article.category || undefined,
             author: article.author,
             authorImage: article.authorImage,
             readTime: article.readTime,
@@ -132,7 +132,7 @@ export default function WritingPage() {
     const matchesSearch = searchQuery.trim() === "" || 
       article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       article.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      article.category.toLowerCase().includes(searchQuery.toLowerCase())
+      (article.category && article.category.toLowerCase().includes(searchQuery.toLowerCase()))
     
     return matchesCategory && matchesSearch
   })
@@ -195,9 +195,13 @@ export default function WritingPage() {
                   <div>
                     {/* Category Tag and Date */}
                     <div className="mb-4 sm:mb-6 flex items-center justify-between gap-4">
-                      <span className="inline-block bg-muted text-foreground text-xs font-semibold px-3 sm:px-4 py-1.5 sm:py-2 rounded-full uppercase">
-                        {latestArticle.category || "RESEARCH"}
-                      </span>
+                      {latestArticle.category ? (
+                        <span className="inline-block bg-muted text-foreground text-xs font-semibold px-3 sm:px-4 py-1.5 sm:py-2 rounded-full uppercase">
+                          {latestArticle.category}
+                        </span>
+                      ) : (
+                        <span></span>
+                      )}
                       <span className="text-xs sm:text-sm text-muted-foreground">
                         {new Date(latestArticle.pubDate).toLocaleDateString("en-US", {
                           month: "short",
@@ -367,21 +371,29 @@ export default function WritingPage() {
                 >
                   {/* Article Image */}
                   <div className="relative h-48 bg-muted overflow-hidden border-b border-border">
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <svg
-                        className="w-16 h-16 text-foreground opacity-40"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={1.5}
-                          d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                        />
-                      </svg>
-                    </div>
+                    {article.image ? (
+                      <img
+                        src={article.image}
+                        alt={article.title}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <svg
+                          className="w-16 h-16 text-foreground opacity-40"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={1.5}
+                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                          />
+                        </svg>
+                      </div>
+                    )}
                     <div className="absolute top-3 right-3 text-muted-foreground text-xs font-medium">
                       {new Date(article.pubDate).toLocaleDateString("en-US", {
                         month: "short",
@@ -392,9 +404,11 @@ export default function WritingPage() {
 
                   {/* Article Content */}
                   <div className="p-5">
-                    <span className="inline-block bg-muted text-muted-foreground text-xs font-semibold px-3 py-1 rounded-full uppercase mb-3">
-                      {article.category}
-                    </span>
+                    {article.category && (
+                      <span className="inline-block bg-muted text-muted-foreground text-xs font-semibold px-3 py-1 rounded-full uppercase mb-3">
+                        {article.category}
+                      </span>
+                    )}
                     <h3 className="font-display font-bold text-lg text-foreground mb-2 line-clamp-2">
                       {article.title}
                     </h3>

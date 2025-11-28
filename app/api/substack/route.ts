@@ -48,8 +48,18 @@ function parseRSSServer(rssText: string) {
     const linkMatch = itemXml.match(/<link>(.*?)<\/link>/i)
     const pubDateMatch = itemXml.match(/<pubDate>(.*?)<\/pubDate>/i)
     const descMatch = itemXml.match(/<description><!\[CDATA\[([\s\S]*?)\]\]><\/description>|<description>([\s\S]*?)<\/description>/i)
-    const creatorMatch = itemXml.match(/<dc:creator>(.*?)<\/dc:creator>|<creator>(.*?)<\/creator>|<author>(.*?)<\/author>/i)
     const categoryMatch = itemXml.match(/<category>(.*?)<\/category>/i)
+    
+    // Extract all creator/author tags (there can be multiple)
+    // Handle both CDATA and plain text formats
+    const creatorMatches = [
+      ...itemXml.matchAll(/<dc:creator><!\[CDATA\[(.*?)\]\]><\/dc:creator>/gi),
+      ...itemXml.matchAll(/<dc:creator>(.*?)<\/dc:creator>/gi),
+      ...itemXml.matchAll(/<creator><!\[CDATA\[(.*?)\]\]><\/creator>/gi),
+      ...itemXml.matchAll(/<creator>(.*?)<\/creator>/gi),
+      ...itemXml.matchAll(/<author><!\[CDATA\[(.*?)\]\]><\/author>/gi),
+      ...itemXml.matchAll(/<author>(.*?)<\/author>/gi),
+    ]
     
     // Substack puts full content (including images) in content:encoded, not description
     const contentMatch = itemXml.match(/<content:encoded><!\[CDATA\[([\s\S]*?)\]\]><\/content:encoded>/i)
@@ -62,9 +72,21 @@ function parseRSSServer(rssText: string) {
     const link = (linkMatch?.[1] || "").trim()
     const pubDate = (pubDateMatch?.[1] || "").trim()
     const description = (descMatch?.[1] || descMatch?.[2] || "").trim()
-    let creator = (creatorMatch?.[1] || creatorMatch?.[2] || creatorMatch?.[3] || "").trim()
-    // Remove CDATA wrappers from creator/author
-    creator = creator.replace(/<!\[CDATA\[(.*?)\]\]>/g, '$1').trim()
+    
+    // Process all creators/authors and join with commas
+    const creators: string[] = []
+    creatorMatches.forEach((match) => {
+      const creator = (match[1] || "").trim()
+      if (creator) {
+        // CDATA is already handled by the regex, but clean any remaining wrappers
+        const cleanedCreator = creator.replace(/<!\[CDATA\[(.*?)\]\]>/g, '$1').trim()
+        if (cleanedCreator && !creators.includes(cleanedCreator)) {
+          creators.push(cleanedCreator)
+        }
+      }
+    })
+    const creator = creators.length > 0 ? creators.join(", ") : ""
+    
     const category = (categoryMatch?.[1] || "").trim()
 
     if (!title || !link) return
@@ -109,7 +131,22 @@ function parseRSSServer(rssText: string) {
       return match
     })
 
-    const wordCount = description.replace(/<[^>]*>/g, "").split(/\s+/).filter(Boolean).length
+    // Calculate read time from full content (content:encoded), not just description
+    // This gives accurate reading time based on the actual article length
+    const contentForWordCount = fullContent || description
+    const plainText = contentForWordCount
+      .replace(/<[^>]*>/g, "") // Remove HTML tags
+      .replace(/&nbsp;/g, " ")
+      .replace(/&amp;/g, "&")
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/\s+/g, " ") // Normalize whitespace
+      .trim()
+    
+    const wordCount = plainText.split(/\s+/).filter(Boolean).length
+    // Average reading speed is 200-250 words per minute, using 200 for conservative estimate
     const readTime = Math.max(1, Math.ceil(wordCount / 200))
 
     articles.push({
@@ -166,19 +203,56 @@ async function fetchFromSubstackAPI(apiKey: string, publicationUrl: string, forc
     
     // Transform API response to our article format
     if (Array.isArray(data)) {
-      return data.map((post: any, index: number) => ({
-        id: post.id || post.slug || `article-${index}`,
-        title: post.title || "",
-        excerpt: post.subtitle || post.description || "",
-        pubDate: post.created_at || post.published_at || new Date().toISOString(),
-        link: post.post_url || post.canonical_url || `${publicationUrl}/p/${post.slug}`,
-        author: post.author?.name || "Elysium",
-        authorImage: post.author?.photo_url || post.author?.avatar_url || post.publication?.logo_url || undefined,
-        category: post.tags?.[0] || undefined,
-        readTime: post.read_time ? `${post.read_time} min read` : "5 min read",
-        image: post.cover_image || post.thumbnail_image || undefined,
-        content: post.body_html || post.content_html || post.description || "",
-      }))
+      return data.map((post: any, index: number) => {
+        // Handle multiple authors from API
+        let authors: string[] = []
+        if (post.authors && Array.isArray(post.authors) && post.authors.length > 0) {
+          authors = post.authors.map((a: any) => a.name || a).filter(Boolean)
+        } else if (post.author?.name) {
+          authors = [post.author.name]
+        }
+        
+        const author = authors.length > 0 ? authors.join(", ") : "Elysium"
+        
+        // Calculate read time from API data
+        // Substack API provides reading_time_minutes field
+        let readTime = "5 min read" // Default fallback
+        if (post.reading_time_minutes) {
+          readTime = `${post.reading_time_minutes} min read`
+        } else if (post.read_time) {
+          readTime = `${post.read_time} min read`
+        } else {
+          // Calculate from content if not provided
+          const contentForCalc = post.body_html || post.content_html || post.description || ""
+          const plainText = contentForCalc
+            .replace(/<[^>]*>/g, "")
+            .replace(/&nbsp;/g, " ")
+            .replace(/&amp;/g, "&")
+            .replace(/&lt;/g, "<")
+            .replace(/&gt;/g, ">")
+            .replace(/&quot;/g, '"')
+            .replace(/&#39;/g, "'")
+            .replace(/\s+/g, " ")
+            .trim()
+          const wordCount = plainText.split(/\s+/).filter(Boolean).length
+          const calculatedReadTime = Math.max(1, Math.ceil(wordCount / 200))
+          readTime = `${calculatedReadTime} min read`
+        }
+        
+        return {
+          id: post.id || post.slug || `article-${index}`,
+          title: post.title || "",
+          excerpt: post.subtitle || post.description || "",
+          pubDate: post.created_at || post.published_at || new Date().toISOString(),
+          link: post.post_url || post.canonical_url || `${publicationUrl}/p/${post.slug}`,
+          author: author,
+          authorImage: post.author?.photo_url || post.author?.avatar_url || post.publication?.logo_url || undefined,
+          category: post.tags?.[0] || undefined,
+          readTime: readTime,
+          image: post.cover_image || post.thumbnail_image || undefined,
+          content: post.body_html || post.content_html || post.description || "",
+        }
+      })
     }
     
     return []
